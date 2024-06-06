@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% include "../include/head.html" %} {% load static %}
+
+  <!-- Toastr CSS from updated CDN -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
+  />
+
+  <title>Login Confirmation - LUTH</title>
+
+  <style>
+    body {
+      background-image: url("{% static 'img/5.jpg'%}");
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+  </style>
+
+  <body>
+    <main class="login-container">
+      <div class="container">
+        <section
+          class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4"
+        >
+          <div class="container">
+            <div class="row justify-content-center">
+              <div
+                class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center"
+              >
+                <div class="card mb-3">
+                  <div class="card-body">
+                    <div class="pt-4 pb-2">
+                      <h5 class="card-title text-center pb-0 fs-4">
+                        Confirm Your Login ID
+                      </h5>
+                      <br /><br />
+
+                      <p class="text-center small">
+                        <strong
+                          >Welcome 👋🏽
+                                              <br />
+                          You have successfully registered, An email has been
+                          sent to you,</strong
+                        >
+                        <br /><br /><br />
+                      </p>
+                    </div>
+
+                    <form
+                      class="row g-3 needs-validation"
+                      method="POST"
+                      novalidate
+                    >
+                      {% csrf_token %} &nbsp; Click on login to access your
+                      dashboard!
+                      <div class="col-12">
+                        <button class="btn btn-primary w-100" type="submit">
+                          Login
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+    <!-- End #main -->
+
+    <a
+      href="#"
+      class="back-to-top d-flex align-items-center justify-content-center"
+      ><i class="bi bi-arrow-up-short"></i
+    ></a>
+
+    {% include "../include/footer.html" %}
+    <!-- Toastr JS from updated CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <script>
+      {% if messages %}
+          {% for message in messages %}
+              toastr.options = {
+                  "closeButton": true,
+                  "debug": false,
+                  "newestOnTop": true,
+                  "progressBar": true,
+                  "positionClass": "toast-top-right",
+                  "preventDuplicates": false,
+                  "onclick": null,
+                  "showDuration": "300",
+                  "hideDuration": "1000",
+                  "timeOut": "10000",
+                  "extendedTimeOut": "5000",
+                  "showEasing": "swing",
+                  "hideEasing": "linear",
+                  "showMethod": "fadeIn",
+                  "hideMethod": "fadeOut"
+              };
+              toastr["{{ message.tags }}"]("{{ message }}");
+          {% endfor %}
+      {% endif %}
+    </script>
+  </body>
+</html>

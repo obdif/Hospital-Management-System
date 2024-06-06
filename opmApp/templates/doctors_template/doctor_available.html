@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% include "../include/head.html" %} 
+    <!-- Toastr CSS from updated CDN -->
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
+  />
+
+  {% load static %}
+
+  <title>Appointments - LUTH</title>
+
+  <body>
+    <!-- ======= Header ======= -->
+    {% include "../include/doctor_header.html" %}
+
+    <!-- End Header -->
+
+    <!-- ======= Sidebar ======= -->
+    <aside id="sidebar" class="sidebar">
+      <ul class="sidebar-nav" id="sidebar-nav">
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="{%url 'doctor_dashboard'%}">
+            <i class="bi bi-grid"></i>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <!-- End patient_dashboard Nav -->
+    
+        <li class="nav-item">
+          <a class="nav-link " href="{% url 'doctor_appointments'%}">
+            <i class="bi bi-list-ol"></i><span>Appointments</span>
+          </a>
+        </li>
+        <!-- End Appointments Nav -->
+    
+        {% comment %} <li class="nav-item">
+          <a class="nav-link collapsed" href="{% url 'doctor_appointments'%}">
+            <i class="bi bi-shop"></i><span>Pharmacy</span>
+          </a>
+        </li> {% endcomment %}
+        <!-- End Pharmacy Nav -->
+    
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="{% url 'doctor_patients'%}">
+            <i class="bi bi-people"></i><span>Patients</span>
+          </a>
+        </li>
+        <!-- End Doctors Nav -->
+    
+    
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="{% url 'doctors'%}">
+            <i class="bi bi-people"></i><span>Doctors</span>
+          </a>
+        </li>
+        <!-- End Doctors Nav -->
+    
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="{% url 'departments'%}">
+            <i class="bi bi-layout-wtf"></i><span>Departments</span>
+          </a>
+        </li>
+        <!-- End Departments Nav -->
+    
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="#">
+            <i class="bi bi-credit-card"></i><span>Payments</span>
+          </a>
+        </li>
+        <!-- End Payment Nav -->
+    
+        <!-- <li class="nav-heading">Pages</li> -->
+    
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="{% url 'doctor_profile'%}">
+            <i class="bi bi-person"></i>
+            <span>Profile</span>
+          </a>
+        </li>
+        <!-- End Profile Page Nav -->
+    
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="{% url 'doctor_logout'%}">
+            <i style="color: red" class="bi bi-box-arrow-right"></i>
+            <span style="color: red">Sign Out</span>
+          </a>
+        </li>
+        <!-- End Logout Page Nav -->
+      </ul>
+    </aside>
+    
+
+    <!-- End Sidebar-->
+
+    <main id="main" class="main">
+      <div class="" style="margin-bottom:30px;">
+        <h4 style="text-align: center; font-weight: 600">
+        Select Available Day and Time for Appointment
+        </h4>
+      </div> <br>
+      <!-- End Page Title -->
+      {% comment %} <div class="pagetitle-btn" style="margin-bottom:20px;">
+        <a href="{% url 'doctor_available'%}"><button>Create Available Date</button></a>
+      </div> {% endcomment %}
+      <section class="section">
+        <div class="row">
+          <div class="col-lg-12">
+  
+            <div class="card">
+             
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <table class="table datatable">
+                            <thead>
+                                <tr>
+                                    <th><input type="checkbox"></th>
+                                    <th>Days</th>
+                                    <th>(Time) From</th>
+                                    <th>(Time) To</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for day in days_of_week %}
+                                    <tr>
+                                        <td>
+                                            {% if day in available_days %}
+                                                {% with available_day=available_days|default_if_none:None %}
+                                                    <input type="checkbox" name="{{ day }}_available" checked>
+                                                {% endwith %}
+                                            {% else %}
+                                                <input type="checkbox" name="{{ day }}_available">
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <input type="hidden" value="{{ day }}" name="{{ day }}">
+                                            {{ day }}
+                                        </td>
+                                        <td>
+                                            {% if day in available_days %}
+                                                {% with available_day=available_days|default_if_none:None %}
+                                                    <input type="time" name="{{ day }}_from " value="{{ available_day.from_time }}">
+                                                {% endwith %}
+                                            {% else %}
+                                                <input type="time" name="{{ day }}_from ">
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if day in available_days %}
+                                                {% with available_day=available_days|default_if_none:None %}
+                                                    <input type="time" name="{{ day }}_to" value="{{ available_day.to_time }}">
+                                                {% endwith %}
+                                            {% else %}
+                                                <input type="time" name="{{ day }}_to">
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <div class="col-sm-12">
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </form>
+                    
+                    <!-- End Table with stripped rows -->
+                  </div>
+                    
+            </div>
+  
+          </div>
+        </div>
+      </section>
+    </main>
+    <!-- End #main -->
+
+    <!-- ======= Footer ======= -->
+    {% include "../include/footer.html" %}
+    <!-- Toastr JS from updated CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+
+<script>
+  {% if messages %}
+      {% for message in messages %}
+          toastr.options = {
+              "closeButton": true,
+              "debug": false,
+              "newestOnTop": true,
+              "progressBar": true,
+              "positionClass": "toast-top-right",
+              "preventDuplicates": false,
+              "onclick": null,
+              "showDuration": "300",
+              "hideDuration": "1000",
+              "timeOut": "10000",
+              "extendedTimeOut": "5000",
+              "showEasing": "swing",
+              "hideEasing": "linear",
+              "showMethod": "fadeIn",
+              "hideMethod": "fadeOut"
+          };
+          toastr["{{ message.tags }}"]("{{ message }}");
+      {% endfor %}
+  {% endif %}
+</script>
+  </body>
+</html>

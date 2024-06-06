@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+{% include "../include/head.html" %}
+  <!-- Toastr CSS from updated CDN -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
+  />
+
+{% load static %}
+<title>Dashboard - LUTH</title>
+
+
+<body>
+
+  <!-- ======= Header ======= -->
+ 
+  {% include "../include/header.html" %}
+  
+  <!-- End Header -->
+
+  <!-- ======= Sidebar ======= -->
+{% include "../include/sidebar.html" %}
+  <!-- End Sidebar-->
+
+  <main id="main" class="main">
+
+    <div class="pagetitle">
+      <div class="pagetitle-1">
+        <h1>Dashboard</h1>
+      </div>
+      <div class="pagetitle-btn">
+        <a href="{% url 'book_an_appointment'%}"><button>Book An Appointment</button></a>
+      </div>
+    </div><!-- End Page Title -->
+
+    <section class="section dashboard">
+      <div class="row">
+
+        <!-- Left side columns -->
+        <div class="col-lg-8">
+          <div class="row">
+
+            <!-- Sales Card -->
+            <div class="col-xxl-4 col-md-6">
+              <div class="card info-card sales-card">
+
+
+                <div class="card-body">
+                  <h5 class="card-title">Patient ID</h5>
+                  
+                 
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <i class="bi bi-person"></i>
+                    </div>
+                    <div class="ps-1">
+                      <h6 style="text-wrap: wrap;   text-size-adjust: auto;  ">{{patient_id}}</h6>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div><!-- End Sales Card -->
+
+            <!-- Revenue Card -->
+            <div class="col-xxl-4 col-md-6">
+              <div class="card info-card revenue-card">
+
+                <div class="card-body">
+                  <h5 class="card-title">Total Billing</h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <i class="bi bi-hash"></i>
+                    </div>
+                    <div class="ps-2">
+                      <h6>#30,264</h6>
+                      <a href=""
+                      style="
+                        text-decoration:underline;
+                        font-size:17px;
+                        margin-top:70px;
+                        margin-botttom:20px;
+                        margin-left:8px;
+                      "
+                      >view all</a>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div><!-- End Revenue Card -->
+
+
+            <div class="d-info">
+              <div class="d-info-items">
+
+                <div class="d-item card-body" style="background:#20c997;">
+                  <h5 class="card-title d-title">Total Appointment</h5>
+
+                  <div class="ps-2">
+                    {% comment %} <i class="bi bi-hash"></i> {% endcomment %}
+                    <h2>{{appointments.count}}</h2>
+                  </div>
+                </div>
+
+                <div class="d-item card-body" style="background:#00d4ff;">
+                  <h5 class="card-title d-title">Upcoming Appointment</h5>
+                  <div class="ps-2">
+                    {% comment %} <i class="bi bi-hash"></i> {% endcomment %}
+                    <h2>{{pending_appointments}}</h2>
+                  </div>
+                </div>
+
+                <div class="d-item card-body" style="background:#f8b400;">
+                  <h5 class="card-title d-title">Rejected Appointment</h5>
+                  <div class="ps-2">
+                    {% comment %} <i class="bi bi-hash"></i> {% endcomment %}
+                    <h2>{{rejected_appointments}}</h2>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+          
+            <!-- Customers Card -->
+            <div class="col-xxl-4 col-xl-12">
+
+              <div class="card info-card customers-card">
+
+                <div class="card-body" style="background: #012970; color:white; padding: 25px;cursor: pointer;">
+                  <!-- <h5 class="card-title">Customers <span>| This Year</span></h5> -->
+                  <a href="{%url 'medical_historys'%}">
+                  <div class="d-flex align-items-center">
+                      <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                        <i class="bi bi-chat-left-dots-fill"></i>
+                      </div>
+                      <div class="ps-3">
+                        <h6 style="color:white;" class="animated-text">You have 5 messages</h6>
+                        <p style="color: rgb(166, 164, 164);">Click to check your inbox!</p>
+                      </div>
+                      <i class="bi bi-hand-index hand-click"
+                        style="
+                          font-size:60px;
+                          color:white;
+                          position:relative;
+                          bottom:-25px;
+                          left: 18%;
+                        "
+                      ></i>
+                  </div>
+                  </a>
+                </div>
+              </div>
+
+            </div><!-- End Customers Card -->
+
+            
+            <section class="section">
+              <div class="row">
+                <div class="col-lg-12">
+
+                  <div class="card">
+                    <div class="card-body">
+                      <h5 class="card-title">Medical Records</h5>
+                
+                      {% if approved_appointments %}
+                      <!-- Table with stripped rows -->
+                      <table class="table datatable">
+                        <thead>
+                          <tr>
+                            <th data-type="date" data-format="YYYY/DD/MM">Date</th>
+                            <th>Doctor.</th>
+                            <th>Injury/Condition</th>
+                            <th>Results</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {% for appointment in appointments %}
+                            {% if appointment.status is True %}
+                              <tr>
+                                <td>{{appointment.date_time}}</td>
+                                <td>{{appointment.doctor_id.name}}</td>
+                                <td>{{appointment.condition}}</td>
+                                <td>
+                                  <div class="result">
+                                    <a href="">Check Result</a>
+                                  </div>
+                            
+                                </td>
+                              </tr>
+                            {% endif %}
+                          {% endfor %}
+                        </tbody>
+                      </table>
+                      <h5 class="" style="text-align:center;"> <a href="{%url 'medical_historys'%}">View all</a></h5>
+                      {% elif pending_appointments %}
+
+                          <div class="blank">
+                              <div class="blank_icon">
+                                <i  class="bi bi-clock-history blank-icon"></i><br>
+                                <p>Your medical Report are still pending. kindly wait patiently or <a href="{%url 'book_an_appointment'%}">Create a new appointment.</a></p>
+                              </div>
+                             
+                          </div>
+                        {% else %}
+
+                           <div class="blank">
+                                <div class="blank_icon">
+                                    <i class="bi bi-journal-x blank-icon"></i><br>
+                                    <p>You have no Medical Report. <a href="{% url 'book_an_appointment' %}">Create a new appointment.</a></p>
+                                </div>
+                            </div>
+
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+
+
+            <section class="section">
+              <div class="row">
+                <div class="col-lg-12">
+
+                  <div class="card">
+                    {% if appointments %}
+                    <div class="card-body">
+                      <h5 class="card-title">Doctor Visit</h5>
+                
+                      <!-- Table with stripped rows -->
+                      <table class="table datatable">
+                        <thead>
+                          <tr>
+                            <th data-type="date" data-format="YYYY/DD/MM">Date</th>
+                            <th>Doctor.</th>
+                            <th>Department</th>
+                            <th>Reports</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {% for appointment in appointments %}
+                            {% if appointment.status == "Accepted" %}
+                              <tr>
+                                <td>{{appointment.date_time}}</td>
+                                <td>Dr. {{appointment.doctor_id.name}}</td>
+                                <td>{{appointment.doctor_id.department}}</td>
+                                <td>
+                                  <div class="result">
+                                    <a href="">View report</a>
+                                  </div>
+                            
+                                </td>
+                              </tr>
+                            {% endif %}
+                          {% endfor %}
+                        </tbody>
+                      </table>
+                      <h5 class="" style="text-align:center;"> <a href="{%url 'medical_historys'%}">View all</a></h5>
+                    </div>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </section>
+
+
+          </div>
+        </div><!-- End Left side columns -->
+
+        <!-- Right side columns -->
+        <div class="col-lg-4">
+
+          <!-- Recent Activity -->
+          <div class="card">
+
+            <div class="card-body">
+              <h5 class="card-title">Health care video.</h5>
+
+              <div class="activity">
+
+                <video autoplay loop muted>
+                  <source src="{% static 'img/health-care.mp4'%}" type="video/mp4">
+                </video>
+
+                <div class="activity-item d-flex">
+                  <div class="activity-content">
+                    We all need health care at some stage in our life. Not only it is important to have access to health
+                    care we need, but also the health care we receive should be of high quality to improve our health.
+                    This video explains what is meant by quality of care by World Health Organization (WHO).
+                  </div>
+                </div><!-- End activity item-->
+
+
+
+              </div>
+
+            </div>
+          </div><!-- End Recent Activity -->
+
+
+
+
+        </div><!-- End Right side columns -->
+
+      </div>
+    </section>
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+{% include "../include/footer.html" %}
+
+  <!-- Toastr JS from updated CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+
+<script>
+  {% if messages %}
+      {% for message in messages %}
+          toastr.options = {
+              "closeButton": true,
+              "debug": false,
+              "newestOnTop": true,
+              "progressBar": true,
+              "positionClass": "toast-top-right",
+              "preventDuplicates": false,
+              "onclick": null,
+              "showDuration": "300",
+              "hideDuration": "1000",
+              "timeOut": "10000",
+              "extendedTimeOut": "5000",
+              "showEasing": "swing",
+              "hideEasing": "linear",
+              "showMethod": "fadeIn",
+              "hideMethod": "fadeOut"
+          };
+          toastr["{{ message.tags }}"]("{{ message }}");
+      {% endfor %}
+  {% endif %}
+</script>
+
+</body>
+
+</html>

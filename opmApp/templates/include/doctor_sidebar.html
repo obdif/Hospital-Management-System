@@ -1,0 +1,75 @@
+<aside id="sidebar" class="sidebar">
+    <ul class="sidebar-nav" id="sidebar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="{%url 'doctor_dashboard'%}">
+          <i class="bi bi-grid"></i>
+          <span>Dashboard</span>
+        </a>
+      </li>
+      <!-- End patient_dashboard Nav -->
+  
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{% url 'doctor_appointments'%}">
+          <i class="bi bi-list-ol"></i><span>Appointments</span>
+        </a>
+      </li>
+      <!-- End Appointments Nav -->
+  
+      {% comment %} <li class="nav-item">
+        <a class="nav-link collapsed" href="{% url 'doctor_appointments'%}">
+          <i class="bi bi-shop"></i><span>Pharmacy</span>
+        </a>
+      </li> {% endcomment %}
+      <!-- End Pharmacy Nav -->
+  
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{% url 'doctor_patients'%}">
+          <i class="bi bi-people"></i><span>Patients</span>
+        </a>
+      </li>
+      <!-- End Patients Nav -->
+  
+  
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{% url 'invoices'%}">
+          <i class="bi bi-people"></i><span>Invoices</span>
+        </a>
+      </li>
+      <!-- End invoices Nav -->
+  
+  
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{% url 'doctors'%}">
+          <i class="bi bi-people"></i><span>Doctors</span>
+        </a>
+      </li>
+      <!-- End Doctors Nav -->
+  
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{% url 'departments'%}">
+          <i class="bi bi-layout-wtf"></i><span>Departments</span>
+        </a>
+      </li>
+      <!-- End Departments Nav -->
+  
+  
+      <!-- <li class="nav-heading">Pages</li> -->
+  
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{% url 'doctor_profile'%}">
+          <i class="bi bi-person"></i>
+          <span>Profile</span>
+        </a>
+      </li>
+      <!-- End Profile Page Nav -->
+  
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{% url 'doctor_logout'%}">
+          <i style="color: red" class="bi bi-box-arrow-right"></i>
+          <span style="color: red">Sign Out</span>
+        </a>
+      </li>
+      <!-- End Logout Page Nav -->
+    </ul>
+  </aside>
+  

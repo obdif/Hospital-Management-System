@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% include "../include/head.html" %} {% load static %}
+
+  <!-- Toastr CSS from updated CDN -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
+  />
+
+  <title>Login - LUTH</title>
+
+  <style>
+    body {
+      background-image: url("{% static 'img/1.jpg'%}");
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+  </style>
+
+  <body>
+    <main class="login-container">
+      <div class="container">
+        <section
+          class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4"
+        >
+          <div class="container">
+            <div class="row justify-content-center">
+              <div
+                class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center"
+              >
+                <div class="d-flex justify-content-center py-4">
+                  <a
+                    href="{% url 'patient_dashboard'%}"
+                    class="logo d-flex align-items-center w-auto"
+                  >
+                    <img src="{% static 'img/logo.png'%}" alt="" />
+                    <span class="d-none d-lg-block">LUTH</span>
+                  </a>
+                </div>
+                <!-- End Logo -->
+
+                <div class="card mb-3">
+                  <div class="card-body">
+                    <div class="pt-4 pb-2">
+                      <h5 class="card-title text-center pb-0 fs-4">
+                        Login to Your Account
+                      </h5>
+                      <p class="text-center small">
+                        Enter your <strong>PATIENT ID</strong> to login
+                      </p>
+                    </div>
+
+                    <form
+                      class="row g-3 needs-validation"
+                      method="POST"
+                      novalidate
+                    >
+                      {% csrf_token %}
+
+                      <div class="col-12">
+                        <label for="yourId" class="form-label"
+                          >Patient id</label
+                        >
+                        <input
+                          type="text"
+                          style="text-transform: uppercase"
+                          name="yourId"
+                          class="form-control"
+                          id="yourId"
+                          value="{{patient_id|default_if_none:""}}"
+                          required
+                        />
+                        <div class="invalid-feedback">
+                          Please enter your <strong>PATIENT ID.</strong>
+                        </div>
+                      </div>
+
+                      <div class="col-12">
+                        <button class="btn btn-primary w-100" type="submit">
+                          Login
+                        </button>
+                      </div>
+                      <div class="col-12">
+                        <p class="small mb-0">
+                          Don't have account?
+                          <a href="{% url 'patient_register'%}">Create an account</a>
+                        </p>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+    <!-- End #main -->
+
+    <a
+      href="#"
+      class="back-to-top d-flex align-items-center justify-content-center"
+      ><i class="bi bi-arrow-up-short"></i
+    ></a>
+
+    {% include "../include/footer.html" %}
+    <!-- Toastr JS from updated CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <script>
+      {% if messages %}
+          {% for message in messages %}
+              toastr.options = {
+                  "closeButton": true,
+                  "debug": false,
+                  "newestOnTop": true,
+                  "progressBar": true,
+                  "positionClass": "toast-top-right",
+                  "preventDuplicates": false,
+                  "onclick": null,
+                  "showDuration": "300",
+                  "hideDuration": "1000",
+                  "timeOut": "10000",
+                  "extendedTimeOut": "5000",
+                  "showEasing": "swing",
+                  "hideEasing": "linear",
+                  "showMethod": "fadeIn",
+                  "hideMethod": "fadeOut"
+              };
+              toastr["{{ message.tags }}"]("{{ message }}");
+          {% endfor %}
+      {% endif %}
+    </script>
+  </body>
+</html>

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% include "../include/head.html" %} {% load static %}
+  <!-- Toastr CSS from updated CDN -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
+  />
+
+
+  <title>Medical Result - LUTH</title>
+
+  <body>
+    <!-- ======= Header ======= -->
+    {% include "../include/header.html" %}
+
+    <!-- End Header -->
+
+    <!-- ======= Sidebar ======= -->
+    <aside id="sidebar" class="sidebar">
+      <ul class="sidebar-nav" id="sidebar-nav">
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="{% url 'patient_dashboard'%}">
+            <i class="bi bi-grid"></i>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <!-- End patient_dashboard Nav -->
+
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'patient_appointments'%}">
+            <i class="bi bi-list-ol"></i><span>Appointments</span>
+          </a>
+        </li>
+        <!-- End Appointments Nav -->
+
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="{% url 'patient_doctors'%}">
+            <i class="bi bi-people"></i><span>Doctors</span>
+          </a>
+        </li>
+        <!-- End Doctors Nav -->
+
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="{%url 'departments'%}">
+            <i class="bi bi-layout-wtf"></i><span>Departments</span>
+          </a>
+        </li>
+        <!-- End Departments Nav -->
+
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="#">
+            <i class="bi bi-credit-card"></i><span>Payments</span>
+          </a>
+        </li>
+        <!-- End Payment Nav -->
+
+        <!-- <li class="nav-heading">Pages</li> -->
+
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="{% url 'patient_profile'%}">
+            <i class="bi bi-person"></i>
+            <span>Profile</span>
+          </a>
+        </li>
+        <!-- End Profile Page Nav -->
+
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="{%url 'patient_logout' %}">
+            <i style="color: red" class="bi bi-box-arrow-right"></i>
+            <span style="color: red">Sign Out</span>
+          </a>
+        </li>
+        <!-- End Logout Page Nav -->
+      </ul>
+    </aside>
+
+    <!-- End Sidebar-->
+
+    <main id="main" class="main">
+      <div class="">
+        <h1 style="text-align: center; font-weight: 600">
+         Medical Result for HeadAche
+        </h1>
+      </div> <br><br>
+      <!-- End Page Title -->
+
+      <div class=" download" style="margin-bottom:20px;">
+        <a href="">
+            <div class="download-btn">
+            <i class="bi bi-download"></i>
+            <button>Print Report</button>
+            </div>
+        </a>
+      </div>
+    
+      <section class="section">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-body">
+                <style>
+                    table{
+                        border:1px solid black;
+                        margin-top:30px;
+                    }
+               
+                </style>
+                <table class="table datatable" style="border:1px solid black;">
+                
+                    <tbody>
+                        <tr>
+                            <th colspan="4">Patient Name</th>
+                            <td>Adekunle Blessing Olamide</td>
+                        </tr>
+                        <tr>
+                            <th colspan="4">Medical Record Number</th>
+                            <td>LUTHME/24/483483</td>
+                        </tr>
+                        <tr>
+                            <th colspan="4">Admission Date</th>
+                            <td>May 25, 2024</td>
+                        </tr>
+
+                        <tr>
+                            <th colspan="4">DisCharge date</th>
+                            <td>May 28, 2024</td>
+                        </tr>
+
+                        <tr>
+                            <th colspan="4">Condition before Admit.</th>
+                            <td>Headache</td>
+                        </tr>
+
+                        <tr>
+                            <th colspan="4">Condition on DisCharge</th>
+                            <td>Stable</td>
+                        </tr>
+
+                        <tr>
+                            <th colspan="4">Attending Doctor/Physician</th>
+                            <td>Dr. Ifeoluwa</td>
+                        </tr>
+
+                        <tr>
+                            <th colspan="4">Final diagnosis</th>
+                            <td>N/A</td>
+                        </tr>
+
+                        <tr >
+                            <th colspan="4">Primary Care Physician</th>
+                            <td>N/A</td>
+                        </tr>
+
+                        <tr >
+                            <th colspan="4">History of Present Illness</th>
+                            <tr ></tr>
+                            <td >
+                                <ol>
+                                    <li>osnfd</li>
+                                    <li>osnfd</li>
+                                    <li>osnfd</li>
+                                </ol>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th colspan="4">Discharge Meditations</th>
+                            <td>dsfdsdf</td>
+                        </tr>
+
+                        <tr>
+                            <th colspan="4">Discharge Instructions</th>
+                            <td>N/A</td>
+                        </tr>
+                        <tr>
+                            <th colspan="5" style='text-align:center;'>Hospital Bill</th>
+                        </tr>
+
+                        <tr style="border:1px solid red;">
+                            <th style="border:1px solid black;" rowspan="2">Room Fee</th>
+                            <th style="border:1px solid black;" colspan="">Medicine Cost</th>
+                            <th style="border:1px solid black;" colspan="">Doctor Fee</th>
+                            <th style="border:1px solid black;" colspan="">Other Charges</th>
+                            <th style="border:1px solid black;" colspan="">Total</th>
+                        <tr>
+
+                        <tr>
+                            <td style="border:1px solid black;">NGN 3,000</td>
+                            <td style="border:1px solid black;">NGN 8,350</td>
+                            <td style="border:1px solid black;">NGN 10,000</td>
+                            <td style="border:1px solid black;">NGN 6,500</td>
+                            <td style="border:1px solid black;">NGN 27,850</td>
+                        <tr>
+                        
+
+                    </tbody>
+                  </table>
+                  
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <!-- End #main -->
+
+    <!-- ======= Footer ======= -->
+    {% include "../include/footer.html" %}
+    <!-- Toastr JS from updated CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <script>
+      {% if messages %}
+          {% for message in messages %}
+              toastr.options = {
+                  "closeButton": true,
+                  "debug": false,
+                  "newestOnTop": true,
+                  "progressBar": true,
+                  "positionClass": "toast-top-right",
+                  "preventDuplicates": false,
+                  "onclick": null,
+                  "showDuration": "300",
+                  "hideDuration": "5000",
+                  "timeOut": "10000",
+                  "extendedTimeOut": "5000",
+                  "showEasing": "swing",
+                  "hideEasing": "linear",
+                  "showMethod": "fadeIn",
+                  "hideMethod": "fadeOut"
+              };
+              toastr["{{ message.tags }}"]("{{ message }}");
+          {% endfor %}
+      {% endif %}
+    </script>
+  </body>
+</html>

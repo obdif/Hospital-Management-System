@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% include "../include/head.html" %} {% load static %}
+
+  <title>Appointments - LUTH</title>
+
+  <body>
+    <!-- ======= Header ======= -->
+    {% include "../include/doctor_header.html" %}
+
+    <!-- End Header -->
+
+    <!-- ======= Sidebar ======= -->
+    <aside id="sidebar" class="sidebar">
+      <ul class="sidebar-nav" id="sidebar-nav">
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="{%url 'doctor_dashboard'%}">
+            <i class="bi bi-grid"></i>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <!-- End patient_dashboard Nav -->
+    
+        <li class="nav-item">
+          <a class="nav-link " href="{% url 'doctor_appointments'%}">
+            <i class="bi bi-list-ol"></i><span>Appointments</span>
+          </a>
+        </li>
+        <!-- End Appointments Nav -->
+    
+        {% comment %} <li class="nav-item">
+          <a class="nav-link collapsed" href="{% url 'doctor_appointments'%}">
+            <i class="bi bi-shop"></i><span>Pharmacy</span>
+          </a>
+        </li> {% endcomment %}
+        <!-- End Pharmacy Nav -->
+    
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="{% url 'doctor_patients'%}">
+            <i class="bi bi-people"></i><span>Patients</span>
+          </a>
+        </li>
+        <!-- End Doctors Nav -->
+    
+    
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="{% url 'doctors'%}">
+            <i class="bi bi-people"></i><span>Doctors</span>
+          </a>
+        </li>
+        <!-- End Doctors Nav -->
+    
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="{% url 'departments'%}">
+            <i class="bi bi-layout-wtf"></i><span>Departments</span>
+          </a>
+        </li>
+        <!-- End Departments Nav -->
+    
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="#">
+            <i class="bi bi-credit-card"></i><span>Payments</span>
+          </a>
+        </li>
+        <!-- End Payment Nav -->
+    
+        <!-- <li class="nav-heading">Pages</li> -->
+    
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="{% url 'doctor_profile'%}">
+            <i class="bi bi-person"></i>
+            <span>Profile</span>
+          </a>
+        </li>
+        <!-- End Profile Page Nav -->
+    
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="{% url 'doctor_logout'%}">
+            <i style="color: red" class="bi bi-box-arrow-right"></i>
+            <span style="color: red">Sign Out</span>
+          </a>
+        </li>
+        <!-- End Logout Page Nav -->
+      </ul>
+    </aside>
+    
+
+    <!-- End Sidebar-->
+
+    <main id="main" class="main">
+      <div class="" style="margin-bottom:30px;">
+        <h1 style="text-align: center; font-weight: 600">
+        Appointments
+        </h1>
+      </div> <br>
+      <!-- End Page Title -->
+      <div class="pagetitle-btn" style="margin-bottom:20px;">
+        <a href="{% url 'doctor_available'%}"><button>Create Available Date</button></a>
+      </div>
+      <section class="section">
+        <div class="row">
+          <div class="col-lg-12">
+  
+            <div class="card">
+              {% if appointments %}
+              <div class="card-body">
+                <table class="table datatable">
+                  <thead>
+                    <tr>
+                      <th>Patient Name</th>
+                      <th>Age</th>
+                      <th data-type="date" data-format="YYYY/DD/MM" style="text-align:center;">Appointed Date</th>
+                      <th>Appointed Time</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for appointment in appointments   %}
+                    <tr>
+                      <td>{{appointment.patient}}</td>
+                      <td>{{appointment.patient.age}}</td>
+                      <td>{{appointment.date_time}}</td>
+                      <td> {{appointment.time}}</td>
+                      <td>
+                        {% if appointment.status == 'Accepted' %}
+                        <p style="color:darkgreen; font-weight:800;">Accepted</p>
+                        {% elif appointment.status == 'Rejected' %}
+                        <p style="color:red; font-weight:800;">Rejected</p>
+                        {% else %}
+                        <p style="color:orange; font-weight:800;">Pending</p>
+                        {% endif %}
+                      </td>
+
+                      <td>
+                        {% if appointment.status == 'Accepted' %}
+                        <div class="action-button">
+                          <a  style="color:rgb(152, 192, 152); cursor: not-allowed;"><button style="color:rgb(152, 192, 152); cursor: not-allowed;"><i class="bi bi-check-circle"></i></button></a>
+                          <a  style="color:rgb(187, 133, 133); cursor: not-allowed;"><button style="color:rgb(187, 133, 133); cursor: not-allowed;"><i class="bi bi-x-circle-fill"></i></button></a>
+                        </div>
+                        {% elif appointment.status == 'Rejected' %}
+                        <div class="action-button">
+                          <a  style="color:rgb(152, 192, 152); cursor: not-allowed;"><button style="color:rgb(152, 192, 152); cursor: not-allowed;"><i class="bi bi-check-circle"></i></button></a>
+                          <a  style="color:rgb(187, 133, 133); cursor: not-allowed;"><button style="color:rgb(187, 133, 133); cursor: not-allowed;"><i class="bi bi-x-circle-fill"></i></button></a>
+                        </div> 
+                        {% else %}
+                        <div class="action-button">
+                          <a href="{% url 'accept_appointment' appointment.id %}" style="color:darkgreen;"><button style="color:darkgreen; " onclick="return confirm('Are you sure you want to Accept this appointment?');"><i class="bi bi-check-circle"></i></button></a>
+                          <form method="post" action="{% url 'reject_appointment' appointment.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" style="color:darkred;" onclick="return confirm('Are you sure you want to Reject this appointment?');">
+                                <i class="bi bi-x-circle-fill"></i>
+                            </button>
+                          </form>
+                        </div>
+                        {% endif %}
+                      </td>
+                      <td>
+                        <a href="{%url "appointment_details"%}">view</a>
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+               
+                <!-- End Table with stripped rows -->
+              </div>
+              {% else %}
+              <div class="blank">
+                <div class="blank_icon">
+                  <i  class="bi bi-journal-x blank-icon"></i><br>
+                  <p>No appointment found for you. </p>
+                </div>
+               
+                </div>
+                    
+              {% endif %}
+            </div>
+  
+          </div>
+        </div>
+      </section>
+    </main>
+    <!-- End #main -->
+
+    <!-- ======= Footer ======= -->
+    {% include "../include/footer.html" %}
+  </body>
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% include "../include/head.html" %} {% load static %}
+
+  <title>Doctors - LUTH</title>
+
+  <body>
+    <!-- ======= Header ======= -->
+    {% include "../include/header.html" %}
+
+    <!-- End Header -->
+
+    <!-- ======= Sidebar ======= -->
+    <aside id="sidebar" class="sidebar">
+      <ul class="sidebar-nav" id="sidebar-nav">
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="{% url 'dashboard'%}">
+            <i class="bi bi-grid"></i>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <!-- End Dashboard Nav -->
+
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="{% url 'appointments'%}">
+            <i class="bi bi-list-ol"></i><span>Appointments</span>
+          </a>
+        </li>
+        <!-- End Appointments Nav -->
+
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'doctors'%}">
+            <i class="bi bi-people"></i><span>Doctors</span>
+          </a>
+        </li>
+        <!-- End Doctors Nav -->
+
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="{% url 'departments'%}">
+            <i class="bi bi-layout-wtf"></i><span>Departments</span>
+          </a>
+        </li>
+        <!-- End Departments Nav -->
+
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="#">
+            <i class="bi bi-credit-card"></i><span>Payments</span>
+          </a>
+        </li>
+        <!-- End Payment Nav -->
+
+        <!-- <li class="nav-heading">Pages</li> -->
+
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="{% url 'profile'%}">
+            <i class="bi bi-person"></i>
+            <span>Profile</span>
+          </a>
+        </li>
+        <!-- End Profile Page Nav -->
+
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="pages-login.html">
+            <i style="color: red" class="bi bi-box-arrow-right"></i>
+            <span style="color: red">Sign Out</span>
+          </a>
+        </li>
+        <!-- End Logout Page Nav -->
+      </ul>
+    </aside>
+    <!-- End Sidebar-->
+
+    <main id="main" class="main">
+      <div class="pagetitle">
+        <h1>Our Professional Doctors</h1>
+      </div>
+      <!-- End Page Title -->
+
+      <section class="section">
+        <!-- ================DOCTOR GRID LAYOUT START ================= -->
+        <div class="doctor-grid">
+          <div class="doctor">
+            <div class="doctor-img">
+              <img
+                src="{% static 'img/doctors/HOD Medicine.jpg'%}"
+                alt=""
+                width="300"
+              />
+            </div>
+            <div class="doctor-name">
+              <h4 class="pagetitle">DR. MRS. ADEYEYE O.O</h4>
+              <br />
+              <em>Head of Department (medicine)</em>
+            </div>
+          </div>
+
+          <div class="doctor">
+            <div class="doctor-img">
+              <img
+                src="{% static 'img/doctors/HODOphtal.jpg'%}"
+                alt=""
+                width="300"
+              />
+            </div>
+            <div class="doctor-name">
+              <h4 class="pagetitle">PROF. ADEKOYA BOLA</h4>
+              <br />
+              <em>Head of Department</em>
+            </div>
+          </div>
+
+          <div class="doctor">
+            <div class="doctor-img">
+              <img
+                src="{% static 'img/doctors/HOD O&G.jpg'%}"
+                alt=""
+                width="300"
+              />
+            </div>
+            <div class="doctor-name">
+              <h4 class="pagetitle">DR. K.A RABIU</h4>
+              <br />
+              <em>Head of Department (Obstretric & Gyneacology)</em>
+            </div>
+          </div>
+
+          <!-- <div class="doctor">
+          <div class="doctor-img">
+            <img src="assets/img/card.jpg" alt="" width="300">
+          </div>
+          <div class="doctor-name">
+            <h3 class="pagetitle">Dr. Adekunle Blessing</h3>
+            <em>Physistcian</em>
+          </div>
+        </div>
+
+
+        <div class="doctor">
+          <div class="doctor-img">
+            <img src="assets/img/card.jpg" alt="" width="300">
+          </div>
+          <div class="doctor-name">
+            <h3 class="pagetitle">Dr. Adekunle Blessing</h3>
+            <em>Physistcian</em>
+          </div>
+        </div> -->
+        </div>
+
+        <!-- ==================DOCTOR GRID LAYOUT END ============================== -->
+      </section>
+    </main>
+    <!-- End #main -->
+
+    <!-- ======= Footer ======= -->
+
+    {% include "../include/footer.html" %}
+  </body>
+</html>
