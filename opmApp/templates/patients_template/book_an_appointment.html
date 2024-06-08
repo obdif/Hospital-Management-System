@@ -7,7 +7,6 @@
     href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
   />
 
-
   <title>Appointments - LUTH</title>
 
   <body>
@@ -90,13 +89,15 @@
           <div class="col-lg-10">
             <div class="card">
               <div class="card-body">
-                <form class="row g-3 needs-validation"
-                novalidate
-                method="post"
-                enctype="multipart/form-data">
-                {% csrf_token %}
+                <form
+                  class="row g-3 needs-validation"
+                  novalidate
+                  method="post"
+                  enctype="multipart/form-data"
+                >
+                  {% csrf_token %}
                   <div class="">
-                    <label for="inputPassword" class="col-sm-8 col-form-label"
+                    <label for="description" class="col-sm-8 col-form-label"
                       >Let us Know how you feel
                       <span style="color: red">*</span></label
                     >
@@ -106,55 +107,68 @@
                         style="height: 150px"
                         required
                         name="description"
-                      >{{description|default_if_none:""}}</textarea>
+                      >
+                              {{description|default_if_none:""}}</textarea
+                      >
                       <div class="invalid-feedback">
                         Let's Know how you feel.
                       </div>
                     </div>
-
                   </div>
 
-                  {% comment %} <div class="" style="margin-top: 20px">
-                    <label for="inputNumber" class="col-sm-8 col-form-label"
-                      >Upload Image if Necessary<span
-                        > <em>(optional)</em></span
-                      ></label
+                  <div class="col-12" style="margin-top: 20px">
+                    <label for="doctor-select" class="form-label"
+                      >Select Doctor<span style="color: red">*</span></label
                     >
-                    <div class="col-12">
-                      <input class="form-control" type="file" name="file" id="formFile" />
+                    <select
+                      class="form-select"
+                      id="doctor-select"
+                      name="doctor"
+                      required
+                    >
+                      <option selected disabled value="">Choose...</option>
+                      {% for doctor in doctors %}
+                      <option
+                        value="{{doctor.id}}"
+                        style="text-transform: Capitalize"
+                      >
+                        {{doctor.name}} &nbsp;({{doctor.department}})
+                      </option>
+                      {% endfor %}
+                    </select>
+                    <div class="invalid-feedback">
+                      Please! Select a Doctor to book an Appointment with.
                     </div>
+                  </div>
 
-                  </div> {% endcomment %}
-
-                      <div class="col-12" style="margin-top: 20px">
-                        <label for="age" class="form-label">Select Doctor<span style="color:red;">*</span></label>
-                        <select class="form-select" id="validationDefault04" name="doctor" required>
-                          <option selected disabled value="">Choose...</option>
-                          {% for doctor in doctors %}
-                          <option value="{{doctor.id}}" style="text-transform:Capitalize;"> {{doctor.name}} &nbsp;({{doctor.department}})</option>
-                          {% endfor %}
-                       
-                        </select>
-                        <div class="invalid-feedback">
-                          Please! Select a Doctor to book an Appointment with.
-                        </div>
+                  <div
+                    id="date-time-fields"
+                    style="display: none; margin-top: 20px"
+                  >
+                    <div class="">
+                      <label for="date" class="col-sm-8 col-form-label"
+                        >Select Date<span style="color: red">*</span></label
+                      >
+                      <div class="col-sm-12">
+                        <select
+                          class="form-control"
+                          id="date"
+                          name="date"
+                        ></select>
                       </div>
-
-                  <div class="" style="margin-top: 20px">
-                    <label for="inputDate" class="col-sm-8 col-form-label"
-                      >Select Date<span style="color:red;">*</span></label
-                    >
-                    <div class="col-sm-12">
-                      <input type="date" class="form-control" name="date"/>
                     </div>
-                  </div>
 
-                  <div class="" style="margin-top: 20px">
-                    <label for="inputDate" class="col-sm-8 col-form-label"
-                      >Select Time<span style="color:red;">*</span></label
-                    >
-                    <div class="col-sm-12">
-                      <input type="time" class="form-control" name="time"/>
+                    <div class="" style="margin-top: 20px">
+                      <label for="time" class="col-sm-8 col-form-label"
+                        >Select Time<span style="color: red">*</span></label
+                      >
+                      <div class="col-sm-12">
+                        <select
+                          class="form-control"
+                          id="time"
+                          name="time"
+                        ></select>
+                      </div>
                     </div>
                   </div>
 
@@ -169,7 +183,7 @@
                     </div>
                   </div>
                 </form>
-                <!-- End Appointmen form -->
+                <!-- End Appointment form -->
               </div>
             </div>
           </div>
@@ -183,8 +197,34 @@
     <!-- Toastr JS from updated CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+      {% comment %} SCRIPTS TO SHOW DATE AND TIME   {% endcomment %}
+          $(document).ready(function() {
+              $('#doctor-select').change(function() {
+                  var doctorId = $(this).val();
+                  if (doctorId) {
+                      $.ajax({
+                          url: "{% url 'fetch_available_times' %}",
+                          data: {
+                              'doctor_id': doctorId
+                          },
+                          success: function(data) {
+                              $('#date').html(data.dates);
+                              $('#time').html(data.times);
+                              $('#date-time-fields').show();
+                          }
+                      });
+                  } else {
+                      $('#date-time-fields').hide();
+                  }
+              });
+          });
+
+        
+
+          {% comment %} =========== SCRIPTS FOR TOAST MESSAGES ======= {% endcomment %}
+
       {% if messages %}
           {% for message in messages %}
               toastr.options = {

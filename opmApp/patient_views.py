@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 import requests
+from django.http import JsonResponse
 from django.core.mail import send_mail
 
 
@@ -119,10 +120,11 @@ def book_an_appointment(request):
     doctors = Doctor.objects.all()
     get_patient = Patient.objects.get(id=request.user.id)
 
+
     if request.method == "POST":
         description = request.POST.get('description', '')
         doctor_id = request.POST.get('doctor', '')
-        date = request.POST.get('date')
+        date_str = request.POST.get('date')
         time = request.POST.get('time')
         
         
@@ -145,20 +147,54 @@ def book_an_appointment(request):
             return render(request, "patients_template/book_an_appointment.html", context)
 
         
-        patient = request.user    
+        # try:
+        #     date = datetime.strptime(date_str, "%Y-%m-%d").date()
+        # except ValueError:
+        #     messages.error(request, "Invalid date format. Please use YYYY-MM-DD format.")
+        #     return render(request, "patients_template/book_an_appointment.html", context)
         
-        appointment = Appointment(patient=patient, doctor_id=doctor, description=description, date_time=date, time=time)
+        patient = get_patient  # Use the patient object obtained earlier
+
+        appointment = Appointment(patient=patient, doctor_id=doctor, description=description, date_time=date_str, time=time)
         appointment.save()
-        
+
         messages.success(request, "Appointment sent!")
         return redirect("patient_appointments")
+        
+        # patient = request.user    
+        
+        # appointment = Appointment(patient=patient, doctor_id=doctor, description=description, date_time=date, time=time)
+        # appointment.save()
+        
+        # messages.success(request, "Appointment sent!")
+        # return redirect("patient_appointments")
       
     context={
         "doctors":doctors,
-        "name": get_patient.name
+        "name": get_patient.name,
     }
  
     return render(request,"patients_template/book_an_appointment.html", context)
+
+
+@login_required(login_url="patient_login")
+def fetch_available_times(request):
+    doctor_id = request.GET.get('doctor_id')
+    availabilities = DoctorAvailableDay.objects.filter(doctor_id=doctor_id)
+    
+    dates = []
+    times = []
+    
+    for availability in availabilities:
+        dates.append(f"<option value='{availability.day}'>{availability.day}</option>")
+        times.append(f"<option value='{availability.from_time}'>{availability.from_time} - {availability.to_time}</option>")
+    
+    return JsonResponse({
+        'dates': ''.join(dates),
+        'times': ''.join(times),
+    })
+
+
 
 @login_required(login_url="patient_login")
 def patient_appointments(request):

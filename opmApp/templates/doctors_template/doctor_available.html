@@ -95,7 +95,12 @@
     <!-- End Sidebar-->
 
     <main id="main" class="main">
-      <div class="" style="margin-bottom:30px;">
+        
+      <div class="" style="margin-bottom:30px; display:flex; gap:15%;">
+        <button onclick ="goBack()" class="backBtn">
+          <i class="bi bi-arrow-left-short" 
+          id="iconx"></i>
+      </button>
         <h4 style="text-align: center; font-weight: 600">
         Select Available Day and Time for Appointment
         </h4>
@@ -184,6 +189,11 @@
 
 
 <script>
+
+  function goBack(){
+    window.history.back();
+}
+
   {% if messages %}
       {% for message in messages %}
           toastr.options = {

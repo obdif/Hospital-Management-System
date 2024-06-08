@@ -21,7 +21,8 @@ urlpatterns = [
     path('patient/edit_appointment/<int:appointment_id>/', patient_views.edit_appointment, name="edit_appointment"),
     path('patient/delete_appointment/<int:appointment_id>/', patient_views.delete_appointment, name="delete_appointment"),
     path('patient/patient_registration_confirmation/', patient_views.patient_registration_confirmation, name="patient_registration_confirmation"),
-    
+    path('fetch-available-times/', patient_views.fetch_available_times, name='fetch_available_times'),
+
     
     
     
@@ -43,7 +44,6 @@ urlpatterns = [
     path('doctor/appointments/accept/<int:appointment_id>/', doctor_views.accept_appointment, name="accept_appointment"),
     path('doctor/appointments/reject/<int:appointment_id>/', doctor_views.reject_appointment, name="reject_appointment"),
     path('appointments/appointment_details', doctor_views.appointment_details, name="appointment_details"),
-    
 
 ]
 

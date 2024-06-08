@@ -118,7 +118,7 @@
                             {% for appointment in appointments %}
                             <tbody>
                               <tr>
-                                <td>{{ appointment.date_time  }}</td>
+                                <td>{{ appointment.date_time}} at {{appointment.time}}</td>
                                 <td>Dr. {{ appointment.doctor_id.name}}</td>
                                 <td>{{appointment.doctor_id.department}}</td>
                                 {% comment %} <td>

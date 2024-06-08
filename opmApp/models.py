@@ -14,7 +14,7 @@ class CustomUser(AbstractUser):
     username = models.CharField(max_length=200, null=True, unique=True) 
     name = models.CharField(max_length = 200)
     email = models.CharField(max_length = 200, unique=True)
-    profile_pic = models.FileField(upload_to="images/profile/", default="images/profile/prfile.jpeg")
+    profile_pic = models.ImageField(upload_to="images/profile/", blank=True, default="images/profile/prfile.jpeg")
     
     
     USERNAME_FIELD = "email"
@@ -69,7 +69,7 @@ class Department(models.Model):
 class Doctor(CustomUser):
     status=models.BooleanField(default=False)
     department = models.ForeignKey(Department, on_delete=models.SET_NULL, null=True, blank=True)
-    document = models.FileField(upload_to='images/doctor_documents/', null=True, blank=True)
+    document = models.ImageField(upload_to='images/doctor_documents/', null=True, blank=True)
     
     def __str__(self):
         return self.name
@@ -87,12 +87,12 @@ class Appointment(models.Model):
     
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     doctor_id = models.ForeignKey(Doctor, on_delete=models.CASCADE)
-    description = models.TextField(max_length=1000)
-    condition = models.CharField(max_length=100)
+    description = models.TextField(blank=True)
+    condition = models.CharField(max_length=100, blank=True)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='Pending')
-    date_time = models.DateField()
-    doctor_note = models.TextField(max_length=1000)
-    time = models.TimeField()
+    date_time = models.CharField(max_length=10)
+    doctor_note = models.TextField(blank=True)
+    time = models.CharField(max_length=10)
     current_date = models.DateTimeField(default=timezone.now)
 
     def __str__(self):

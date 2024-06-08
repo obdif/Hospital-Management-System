@@ -147,7 +147,7 @@ def doctor_login(request):
     return render(request,"doctors_template/doctor_login.html")
 
 
-
+@login_required(login_url="doctor_login")
 def patients(request):
  
     return render(request,"doctors_template/patients.html")
@@ -203,17 +203,13 @@ def doctor_appointments(request):
 
 
 # ================================== APPOINTMENT  VIEW DETAILS ==============================
-
+@login_required(login_url="doctor_login")
 def doctor_available(request):
     user = request.user
     doctor = Doctor.objects.get(customuser_ptr=user)
 
     if request.method == 'POST':
-        # startDay = request.POST.get('startDay')
-        # endDay = request.POST.get('endDay')
-        
-        
-        # Process new availabilities
+      
         days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
         for day in days:
             if request.POST.get(f'{day}_available'):
@@ -227,17 +223,7 @@ def doctor_available(request):
                         to_time=to_time
                     )
                     
-        # if startDay is None:
-        #     messages.error(request, "Please select avalable starting time")
-        #     return redirect("doctor_available")
-        # else:
-        #     pass
-        # if endDay is None:
-        #     messages.error(request, "Please select available time for Appoinment.")
-        #     return redirect("doctor_available")
-        # else:
-        #     pass
-                    
+      
         return redirect('doctor_appointments')
 
     availabilities = DoctorAvailableDay.objects.filter(doctor=doctor)

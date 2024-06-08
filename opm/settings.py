@@ -150,5 +150,5 @@ AUTHENTICATION_BACKENDS = [
 
 # FOR IMAGE OR FILE UPLOADING...
 
-MEDIA_ROOT= os.path.join(BASE_DIR, "media")
+MEDIA_ROOT= 'static/media'
 MEDIA_URL='/media/'

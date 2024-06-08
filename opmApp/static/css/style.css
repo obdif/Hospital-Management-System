@@ -1416,3 +1416,12 @@ video{
   font-size: 2.8rem;
   
 }
+
+.main .backBtn{
+  background-color: #012970;
+  width: 5rem;
+  font-size: 25px;
+  color: white;
+  border: none;
+  border-radius: 10px;
+}
