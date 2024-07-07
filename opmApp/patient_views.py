@@ -7,6 +7,7 @@ from django.contrib import messages
 import requests
 from django.http import JsonResponse
 from django.core.mail import send_mail
+from django.utils import timezone
 
 
 
@@ -16,7 +17,7 @@ from django.core.mail import send_mail
 def patient_dashboard(request):
     # doctors = Doctor.objects.all()
     patient = Patient.objects.get(id=request.user.id)
-    appointments = Appointment.objects.filter(patient=request.user).order_by('-date_time')
+    appointments = Appointment.objects.filter(patient=request.user).order_by('-current_date')
     pending_appointments = appointments.filter(status='Pending').count()
     rejected_appointments = appointments.filter(status='Rejected').count()
     
@@ -198,7 +199,7 @@ def fetch_available_times(request):
 
 @login_required(login_url="patient_login")
 def patient_appointments(request):
-    appointments = Appointment.objects.filter(patient=request.user).order_by('-id', 'status')
+    appointments = Appointment.objects.filter(patient=request.user).order_by('-current_date')
     patient = Patient.objects.get(id=request.user.id)
     
     
@@ -225,14 +226,15 @@ def edit_appointment(request, appointment_id):
         time = request.POST.get('time')
         
                 # Combine date and time into a single datetime object
-        date_time_str = f"{date} {time}"
-        try:
-            date_time = datetime.strptime(date_time_str, '%Y-%m-%d %H:%M')
-        except ValueError:
-            # Handle the case where the date or time format is incorrect
-            return render(request, 'edit_appointment.html', {'error': 'Invalid date or time format', 'appointment': appointment})
+        # date_time_str = f"{date} {time}"
+        # try:
+        #     date_time = datetime.strptime(date_time_str, '%Y-%m-%d %H:%M')
+        # except ValueError:
+        #     # Handle the case where the date or time format is incorrect
+        #     return render(request, 'edit_appointment.html', {'error': 'Invalid date or time format', 'appointment': appointment})
 
         status_ = appointment.status == 'Pending'
+        datenow = timezone.now()
       
         if description:
             appointment.description = description
@@ -242,8 +244,8 @@ def edit_appointment(request, appointment_id):
             appointment.date_time = date
         if time:
             appointment.time = time
-        if date_time:
-            appointment.date_time = date_time
+        if datenow:
+            appointment.current_date = datenow
         
         appointment.status= "Pending"
         
@@ -263,6 +265,19 @@ def delete_appointment(request, appointment_id):
         messages.success(request, "Appointment deleted successfully.")
         return redirect('patient_appointments')
     
+
+
+@login_required(login_url="patient_login")
+def appointment_details(request, appointment_id):
+    patient = Patient.objects.get(id=request.user.id)
+    appointment = get_object_or_404(Appointment, id=appointment_id)
+
+    context = {
+        'name': patient.name,
+        'appointment': appointment,
+
+    }
+    return render(request, "patients_template/appointment_details.html", context)
 
 
 @login_required(login_url="patient_login")

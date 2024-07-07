@@ -2,7 +2,7 @@
 <html lang="en">
   {% include "../include/head.html" %} {% load static %}
 
-  <title>Appointments - LUTH</title>
+  <title>Patients - LUTH</title>
 
   <body>
     <!-- ======= Header ======= -->
@@ -17,12 +17,19 @@
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
 
+
+    {% comment %} style="position: absolute; background: white; z-index: 1000;" {% endcomment %}
+
     <div class="search-bar">
-        <form class="search-form d-flex align-items-center" method="POST" action="#">
-          <input type="text" name="query" placeholder="Search" title="Enter search keyword">
-          <button type="submit" title="Search"><i class="bi bi-search"></i></button>
-        </form>
-      </div><!-- End Search Bar -->
+      <form class="search-form d-flex align-items-center" method="POST" action="{% url 'patient_search' %}">
+        {% csrf_token %}
+        <input type="text" name="query" id="search-input" placeholder="Search by Patient Id / Name / Email" title="Enter search keyword">
+        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+      </form>
+      <div id="suggestions" ></div>
+    </div>
+
+
   
 
     <nav class="header-nav ms-auto">
@@ -151,10 +158,15 @@
         <!-- End doctor_dashboard Nav -->
     
         <li class="nav-item">
-          <a class="nav-link " href="{% url 'doctor_appointments'%}">
+          <a class="nav-link collapsed" href="{% url 'doctor_appointments'%}">
             <i class="bi bi-list-ol"></i><span>Appointments</span>
           </a>
         </li>
+
+    
+     
+    
+
         <!-- End Appointments Nav -->
     
         {% comment %} <li class="nav-item">
@@ -165,13 +177,18 @@
         <!-- End Pharmacy Nav -->
     
         <li class="nav-item">
-          <a class="nav-link collapsed" href="{% url 'doctor_patients'%}">
+          <a class="nav-link " href="{% url 'doctor_patients'%}">
             <i class="bi bi-people"></i><span>Patients</span>
           </a>
         </li>
         <!-- End Doctors Nav -->
     
-    
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="{% url 'invoices'%}">
+            <i class="bi bi-people"></i><span>Invoices</span>
+          </a>
+        </li>
+
         <li class="nav-item">
           <a class="nav-link collapsed" href="{% url 'doctors'%}">
             <i class="bi bi-people"></i><span>Doctors</span>
@@ -186,11 +203,11 @@
         </li>
         <!-- End Departments Nav -->
     
-        <li class="nav-item">
+        {% comment %} <li class="nav-item">
           <a class="nav-link collapsed" href="#">
             <i class="bi bi-credit-card"></i><span>Payments</span>
           </a>
-        </li>
+        </li> {% endcomment %}
         <!-- End Payment Nav -->
     
         <!-- <li class="nav-heading">Pages</li> -->
@@ -219,13 +236,13 @@
     <main id="main" class="main">
       <div class="" style="margin-bottom:30px;">
         <h1 style="text-align: center; font-weight: 600">
-        Appointments
+        Patients
         </h1>
       </div>
 
-      <div>
-        <div class="add-patient">
-            <button>Add Patient</button>
+      <div> 
+        <div class="add-patient pagetitle-btn" style="margin-bottom:20px;">
+          <a href="{% url 'add_patients'%}"> <button>Add Patient</button></a>
         </div>
       </div>
 
@@ -250,31 +267,27 @@
                     </tr>
                   </thead>
                   <tbody>
+                    {% for patient in patients %}
                     <tr>
-                      <td>LUTH240934</td>
-                      <td>Ayoola Khalid</td>
-                      <td>M</td>
-                      <td> 18</td>
-                      <td> 090738493</td>
-                      <td> ayokhalid2@gmail.com</td>
+                      <td>{{patient.patient_id}}</td>
+                      <td>{{patient.name | truncatechars:20}}</td>
+                      <td>{{patient.sex}}</td>
+                      <td> {{patient.age}}</td>
+                      <td> {{patient.phone_no}}</td>
+                      <td> {{patient.email}}</td>
 
                       <td>
                         <div class="action-button">
                           <a href="" style="color:darkgreen;"><button style="color:darkgreen; "><i class="bi bi-pencil-fill"></i></button></a>
-                          <a href="" style="color:darkgreen;"><button style="color:darkred; "><i class="bi bi-trash-fill"></i></button></a>
-                          <form method="post" action="" style="display:inline;">
-                            {% csrf_token %}
-                            <button type="submit" style="color:blue;" onclick="return confirm('Are you sure you want to delete this appointment?');">
-                                <i class="bi bi-eye-fill"></i>
-                            </button>
-                          </form>
-                          {% comment %} <a href="{% url 'delete_appointment' appointment.id %}" style="color:darkred;"><button style="color:darkred; "><i class="bi bi-trash-fill"></i></button></a> {% endcomment %}
+                          
+                          <a href="{% url 'patients_details' patient.id %}" style="color:blue;"><button style="color:blue; font-size:18px;">view</button></a>
                         </div>  
                       </td>
                       {% comment %} <td>
                         <a href="">view</a>
                       </td> {% endcomment %}
                     </tr>
+                    {% endfor %}
                   </tbody>
                 </table>
                
@@ -291,5 +304,56 @@
 
     <!-- ======= Footer ======= -->
     {% include "../include/footer.html" %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+  
+  
+  <script>
+
+    document.getElementById('search-input').addEventListener('input', function() {
+      fetch(`/doctor/search_autocomplete/?query=${this.value}`)
+          .then(response => response.json())
+          .then(data => {
+              let suggestions = document.getElementById('suggestions');
+              suggestions.innerHTML = '';
+              data.forEach(item => {
+                  let div = document.createElement('div');
+                  div.innerHTML = `${item.name} (${item.id}) - ${item.email}`;
+                  div.addEventListener('click', function() {
+                      document.getElementById('search-input').value = item.name;
+                      suggestions.innerHTML = '';
+                  });
+                  suggestions.appendChild(div);
+              });
+          });
+  });
+  
+    function goBack(){
+      window.history.back();
+  }
+  
+    {% if messages %}
+        {% for message in messages %}
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": true,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "10000",
+                "extendedTimeOut": "5000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            };
+            toastr["{{ message.tags }}"]("{{ message }}");
+        {% endfor %}
+    {% endif %}
+  </script>
   </body>
 </html>

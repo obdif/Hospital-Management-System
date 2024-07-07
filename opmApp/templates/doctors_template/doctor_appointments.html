@@ -42,6 +42,13 @@
         </li>
         <!-- End Doctors Nav -->
     
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="{% url 'invoices'%}">
+            <i class="bi bi-people"></i><span>Invoices</span>
+          </a>
+        </li>
+
+
     
         <li class="nav-item">
           <a class="nav-link collapsed" href="{% url 'doctors'%}">
@@ -157,7 +164,7 @@
                         {% endif %}
                       </td>
                       <td>
-                        <a href="{%url "appointment_details"%}">view</a>
+                        <a href="{%url 'appointment_details' appointment.id%}">view</a>
                       </td>
                     </tr>
                     {% endfor %}

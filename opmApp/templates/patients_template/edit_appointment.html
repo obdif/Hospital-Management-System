@@ -132,7 +132,34 @@
 
                       
                   <div class="" style="margin-top: 20px">
-                    <label for="inputDate" class="col-sm-8 col-form-label"
+                    <div class="">
+                      <label for="date" class="col-sm-8 col-form-label"
+                        >Select Date<span style="color: red">*</span></label
+                      >
+                      <div class="col-sm-12">
+                        <select
+                          class="form-control"
+                          id="date"
+                          name="date"
+                        >{{appointment.date_time}}</select>
+                      </div>
+                    </div>
+
+                    <div class="" style="margin-top: 20px">
+                      <label for="time" class="col-sm-8 col-form-label"
+                        >Select Time<span style="color: red">*</span></label
+                      >
+                      <div class="col-sm-12">
+                        <select
+                          class="form-control"
+                          id="time"
+                          name="time"
+                        >{{appointment.time}}</select>
+                      </div>
+                    </div>
+                  </div>
+
+                    {% comment %} <label for="inputDate" class="col-sm-8 col-form-label"
                       >Select Date<span style="color:red;">*</span></label
                     >
                     <div class="col-sm-12">
@@ -147,7 +174,7 @@
                     <div class="col-sm-12">
                       <input type="time" class="form-control" name="time" value="{{ appointment.date_time|time:"H:i" }}" required/>
                     </div>
-                  </div>
+                  </div> {% endcomment %}
 
 
                   <div
@@ -183,6 +210,28 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
     <script>
+
+        $(document).ready(function() {
+          $('#doctor-select').change(function() {
+              var doctorId = $(this).val();
+              if (doctorId) {
+                  $.ajax({
+                      url: "{% url 'fetch_available_times' %}",
+                      data: {
+                          'doctor_id': doctorId
+                      },
+                      success: function(data) {
+                          $('#date').html(data.dates);
+                          $('#time').html(data.times);
+                          $('#date-time-fields').show();
+                      }
+                  });
+              } else {
+                  $('#date-time-fields').hide();
+              }
+          });
+      });
+
       {% if messages %}
           {% for message in messages %}
               toastr.options = {

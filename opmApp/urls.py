@@ -15,6 +15,7 @@ urlpatterns = [
     path('patient/doctors/', patient_views.doctors, name="patient_doctors"),
     path('patient/appointments/', patient_views.patient_appointments, name="patient_appointments"),
     path('patient/department/', patient_views.department, name="patient_departments"),
+    path('patient/appointment_details/<int:appointment_id>/', patient_views.appointment_details, name="patient_appointment_details"),
     path('patient/medical_historys/', patient_views.medical_historys, name="medical_historys"),
     path('patient/medical_result_receipt/', patient_views.medical_result_receipt, name="medical_result_receipt"),
     path('patient/logout/', patient_views.logout_patient, name="patient_logout"),
@@ -37,13 +38,20 @@ urlpatterns = [
     path('doctor/doctors/', doctor_views.doctors, name="doctors"),
     path('doctor/invoices/', doctor_views.invoices, name="invoices"),
     path('doctor/patients/', doctor_views.patients, name="doctor_patients"),
+    # path('doctor/patients/<int:patient_id>/', doctor_views.patients, name="doctor_patients"),
+    path('doctor/patients_details/<int:patient_id>/', doctor_views.patients_details, name="patients_details"),
     path('doctor/add_patients/', doctor_views.add_patients, name="add_patients"),
     path('doctor/department/', doctor_views.department, name="departments"),
     path('doctor/doctor_available/', doctor_views.doctor_available, name="doctor_available"),
     path('doctor/logout/', doctor_views.logout_doctor, name="doctor_logout"),
     path('doctor/appointments/accept/<int:appointment_id>/', doctor_views.accept_appointment, name="accept_appointment"),
     path('doctor/appointments/reject/<int:appointment_id>/', doctor_views.reject_appointment, name="reject_appointment"),
-    path('appointments/appointment_details', doctor_views.appointment_details, name="appointment_details"),
+    path('doctor/appointments/appointment_details/<int:appointment_id>/', doctor_views.appointment_details, name="appointment_details"),
+
+
+    path('doctor/search/', doctor_views.patient_search, name='patient_search'),
+    path('doctor/search_autocomplete/', doctor_views.search_autocomplete, name='search_autocomplete'),
+
 
 ]
 

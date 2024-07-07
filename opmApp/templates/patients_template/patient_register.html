@@ -59,16 +59,13 @@
                       {% csrf_token %}
                       <div class="col-12">
                         <label for="yourName" class="form-label"
-                          >Your Full Name<span style="color:red;">*</span></label
+                          >Your Full Name<span style="color: red"
+                            >*</span
+                          ></label
                         >
-                        <input
-                          type="text"
-                          name="name"
-                          class="form-control"
-                          id="yourName"
-                          value="{{name|default_if_none:""}}"
-                          required
-                        />
+                        <input type="text" name="name" class="form-control"
+                        id="yourName" value="{{name|default_if_none:""}}"
+                        required />
                         <div class="invalid-feedback">
                           Please, enter your full name!
                         </div>
@@ -76,61 +73,64 @@
 
                       <div class="col-12">
                         <label for="yourEmail" class="form-label"
-                          >Your Email<span style="color:red;">*</span></label
+                          >Your Email<span style="color: red">*</span></label
                         >
-                        <input
-                          type="email"
-                          name="email"
-                          class="form-control"
-                          id="yourEmail"
-                          value="{{email|default_if_none:""}}"
-                          required
-                        />
+                        <input type="email" name="email" class="form-control"
+                        id="yourEmail" value="{{email|default_if_none:""}}"
+                        required />
                         <div class="invalid-feedback">
                           Please enter a valid Email adddress!
                         </div>
                       </div>
 
                       <div class="col-12">
-                        <label for="age" class="form-label">Age<span style="color:red;">*</span></label>
-                        <input
-                          type="number"
-                          name="age"
-                          class="form-control"
-                          min="18"
-                          id="age"
-                          value="{{age|default_if_none:""}}"
-                          required
-                        />
+                        <label for="age" class="form-label"
+                          >Age<span style="color: red">*</span></label
+                        >
+                        <input type="number" name="age" class="form-control"
+                        min="18" id="age" value="{{age|default_if_none:""}}"
+                        required />
                         <!-- <div class="invalid-feedback">Please enter your password!</div> -->
                       </div>
 
-                      
                       <div class="col-12" style="margin-top: 20px">
-                        <label for="sex" class="form-label">Sex<span style="color:red;">*</span></label>
-                        <select class="form-select" id="validationDefault04" name="sex" required>
-                          <option selected disabled value="">Select your gender...</option>
-                          <option value="Male " style="text-transform:Capitalize;">Male</option>
-                          <option value="Female" style="text-transform:Capitalize;">Female</option>
+                        <label for="sex" class="form-label"
+                          >Sex<span style="color: red">*</span></label
+                        >
+                        <select
+                          class="form-select"
+                          id="validationDefault04"
+                          name="sex"
+                          required
+                        >
+                          <option selected disabled value="">
+                            Select your gender...
+                          </option>
+                          <option
+                            value="Male "
+                            style="text-transform: Capitalize"
+                          >
+                            Male
+                          </option>
+                          <option
+                            value="Female"
+                            style="text-transform: Capitalize"
+                          >
+                            Female
+                          </option>
                         </select>
                         <div class="invalid-feedback">
                           Please! Select your Gender before Registering.
                         </div>
                       </div>
 
-
                       <div class="col-12">
                         <label for="phoneNo" class="form-label"
-                          >Phone Number<span style="color:red;">*</span></label
+                          >Phone Number<span style="color: red">*</span></label
                         >
-                        <input
-                          type="phone"
-                          name="phone"
-                          class="form-control"
-                          id="phoneNo"
-                          value="{{phone|default_if_none:""}}"
-                          required
-                        />
+                        <input type="phone" name="phone" class="form-control"
+                        id="phoneNo" value="{{phone|default_if_none:""}}"
+                        required />
                         <div class="invalid-feedback">
                           Please enter a valid Phone Number!
                         </div>

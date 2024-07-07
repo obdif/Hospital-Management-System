@@ -1,10 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
   {% include "../include/head.html" %} {% load static %}
-  <link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
-/>
 
   <title>Patients - LUTH</title>
 
@@ -231,133 +227,52 @@
     <!-- End Sidebar-->
 
     <main id="main" class="main">
-      <div class="" style="margin-bottom:30px; display:flex; gap:15%;">
-        <button onclick ="goBack()" class="backBtn">
-          <i class="bi bi-arrow-left-short" 
-          id="iconx"></i>
-      </button>
-        <h2 style="text-align: center; font-weight: 600">
-          Patients
-        </h2>
-      </div> <br>
+      {% comment %} <div class="" style="margin-bottom:30px;">
+        <h1 style="text-align: center; font-weight: 600">
+        Patients
+        </h1>
+      </div> {% endcomment %}
 
 
 
       <!-- End Page Title -->
       <section class="section">
         <div class="row">
-          <div class="col-lg-11">
+          <div class="col-lg-12">
   
-            <div class="card  ">
-              <div class="card-body" style="padding:20px;">
-             
+            <div class="card">
+              <div class="card-body">
+        
 
-                <form
-                  class="row g-3 needs-validation"
-                  novalidate
-                  method="post"
-                >
-                  {% csrf_token %}
-                  <div class="col-12">
-                    <label for="yourName" class="form-label"
-                      >Patient Name<span style="color: red"
-                        >*</span
-                      ></label
-                    >
-                    <input type="text" name="name" class="form-control"
-                    id="yourName" value="{{name|default_if_none:""}}"
-                    required />
-                    <div class="invalid-feedback">
-                      Please, enter patient name!
-                    </div>
-                  </div>
 
-                  <div class="col-12">
-                    <label for="yourEmail" class="form-label"
-                      >Patient Email<span style="color: red">*</span></label
-                    >
-                    <input type="email" name="email" class="form-control"
-                    id="yourEmail" value="{{email|default_if_none:""}}"
-                    required />
-                    <div class="invalid-feedback">
-                      Please enter a valid Email adddress!
-                    </div>
-                  </div>
+                <h2>Search Results</h2>
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Details</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for patient in patients %}
+        <tr>
+            <td>{{ patient.id }}</td>
+            <td>{{ patient.name }}</td>
+            <td>{{ patient.email }}</td>
+            <td>
+                <a href="{% url 'patients_details' patient.id %}" style="color:blue;">
+                    <button style="color:blue;"><i class="bi bi-eye-fill"></i></button>
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 
-                  <div class="col-12">
-                    <label for="age" class="form-label"
-                      >Patient Age<span style="color: red">*</span></label
-                    >
-                    <input type="number" name="age" class="form-control"
-                    min="18" id="age" value="{{age|default_if_none:""}}"
-                    required />
-                    <!-- <div class="invalid-feedback">Please enter your password!</div> -->
-                  </div>
 
-                  <div class="col-12" style="margin-top: 20px">
-                    <label for="sex" class="form-label"
-                      >Patient Sex<span style="color: red">*</span></label
-                    >
-                    <select
-                      class="form-select"
-                      id="validationDefault04"
-                      name="sex"
-                      required
-                    >
-                      <option selected disabled value="">
-                        Select patient gender...
-                      </option>
-                      <option
-                        value="Male "
-                        style="text-transform: Capitalize"
-                      >
-                        Male
-                      </option>
-                      <option
-                        value="Female"
-                        style="text-transform: Capitalize"
-                      >
-                        Female
-                      </option>
-                    </select>
-                    <div class="invalid-feedback">
-                      Please! Select patient Gender before Registering.
-                    </div>
-                  </div>
-
-                  <div class="col-12">
-                    <label for="phoneNo" class="form-label"
-                      >Patient Phone Number<span style="color: red">*</span></label
-                    >
-                    <input type="phone" name="phone" class="form-control"
-                    id="phoneNo" value="{{phone|default_if_none:""}}"
-                    required />
-                    <div class="invalid-feedback">
-                      Please enter a valid Phone Number!
-                    </div>
-                  </div>
-
-                 
-                  <div class="col-12">
-                    <label for="phoneNo" class="form-label"
-                      >Patient Address<span style="color: red">*</span></label
-                    >
-                    <input type="text" name="address" class="form-control"
-                    id="address" value="{{address|default_if_none:""}}"
-                    required />
-                    <div class="invalid-feedback">
-                      {% comment %} Please enter a valid Phone Number! {% endcomment %}
-                    </div>
-                  </div>
-
-                 
-                  <div class="col-12">
-                    <button class="btn btn-primary w-100" type="submit">
-                      Create Account
-                    </button>
-                  </div>
-                  
-                </form>
+  
               </div>
             </div>
   
@@ -369,39 +284,5 @@
 
     <!-- ======= Footer ======= -->
     {% include "../include/footer.html" %}
-     <!-- Toastr JS from updated CDN -->
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
- 
-     <script>
-    
- 
-         function goBack(){
-           window.history.back();
-       }
- 
-         {% if messages %}
-             {% for message in messages %}
-                 toastr.options = {
-                     "closeButton": true,
-                     "debug": false,
-                     "newestOnTop": true,
-                     "progressBar": true,
-                     "positionClass": "toast-top-right",
-                     "preventDuplicates": false,
-                     "onclick": null,
-                     "showDuration": "300",
-                     "hideDuration": "1000",
-                     "timeOut": "10000",
-                     "extendedTimeOut": "5000",
-                     "showEasing": "swing",
-                     "hideEasing": "linear",
-                     "showMethod": "fadeIn",
-                     "hideMethod": "fadeOut"
-                 };
-                 toastr["{{ message.tags }}"]("{{ message }}");
-             {% endfor %}
-         {% endif %}
-     </script>
   </body>
 </html>

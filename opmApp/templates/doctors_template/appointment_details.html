@@ -2,9 +2,9 @@
 <html lang="en">
   {% include "../include/head.html" %} {% load static %}
   <link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
-/>
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
+  />
 
   <title>Appointments - LUTH</title>
 
@@ -14,8 +14,8 @@
 
     <!-- End Header -->
 
-    <!-- ======= Sidebar ======= -->
-    <aside id="sidebar" class="sidebar">
+     <!-- ======= Sidebar ======= -->
+     <aside id="sidebar" class="sidebar">
       <ul class="sidebar-nav" id="sidebar-nav">
         <li class="nav-item">
           <a class="nav-link collapsed" href="{%url 'doctor_dashboard'%}">
@@ -46,6 +46,13 @@
         </li>
         <!-- End Doctors Nav -->
     
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="{% url 'invoices'%}">
+            <i class="bi bi-people"></i><span>Invoices</span>
+          </a>
+        </li>
+
+
     
         <li class="nav-item">
           <a class="nav-link collapsed" href="{% url 'doctors'%}">
@@ -87,34 +94,93 @@
         <!-- End Logout Page Nav -->
       </ul>
     </aside>
-    
 
     <!-- End Sidebar-->
 
     <main id="main" class="main">
-      <div class="" style="margin-bottom:30px; display:flex; gap:15%;">
-        <button onclick ="goBack()" class="backBtn">
-          <i class="bi bi-arrow-left-short" 
-          id="iconx"></i>
-      </button>
+      <div class="" style="margin-bottom: 30px; display: flex; gap: 15%">
+        <button onclick="" class="backBtn">
+          <a href="{% url 'doctor_appointments' %}"> <i class="bi bi-arrow-left-short" id="iconx"></i></a>
+        </button>
         <h1 style="text-align: center; font-weight: 600">
           Appointments Details
         </h1>
-      </div> <br>
-      
+      </div>
+      <br />
+
       <!-- End Page Title -->
       <section class="section">
         <div class="row">
           <div class="col-lg-12">
             <div class="card">
               <div class="card-body">
-                  
-              
-               
+                <form action="" entype="" method="POST">
+                  {% csrf_token %}
+                  <div class="patient_info">
+                    {% if appointment.status == "Accepted"%}
+
+                    {% elif appointment.status == "Pending" %}
+                    <div class="btn_tag">
+                      <button style="background: darkgreen" name="accept" onclick="return confirm('Are you sure you want to Accept this appointment?');">Accept</button>
+                      <button style="background: darkred" name="reject" onclick="return confirm('Are you sure you want to Reject this appointment?');">Reject</button>
+                    </div>
+                    {% endif %}
+                 
+
+                    <div class="pic">
+                      <img
+                        class="img"
+                        src="{% static 'img/profile.jpeg'%}"
+                        alt="image"
+                        width="200"
+                      />
+                    </div>
+                    <div class="info_text">
+                      <h4>
+                        <strong>Name:</strong>&nbsp; &nbsp;{{patient.name}}
+                      </h4>
+                      <br />
+                      <h4>
+                        <strong>Date:</strong>&nbsp; &nbsp;{{appointment.date_time}}
+                      </h4>
+                      <br />
+                      <h4>
+                        <strong>Time:</strong>&nbsp; &nbsp;{{appointment.time}}
+                      </h4>
+                      <br />
+                      <h4>
+                        <strong>Description:</strong>&nbsp; &nbsp;
+                        <p>{{appointment.description}}</p>
+                      </h4>
+                      <br />
+                    </div>
+                  </div>
+                  <hr />
+                  <div class="doctor_info">
+                    <h2 style="text-align: center">Doctor Feedback</h2>
+
+                    <div class="input_data">
+                      <h4><strong>Doctor Name:</strong></h4>
+                      <input type="text" disabled name="name" style="text-transform:capitalize;" value="{{appointment.doctor_id}}" />
+                    </div>
+
+                    <div class="input_data">
+                      <h4><strong>Condition/Problem:</strong></h4>
+                      <input type="text" name="cp" value="{{appointment.condition}}" />
+                    </div>
+
+                    <div class="input_data">
+                      <h4><strong>Note:</strong></h4>
+                      <textarea id="note" cols="55" rows="5" value="{{appointment.doctor_note}}" name='note'>{{appointment.doctor_note}}</textarea>
+                    </div>
+
+                    <button title="submit" type="submit" class="appbtn">
+                      Submit
+                    </button>
+                  </div>
+                </form>
               </div>
             </div>
-  
-            
           </div>
         </div>
       </section>
@@ -123,39 +189,38 @@
 
     <!-- ======= Footer ======= -->
     {% include "../include/footer.html" %}
-      <!-- Toastr JS from updated CDN -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <!-- Toastr JS from updated CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
+    <script>
 
-<script>
+        function goBack(){
+          window.history.back();
+      }
 
-  function goBack(){
-    window.history.back();
-}
-
-  {% if messages %}
-      {% for message in messages %}
-          toastr.options = {
-              "closeButton": true,
-              "debug": false,
-              "newestOnTop": true,
-              "progressBar": true,
-              "positionClass": "toast-top-right",
-              "preventDuplicates": false,
-              "onclick": null,
-              "showDuration": "300",
-              "hideDuration": "1000",
-              "timeOut": "10000",
-              "extendedTimeOut": "5000",
-              "showEasing": "swing",
-              "hideEasing": "linear",
-              "showMethod": "fadeIn",
-              "hideMethod": "fadeOut"
-          };
-          toastr["{{ message.tags }}"]("{{ message }}");
-      {% endfor %}
-  {% endif %}
-</script>
+        {% if messages %}
+            {% for message in messages %}
+                toastr.options = {
+                    "closeButton": true,
+                    "debug": false,
+                    "newestOnTop": true,
+                    "progressBar": true,
+                    "positionClass": "toast-top-right",
+                    "preventDuplicates": false,
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "10000",
+                    "extendedTimeOut": "5000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                };
+                toastr["{{ message.tags }}"]("{{ message }}");
+            {% endfor %}
+        {% endif %}
+    </script>
   </body>
 </html>

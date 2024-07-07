@@ -142,7 +142,7 @@
                                 <td>
                                   {% if appointment.status == 'Accepted' %}
                                     <div class="pay_bill">
-                                      <a href="">
+                                      <a href="{% url 'patient_appointment_details' appointment.id %}">
                                         <button>view</button>
                                       </a>
                                     </div>

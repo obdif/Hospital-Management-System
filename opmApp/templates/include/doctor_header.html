@@ -9,6 +9,17 @@
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
+    <div class="search-bar">
+      <form class="search-form d-flex align-items-center" method="POST" action="{% url 'patient_search' %}">
+        {% csrf_token %}
+        <input type="text" name="query" id="search-input" placeholder="Search by Patient Id / Name / Email" title="Enter search keyword">
+        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+      </form>
+      <div id="suggestions" style="position: absolute; background: white; z-index: 1000;"></div>
+    </div>
+
+
+    
 
 
     <nav class="header-nav ms-auto">
@@ -122,3 +133,25 @@
     </nav><!-- End Icons Navigation -->
 
   </header>
+
+
+
+  <script>
+    document.getElementById('search-input').addEventListener('input', function() {
+        fetch(`/doctor/search_autocomplete/?query=${this.value}`)
+            .then(response => response.json())
+            .then(data => {
+                let suggestions = document.getElementById('suggestions');
+                suggestions.innerHTML = '';
+                data.forEach(item => {
+                    let div = document.createElement('div');
+                    div.innerHTML = `${item.name} (${item.id}) - ${item.email}`;
+                    div.addEventListener('click', function() {
+                        document.getElementById('search-input').value = item.name;
+                        suggestions.innerHTML = '';
+                    });
+                    suggestions.appendChild(div);
+                });
+            });
+    });
+    </script>
