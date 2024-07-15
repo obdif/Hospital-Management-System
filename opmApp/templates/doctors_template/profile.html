@@ -1,32 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
   {% include "../include/head.html" %} {% load static %}
+  <link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
+/>
+
 
   <title>Profile - LUTH</title>
 
+
   <body>
     <!-- ======= Header ======= -->
-    {% include "../include/header.html" %}
+    {% include "../include/doctor_header.html" %}
+
+
+    <style>
+      .cap{
+        text-transform:Capitalize;
+      }
+
+      input{
+        text-transform:Capitalize;
+      }
+    </style>
 
     <!-- End Header -->
 
-    <!-- ======= Sidebar ======= -->
-    <aside id="sidebar" class="sidebar">
+  
+     <!-- ======= Sidebar ======= -->
+     <aside id="sidebar" class="sidebar">
       <ul class="sidebar-nav" id="sidebar-nav">
         <li class="nav-item">
-          <a class="nav-link collapsed" href="{% url 'dashboard'%}">
+          <a class="nav-link collapsed" href="{%url 'doctor_dashboard'%}">
             <i class="bi bi-grid"></i>
             <span>Dashboard</span>
           </a>
         </li>
-        <!-- End Dashboard Nav -->
-
+        <!-- End doctor_dashboard Nav -->
+    
         <li class="nav-item">
-          <a class="nav-link collapsed" href="{% url 'appointments'%}">
+          <a class="nav-link collapsed" href="{% url 'doctor_appointments'%}">
             <i class="bi bi-list-ol"></i><span>Appointments</span>
           </a>
         </li>
+
+    
+     
+    
+
         <!-- End Appointments Nav -->
+    
+        {% comment %} <li class="nav-item">
+          <a class="nav-link collapsed" href="{% url 'doctor_appointments'%}">
+            <i class="bi bi-shop"></i><span>Pharmacy</span>
+          </a>
+        </li> {% endcomment %}
+        <!-- End Pharmacy Nav -->
+    
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="{% url 'doctor_patients'%}">
+            <i class="bi bi-people"></i><span>Patients</span>
+          </a>
+        </li>
+        <!-- End Doctors Nav -->
+    
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="{% url 'invoices'%}">
+            <i class="bi bi-people"></i><span>Invoices</span>
+          </a>
+        </li>
 
         <li class="nav-item">
           <a class="nav-link collapsed" href="{% url 'doctors'%}">
@@ -34,33 +77,33 @@
           </a>
         </li>
         <!-- End Doctors Nav -->
-
+    
         <li class="nav-item">
-          <a class="nav-link collapsed" href="{% url 'departments'%}">
+          <a class="nav-link collapsed" href="{% url 'doctor_department'%}">
             <i class="bi bi-layout-wtf"></i><span>Departments</span>
           </a>
         </li>
         <!-- End Departments Nav -->
-
-        <li class="nav-item">
+    
+        {% comment %} <li class="nav-item">
           <a class="nav-link collapsed" href="#">
             <i class="bi bi-credit-card"></i><span>Payments</span>
           </a>
-        </li>
+        </li> {% endcomment %}
         <!-- End Payment Nav -->
-
+    
         <!-- <li class="nav-heading">Pages</li> -->
-
+    
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'profile'%}">
+          <a class="nav-link " href="{% url 'doctor_profile'%}">
             <i class="bi bi-person"></i>
             <span>Profile</span>
           </a>
         </li>
         <!-- End Profile Page Nav -->
-
+    
         <li class="nav-item">
-          <a class="nav-link collapsed" href="pages-login.html">
+          <a class="nav-link collapsed" href="{% url 'doctor_logout'%}">
             <i style="color: red" class="bi bi-box-arrow-right"></i>
             <span style="color: red">Sign Out</span>
           </a>
@@ -68,6 +111,7 @@
         <!-- End Logout Page Nav -->
       </ul>
     </aside>
+    
     <!-- End Sidebar-->
 
     <main id="main" class="main">
@@ -84,12 +128,12 @@
                 class="card-body profile-card pt-4 d-flex flex-column align-items-center"
               >
                 <img
-                  src="assets/img/profile-img.jpg"
-                  alt="Profile"
+                  src="{{doctor.profile_pic.url}}"
+                  alt="{{doctor.name}}"
                   class="rounded-circle"
                 />
-                <h2>Triumph Dacosta</h2>
-                <h3>Patient</h3>
+                <h2 style="text-transform:Capitalize;">Dr. {{doctor.name}}</h2>
+                <h3>Doctor</h3>
               </div>
             </div>
           </div>
@@ -126,42 +170,46 @@
                   >
                     <h5 class="card-title">About</h5>
                     <p class="small fst-italic">
-                      Sunt est soluta temporibus accusantium neque nam maiores
-                      cumque temporibus. Tempora libero non est unde veniam est
-                      qui dolor. Ut sunt iure rerum quae quisquam autem eveniet
-                      perspiciatis odit. Fuga sequi sed ea saepe at unde.
+                      {{doctor.about}}
+                      
                     </p>
 
                     <h5 class="card-title">Profile Details</h5>
 
                     <div class="row">
                       <div class="col-lg-3 col-md-4 label">Full Name</div>
-                      <div class="col-lg-9 col-md-8">Triumph Dacosta</div>
+                      <div class="col-lg-9 col-md-8 cap">{{doctor.name}}</div>
                     </div>
 
                     <div class="row">
-                      <div class="col-lg-3 col-md-4 label">Age</div>
-                      <div class="col-lg-9 col-md-8">35<span>Yrs.</span></div>
+                      <div class="col-lg-3 col-md-4 label">Department</div>
+                      <div class="col-lg-9 col-md-8 cap">{{doctor.department}}</div>
                     </div>
+
+
+                    {% comment %} <div class="row">
+                      <div class="col-lg-3 col-md-4 label">Age</div>
+                      <div class="col-lg-9 col-md-8">{{doctor.age}}<span>Yrs.</span></div>
+                    </div> {% endcomment %}
 
                     <div class="row">
                       <div class="col-lg-3 col-md-4 label">Country</div>
-                      <div class="col-lg-9 col-md-8">Nigeria</div>
+                      <div class="col-lg-9 col-md-8 cap">Nigeria</div>
                     </div>
 
                     <div class="row">
                       <div class="col-lg-3 col-md-4 label">Address</div>
-                      <div class="col-lg-9 col-md-8">Ikeja, lagos, Nigeria</div>
+                      <div class="col-lg-9 col-md-8">{{doctor.address}}</div>
                     </div>
 
                     <div class="row">
                       <div class="col-lg-3 col-md-4 label">Phone</div>
-                      <div class="col-lg-9 col-md-8">09148934834</div>
+                      <div class="col-lg-9 col-md-8">{{doctor.phone_no}}</div>
                     </div>
 
                     <div class="row">
                       <div class="col-lg-3 col-md-4 label">Email</div>
-                      <div class="col-lg-9 col-md-8">k.Dacosta@example.com</div>
+                      <div class="col-lg-9 col-md-8" style="text-transform:lowercase;">{{doctor.email}}</div>
                     </div>
                   </div>
 
@@ -170,7 +218,8 @@
                     id="profile-edit"
                   >
                     <!-- Profile Edit Form -->
-                    <form>
+                    <form method="post" enctype="multipart/form-data">
+                      {% csrf_token %}
                       <div class="row mb-3">
                         <label
                           for="profileImage"
@@ -178,20 +227,10 @@
                           >Profile Image</label
                         >
                         <div class="col-md-8 col-lg-9">
-                          <img src="assets/img/profile-img.jpg" alt="Profile" />
+                          <img src="{{ doctor.profile_pic.url }}" alt="Profile" />
                           <div class="pt-2">
-                            <a
-                              href="#"
-                              class="btn btn-primary btn-sm"
-                              title="Upload new profile image"
-                              ><i class="bi bi-upload"></i
-                            ></a>
-                            <a
-                              href="#"
-                              class="btn btn-danger btn-sm"
-                              title="Remove my profile image"
-                              ><i class="bi bi-trash"></i
-                            ></a>
+                            <input type="file" title="Upload new profile image" name="profile_image" class="form-control btn btn-primary btn-sm" id="profileImage">
+                       
                           </div>
                         </div>
                       </div>
@@ -204,11 +243,11 @@
                         >
                         <div class="col-md-8 col-lg-9">
                           <input
-                            name="fullName"
+                            name="name"
                             type="text"
                             class="form-control"
-                            id="fullName"
-                            value="Triumph Dacosta"
+                            id="name"
+                            value="{{doctor.name}}"
                           />
                         </div>
                       </div>
@@ -226,44 +265,53 @@
                             id="about"
                             style="height: 100px"
                           >
-Sunt est soluta temporibus accusantium neque nam maiores cumque temporibus. Tempora libero non est unde veniam est qui dolor. Ut sunt iure rerum quae quisquam autem eveniet perspiciatis odit. Fuga sequi sed ea saepe at unde.</textarea
+                          {{doctor.about}}</textarea
                           >
                         </div>
                       </div>
 
                       <div class="row mb-3">
                         <label
-                          for="company"
+                          for="department"
                           class="col-md-4 col-lg-3 col-form-label"
-                          >Company</label
+                          >Department</label
                         >
                         <div class="col-md-8 col-lg-9">
-                          <input
-                            name="company"
-                            type="text"
-                            class="form-control"
-                            id="company"
-                            value="Lueilwitz, Wisoky and Leuschke"
-                          />
+                          <select class="form-select" id="validationDefault04" name="department" required>
+                            {% for dept in departments %}
+                              <option value="{{ dept.name }}" {% if dept == doctor.department %}selected{% endif %}>{{ dept.name }}</option>
+                            {% endfor %}
+                            {% comment %} {% for department in departments %}
+                            <option value="{{department.id}}"  {% if departments.id|stringformat:"s" == department %}selected{% endif %}> {{department.name}}</option>
+                            {% endfor %} {% endcomment %}
+  
+                            {% comment %} <option> Dermatologists</option>
+                            <option> Anesthesiologists</option>
+                            <option> Emergency Medicine Specialists</option>
+                            <option> Allergists/Immunologists</option>
+                            <option> Rectal Surgeons</option>
+                            <option> Colon Surgeons</option> {% endcomment %}
+                          </select>
+                         
                         </div>
                       </div>
 
-                      <div class="row mb-3">
+                      {% comment %} <div class="row mb-3">
                         <label
-                          for="Job"
+                          for="age"
                           class="col-md-4 col-lg-3 col-form-label"
-                          >Job</label
+                          >Age</label
                         >
                         <div class="col-md-8 col-lg-9">
                           <input
-                            name="job"
-                            type="text"
+                            name="age"
+                            type="number"
                             class="form-control"
-                            id="Job"
-                            value="Web Designer"
+                            id="age"
+                            value="{{doctor.age}}"
                           />
                         </div>
-                      </div>
+                      </div> {% endcomment %}
 
                       <div class="row mb-3">
                         <label
@@ -277,7 +325,7 @@ Sunt est soluta temporibus accusantium neque nam maiores cumque temporibus. Temp
                             type="text"
                             class="form-control"
                             id="Country"
-                            value="USA"
+                            value="{{doctor.country}}"
                           />
                         </div>
                       </div>
@@ -294,7 +342,7 @@ Sunt est soluta temporibus accusantium neque nam maiores cumque temporibus. Temp
                             type="text"
                             class="form-control"
                             id="Address"
-                            value="A108 Adam Street, New York, NY 535022"
+                            value="{{doctor.address}}"
                           />
                         </div>
                       </div>
@@ -308,10 +356,10 @@ Sunt est soluta temporibus accusantium neque nam maiores cumque temporibus. Temp
                         <div class="col-md-8 col-lg-9">
                           <input
                             name="phone"
-                            type="text"
+                            type="tel"
                             class="form-control"
                             id="Phone"
-                            value="(436) 486-3538 x29071"
+                            value="{{doctor.phone_no}}"
                           />
                         </div>
                       </div>
@@ -327,8 +375,10 @@ Sunt est soluta temporibus accusantium neque nam maiores cumque temporibus. Temp
                             name="email"
                             type="email"
                             class="form-control"
-                            id="Email"
-                            value="k.Dacosta@example.com"
+                            id="Email" 
+                            style="text-transform:lowercase;"
+                            value="{{doctor.email}}"
+                            disabled
                           />
                         </div>
                       </div>
@@ -353,5 +403,34 @@ Sunt est soluta temporibus accusantium neque nam maiores cumque temporibus. Temp
 
     <!-- ======= Footer ======= -->
     {% include "../include/footer.html" %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <script>
+
+    
+      {% if messages %}
+          {% for message in messages %}
+              toastr.options = {
+                  "closeButton": true,
+                  "debug": false,
+                  "newestOnTop": true,
+                  "progressBar": true,
+                  "positionClass": "toast-top-right",
+                  "preventDuplicates": false,
+                  "onclick": null,
+                  "showDuration": "300",
+                  "hideDuration": "5000",
+                  "timeOut": "10000",
+                  "extendedTimeOut": "5000",
+                  "showEasing": "swing",
+                  "hideEasing": "linear",
+                  "showMethod": "fadeIn",
+                  "hideMethod": "fadeOut"
+              };
+              toastr["{{ message.tags }}"]("{{ message }}");
+          {% endfor %}
+      {% endif %}
+    </script>
   </body>
 </html>

@@ -2,9 +2,27 @@
 <html lang="en">
   {% include "../include/head.html" %} {% load static %}
 
+  <link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
+/>
+
   <title>Profile - LUTH</title>
 
   <body>
+
+    <style>
+      .cap{
+        text-transform:Capitalize;
+      }
+
+      input{
+        text-transform:Capitalize;
+      }
+    </style>
+
+
+
     <!-- ======= Header ======= -->
     {% include "../include/header.html" %}
 
@@ -29,17 +47,23 @@
         <!-- End Appointments Nav -->
 
         <li class="nav-item">
+          <a class="nav-link collapsed" href="{% url 'patient_appointments'%}">
+            <i class="bi bi-list-ol"></i><span>Invoices</span>
+          </a>
+        </li>
+
+        <li class="nav-item">
           <a class="nav-link collapsed" href="{% url 'patient_doctors'%}">
             <i class="bi bi-people"></i><span>Doctors</span>
           </a>
         </li>
         <!-- End Doctors Nav -->
-
+{% comment %} 
         <li class="nav-item">
-          <a class="nav-link collapsed" href="{% url 'departments'%}">
+          <a class="nav-link collapsed" href="{% url 'patient_departments'%}">
             <i class="bi bi-layout-wtf"></i><span>Departments</span>
           </a>
-        </li>
+        </li> {% endcomment %}
         <!-- End Departments Nav -->
 
         <li class="nav-item">
@@ -84,11 +108,11 @@
                 class="card-body profile-card pt-4 d-flex flex-column align-items-center"
               >
                 <img
-                  src="assets/img/profile-img.jpg"
-                  alt="Profile"
+                  src="{{patient.profile_pic.url}}"
+                  alt="{{patient.name}}"
                   class="rounded-circle"
                 />
-                <h2>Triumph Dacosta</h2>
+                <h2>{{patient.name}}</h2>
                 <h3>Patient</h3>
               </div>
             </div>
@@ -129,32 +153,32 @@
 
                     <div class="row">
                       <div class="col-lg-3 col-md-4 label">Full Name</div>
-                      <div class="col-lg-9 col-md-8">Triumph Dacosta</div>
+                      <div class="col-lg-9 col-md-8 cap">{{patient.name}}</div>
                     </div>
 
                     <div class="row">
                       <div class="col-lg-3 col-md-4 label">Age</div>
-                      <div class="col-lg-9 col-md-8">35<span>Yrs.</span></div>
+                      <div class="col-lg-9 col-md-8 cap">{{patient.age}}<span>Yrs.</span></div>
                     </div>
 
                     <div class="row">
                       <div class="col-lg-3 col-md-4 label">Blood Group</div>
-                      <div class="col-lg-9 col-md-8">A+</div>
+                      <div class="col-lg-9 col-md-8">{{patient.bgroup}}</div>
                     </div>
 
                     <div class="row">
                       <div class="col-lg-3 col-md-4 label">Address</div>
-                      <div class="col-lg-9 col-md-8">Ikeja, lagos, Nigeria</div>
+                      <div class="col-lg-9 col-md-8 cap">{{patient.address}}</div>
                     </div>
 
                     <div class="row">
                       <div class="col-lg-3 col-md-4 label">Phone</div>
-                      <div class="col-lg-9 col-md-8">09148934834</div>
+                      <div class="col-lg-9 col-md-8">{{patient.phone_no}}</div>
                     </div>
 
                     <div class="row">
                       <div class="col-lg-3 col-md-4 label">Email</div>
-                      <div class="col-lg-9 col-md-8">k.Dacosta@example.com</div>
+                      <div class="col-lg-9 col-md-8">{{patient.email}}</div>
                     </div>
                   </div>
 
@@ -163,7 +187,8 @@
                     id="profile-edit"
                   >
                     <!-- Profile Edit Form -->
-                    <form>
+                    <form method="post" enctype="multipart/form-data">
+                      {% csrf_token %}
                       <div class="row mb-3">
                         <label
                           for="profileImage"
@@ -171,23 +196,13 @@
                           >Profile Image</label
                         >
                         <div class="col-md-8 col-lg-9">
-                          <img src="assets/img/profile-img.jpg" alt="Profile" />
+                          <img src="{{ patient.profile_pic.url }}" alt="Profile" />
                           <div class="pt-2">
-                            <a
-                              href="#"
-                              class="btn btn-primary btn-sm"
-                              title="Upload new profile image"
-                              ><i class="bi bi-upload"></i
-                            ></a>
-                            <a
-                              href="#"
-                              class="btn btn-danger btn-sm"
-                              title="Remove my profile image"
-                              ><i class="bi bi-trash"></i
-                            ></a>
+                            <input type="file" title="Upload new profile image" name="profile_image" class="form-control btn btn-primary btn-sm" id="profileImage">
+                       
                           </div>
                         </div>
-                      </div>
+
 
                       <div class="row mb-3">
                         <label
@@ -197,87 +212,55 @@
                         >
                         <div class="col-md-8 col-lg-9">
                           <input
-                            name="fullName"
+                            name="name"
                             type="text"
                             class="form-control"
-                            id="fullName"
-                            value="Triumph Dacosta"
+                            id="name"
+                            value="{{patient.name}}"
                           />
                         </div>
                       </div>
 
-                      <div class="row mb-3">
-                        <label
-                          for="about"
-                          class="col-md-4 col-lg-3 col-form-label"
-                          >About</label
-                        >
-                        <div class="col-md-8 col-lg-9">
-                          <textarea
-                            name="about"
-                            class="form-control"
-                            id="about"
-                            style="height: 100px"
-                          >
-Sunt est soluta temporibus accusantium neque nam maiores cumque temporibus. Tempora libero non est unde veniam est qui dolor. Ut sunt iure rerum quae quisquam autem eveniet perspiciatis odit. Fuga sequi sed ea saepe at unde.</textarea
-                          >
-                        </div>
-                      </div>
+                     
 
                       <div class="row mb-3">
                         <label
-                          for="company"
+                          for="age"
                           class="col-md-4 col-lg-3 col-form-label"
-                          >Company</label
+                          >Age</label
                         >
                         <div class="col-md-8 col-lg-9">
                           <input
-                            name="company"
-                            type="text"
+                            name="age"
+                            type="number"
                             class="form-control"
-                            id="company"
-                            value="Lueilwitz, Wisoky and Leuschke"
+                            id="age"
+                            value="{{patient.age}}"
                           />
                         </div>
                       </div>
 
                       <div class="row mb-3">
                         <label
-                          for="Job"
+                          for="bgroup"
                           class="col-md-4 col-lg-3 col-form-label"
-                          >Job</label
+                          >Blood Group</label
                         >
                         <div class="col-md-8 col-lg-9">
                           <input
-                            name="job"
+                            name="bgroup"
                             type="text"
                             class="form-control"
-                            id="Job"
-                            value="Web Designer"
+                            id="bgroup"
+                            value="{{patient.bgroup}}"
+                            Disabled
                           />
                         </div>
                       </div>
 
                       <div class="row mb-3">
                         <label
-                          for="Country"
-                          class="col-md-4 col-lg-3 col-form-label"
-                          >Country</label
-                        >
-                        <div class="col-md-8 col-lg-9">
-                          <input
-                            name="country"
-                            type="text"
-                            class="form-control"
-                            id="Country"
-                            value="USA"
-                          />
-                        </div>
-                      </div>
-
-                      <div class="row mb-3">
-                        <label
-                          for="Address"
+                          for="address"
                           class="col-md-4 col-lg-3 col-form-label"
                           >Address</label
                         >
@@ -286,28 +269,30 @@ Sunt est soluta temporibus accusantium neque nam maiores cumque temporibus. Temp
                             name="address"
                             type="text"
                             class="form-control"
-                            id="Address"
-                            value="A108 Adam Street, New York, NY 535022"
+                            id="address"
+                            value="{{patient.address}}"
                           />
                         </div>
                       </div>
 
                       <div class="row mb-3">
                         <label
-                          for="Phone"
+                          for="phone"
                           class="col-md-4 col-lg-3 col-form-label"
-                          >Phone</label
+                          >Phone number</label
                         >
                         <div class="col-md-8 col-lg-9">
                           <input
                             name="phone"
-                            type="text"
+                            type="tell"
                             class="form-control"
-                            id="Phone"
-                            value="(436) 486-3538 x29071"
+                            id="phone"
+                            value="{{patient.phone_no}}"
                           />
                         </div>
                       </div>
+
+                     
 
                       <div class="row mb-3">
                         <label
@@ -321,7 +306,9 @@ Sunt est soluta temporibus accusantium neque nam maiores cumque temporibus. Temp
                             type="email"
                             class="form-control"
                             id="Email"
-                            value="k.Dacosta@example.com"
+                            style="text-transform:lowercase;"
+                            value="{{patient.email}}"
+                            disabled
                           />
                         </div>
                       </div>
@@ -346,5 +333,34 @@ Sunt est soluta temporibus accusantium neque nam maiores cumque temporibus. Temp
 
     <!-- ======= Footer ======= -->
     {% include "../include/footer.html" %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <script>
+
+    
+      {% if messages %}
+          {% for message in messages %}
+              toastr.options = {
+                  "closeButton": true,
+                  "debug": false,
+                  "newestOnTop": true,
+                  "progressBar": true,
+                  "positionClass": "toast-top-right",
+                  "preventDuplicates": false,
+                  "onclick": null,
+                  "showDuration": "300",
+                  "hideDuration": "5000",
+                  "timeOut": "10000",
+                  "extendedTimeOut": "5000",
+                  "showEasing": "swing",
+                  "hideEasing": "linear",
+                  "showMethod": "fadeIn",
+                  "hideMethod": "fadeOut"
+              };
+              toastr["{{ message.tags }}"]("{{ message }}");
+          {% endfor %}
+      {% endif %}
+    </script>
   </body>
 </html>

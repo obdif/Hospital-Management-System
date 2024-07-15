@@ -6,61 +6,85 @@
 
   <body>
     <!-- ======= Header ======= -->
-    {% include "../include/header.html" %}
+    {% include "../include/doctor_header.html" %}
 
     <!-- End Header -->
 
-    <!-- ======= Sidebar ======= -->
-    <aside id="sidebar" class="sidebar">
+
+     <!-- ======= Sidebar ======= -->
+     <aside id="sidebar" class="sidebar">
       <ul class="sidebar-nav" id="sidebar-nav">
         <li class="nav-item">
-          <a class="nav-link collapsed" href="{% url 'dashboard'%}">
+          <a class="nav-link collapsed" href="{%url 'doctor_dashboard'%}">
             <i class="bi bi-grid"></i>
             <span>Dashboard</span>
           </a>
         </li>
-        <!-- End Dashboard Nav -->
-
+        <!-- End doctor_dashboard Nav -->
+    
         <li class="nav-item">
-          <a class="nav-link collapsed" href="{% url 'appointments'%}">
+          <a class="nav-link collapsed" href="{% url 'doctor_appointments'%}">
             <i class="bi bi-list-ol"></i><span>Appointments</span>
           </a>
         </li>
+
+    
+     
         <!-- End Appointments Nav -->
+    
+        {% comment %} <li class="nav-item">
+          <a class="nav-link collapsed" href="{% url 'doctor_appointments'%}">
+            <i class="bi bi-shop"></i><span>Pharmacy</span>
+          </a>
+        </li> {% endcomment %}
+        <!-- End Pharmacy Nav -->
+    
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="{% url 'doctor_patients'%}">
+            <i class="bi bi-people"></i><span>Patients</span>
+          </a>
+        </li>
+        <!-- End Doctors Nav -->
+    
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="{% url 'invoices'%}">
+            <i class="bi bi-people"></i><span>Invoices</span>
+          </a>
+        </li>
 
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'doctors'%}">
+          <a class="nav-link " href="{% url 'doctors'%}">
             <i class="bi bi-people"></i><span>Doctors</span>
           </a>
         </li>
         <!-- End Doctors Nav -->
-
+    
         <li class="nav-item">
-          <a class="nav-link collapsed" href="{% url 'departments'%}">
+          <a class="nav-link collapsed" href="{% url 'doctor_department'%}">
             <i class="bi bi-layout-wtf"></i><span>Departments</span>
           </a>
         </li>
         <!-- End Departments Nav -->
-
-        <li class="nav-item">
+    
+        {% comment %} <li class="nav-item">
           <a class="nav-link collapsed" href="#">
             <i class="bi bi-credit-card"></i><span>Payments</span>
           </a>
-        </li>
+        </li> {% endcomment %}
         <!-- End Payment Nav -->
-
+    
         <!-- <li class="nav-heading">Pages</li> -->
-
+    
         <li class="nav-item">
-          <a class="nav-link collapsed" href="{% url 'profile'%}">
+          <a class="nav-link collapsed" href="{% url 'doctor_profile'%}">
             <i class="bi bi-person"></i>
             <span>Profile</span>
           </a>
         </li>
         <!-- End Profile Page Nav -->
-
+    
         <li class="nav-item">
-          <a class="nav-link collapsed" href="pages-login.html">
+          <a class="nav-link collapsed" href="{% url 'doctor_logout'%}">
             <i style="color: red" class="bi bi-box-arrow-right"></i>
             <span style="color: red">Sign Out</span>
           </a>
@@ -68,7 +92,7 @@
         <!-- End Logout Page Nav -->
       </ul>
     </aside>
-    <!-- End Sidebar-->
+    
 
     <main id="main" class="main">
       <div class="pagetitle">
@@ -79,11 +103,11 @@
       <section class="section">
         <!-- ================DOCTOR GRID LAYOUT START ================= -->
         <div class="doctor-grid">
-          <div class="doctor">
+          <div class="doctor doctor-bg">
             <div class="doctor-img">
               <img
-                src="{% static 'img/doctors/HOD Medicine.jpg'%}"
-                alt=""
+                src="https://res.cloudinary.com/dbqtos6rt/image/upload/v1720668852/opms/profile/HOD_Medicine_flllhz.jpg"
+                alt="DR. MRS. ADEYEYE"
                 width="300"
               />
             </div>
@@ -92,13 +116,14 @@
               <br />
               <em>Head of Department (medicine)</em>
             </div>
+            <button>Send an Email Message</button>
           </div>
 
-          <div class="doctor">
+          <div class="doctor doctor-bg">
             <div class="doctor-img">
               <img
-                src="{% static 'img/doctors/HODOphtal.jpg'%}"
-                alt=""
+                src="https://res.cloudinary.com/dbqtos6rt/image/upload/v1720668852/opms/profile/HODOphtal_prsazn.jpg"
+                alt="PROF. ADEKOYA BOLA"
                 width="300"
               />
             </div>
@@ -107,13 +132,14 @@
               <br />
               <em>Head of Department</em>
             </div>
+            <button>Send an Email Message</button>
           </div>
 
-          <div class="doctor">
+          <div class="doctor doctor-bg">
             <div class="doctor-img">
               <img
-                src="{% static 'img/doctors/HOD O&G.jpg'%}"
-                alt=""
+                src="https://res.cloudinary.com/dbqtos6rt/image/upload/v1720668854/opms/profile/HOD_O_G_cg5ezc.jpg"
+                alt="Dr. Rabiu"
                 width="300"
               />
             </div>
@@ -122,28 +148,36 @@
               <br />
               <em>Head of Department (Obstretric & Gyneacology)</em>
             </div>
+            <button>Send an Email Message</button>
           </div>
 
-          <!-- <div class="doctor">
-          <div class="doctor-img">
-            <img src="assets/img/card.jpg" alt="" width="300">
-          </div>
-          <div class="doctor-name">
-            <h3 class="pagetitle">Dr. Adekunle Blessing</h3>
-            <em>Physistcian</em>
-          </div>
-        </div>
 
-
-        <div class="doctor">
-          <div class="doctor-img">
-            <img src="assets/img/card.jpg" alt="" width="300">
+          {% for doctor in doctors %}
+          <div class="doctor doctor-bg">
+            <div class="doctor-img">
+              <img
+                src="{{doctor.profile_pic.url}}"
+                alt="Dr. {{doctor.name}}"
+                width="300"
+              />
+            </div>
+            <div class="doctor-name">
+              <h4 class="pagetitle" style="text-transform:capitalize;">Dr. {{doctor.name}}</h4>
+              <br />
+              <em>{{doctor.department}}</em>
+            </div>
+            <button>Send an Email Message</button>
           </div>
-          <div class="doctor-name">
-            <h3 class="pagetitle">Dr. Adekunle Blessing</h3>
-            <em>Physistcian</em>
-          </div>
-        </div> -->
+          {% endfor %}
+          {% comment %} <div class="doctor">
+            <div class="doctor-img">
+              <img src="assets/img/card.jpg" alt="" width="300">
+            </div>
+            <div class="doctor-name">
+              <h3 class="pagetitle">Dr. Adekunle Blessing</h3>
+              <em>Physistcian</em>
+            </div>
+          </div>  {% endcomment %}
         </div>
 
         <!-- ==================DOCTOR GRID LAYOUT END ============================== -->

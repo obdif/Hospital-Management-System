@@ -3,5 +3,9 @@ from django import template
 register = template.Library()
 
 @register.filter
-def get_item(dictionary, key):
+def dict_get(dictionary, key):
     return dictionary.get(key)
+
+@register.filter
+def attr(value, arg):
+    return getattr(value, arg, None)

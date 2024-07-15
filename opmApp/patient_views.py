@@ -8,6 +8,7 @@ import requests
 from django.http import JsonResponse
 from django.core.mail import send_mail
 from django.utils import timezone
+from django.core.files.storage import default_storage
 
 
 
@@ -24,13 +25,14 @@ def patient_dashboard(request):
 
   
     context ={
-        'patient_id': patient.patient_id,
-        'phone_no' : patient.phone_no,
-        'name': patient.name,
-        'age': patient.age,
-        'email': patient.email,
-        'address': patient.address,
-        'profile': patient.profile_pic,
+        # 'patient_id': patient.patient_id,
+        # 'phone_no' : patient.phone_no,
+        # 'name': patient.name,
+        # 'age': patient.age,
+        # 'email': patient.email,
+        # 'address': patient.address,
+        # 'profile': patient.profile_pic,
+        'patient':patient,
         'appointments': appointments,
         'pending_appointments':pending_appointments,
         'rejected_appointments':rejected_appointments,
@@ -119,8 +121,7 @@ def patient_login(request):
 @login_required(login_url="patient_login")
 def book_an_appointment(request):
     doctors = Doctor.objects.all()
-    get_patient = Patient.objects.get(id=request.user.id)
-
+    patient = Patient.objects.get(id=request.user.id)
 
     if request.method == "POST":
         description = request.POST.get('description', '')
@@ -154,7 +155,7 @@ def book_an_appointment(request):
         #     messages.error(request, "Invalid date format. Please use YYYY-MM-DD format.")
         #     return render(request, "patients_template/book_an_appointment.html", context)
         
-        patient = get_patient  # Use the patient object obtained earlier
+        patient = patient  # Use the patient object obtained earlier
 
         appointment = Appointment(patient=patient, doctor_id=doctor, description=description, date_time=date_str, time=time)
         appointment.save()
@@ -172,7 +173,7 @@ def book_an_appointment(request):
       
     context={
         "doctors":doctors,
-        "name": get_patient.name,
+        "patient": patient,
     }
  
     return render(request,"patients_template/book_an_appointment.html", context)
@@ -205,7 +206,7 @@ def patient_appointments(request):
     
     context = {
         'appointments': appointments,
-        'name': patient.name,
+        'patient': patient,
         # 'pending_appointments_count': pending_appointments_count,
         # 'rejected_appointments_count': rejected_appointments_count,
     }
@@ -218,6 +219,7 @@ def patient_appointments(request):
 def edit_appointment(request, appointment_id):
     appointment = get_object_or_404(Appointment, id=appointment_id, patient=request.user)
     doctors = Doctor.objects.all()
+    patient = Patient.objects.get(id=request.user.id)
 
     if request.method == 'POST':
         description = request.POST.get('description')
@@ -253,7 +255,7 @@ def edit_appointment(request, appointment_id):
         messages.success(request, "Appointment updated successfully")
         return redirect('patient_appointments')
     
-    return render(request, 'patients_template/edit_appointment.html', {'appointment':appointment, 'doctors':doctors})
+    return render(request, 'patients_template/edit_appointment.html', {'appointment':appointment, 'doctors':doctors, 'patient':patient})
 
 # =========================== DELETE APPOINTMENTS =======================
 @login_required(login_url="patient_login")
@@ -273,7 +275,7 @@ def appointment_details(request, appointment_id):
     appointment = get_object_or_404(Appointment, id=appointment_id)
 
     context = {
-        'name': patient.name,
+        'patient': patient,
         'appointment': appointment,
 
     }
@@ -304,8 +306,31 @@ def department(request):
 
 @login_required(login_url="patient_login")
 def patient_profile(request):
+    patient = Patient.objects.get(id=request.user.id)
+    if request.method == 'POST':
+        patient.name = request.POST.get('name', '')
+        patient.age = request.POST.get('age', '')
+        patient.phone_no = request.POST.get('phone', '')
+        patient.address = request.POST.get('address', '')
+        patient.country = request.POST.get('country', '')
+
+
+
+      
+        if 'profile_image' in request.FILES:
+            profile_image = request.FILES['profile_image']
+            patient.profile_pic = default_storage.save(f"profile/{profile_image.name}", profile_image)
+
+        messages.success(request, "Account updated successfully.")
+        patient.save()
+        return redirect('patient_profile')
+    
+    
+    context = {
+        'patient': patient,
+    }
  
-    return render(request,"patients_template/patient_profile.html")
+    return render(request,"patients_template/patient_profile.html", context)
 
 
 

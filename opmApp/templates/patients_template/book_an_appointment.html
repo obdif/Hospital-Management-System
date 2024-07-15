@@ -34,17 +34,25 @@
         <!-- End Appointments Nav -->
 
         <li class="nav-item">
+          <a class="nav-link collapsed" href="{% url 'patient_appointments'%}">
+            <i class="bi bi-list-ol"></i><span>Invoices</span>
+          </a>
+        </li>
+
+
+
+        <li class="nav-item">
           <a class="nav-link collapsed" href="{% url 'patient_doctors'%}">
             <i class="bi bi-people"></i><span>Doctors</span>
           </a>
         </li>
         <!-- End Doctors Nav -->
-
+{% comment %} 
         <li class="nav-item">
-          <a class="nav-link collapsed" href="{%url 'departments'%}">
+          <a class="nav-link collapsed" href="{%url 'patient_departments'%}">
             <i class="bi bi-layout-wtf"></i><span>Departments</span>
           </a>
-        </li>
+        </li> {% endcomment %}
         <!-- End Departments Nav -->
 
         <li class="nav-item">

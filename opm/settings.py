@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import os
 from pathlib import Path
+import cloudinary_storage
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -38,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'opmApp',
+    'cloudinary',
+    'cloudinary_storage',
 ]
 
 MIDDLEWARE = [
@@ -150,5 +153,14 @@ AUTHENTICATION_BACKENDS = [
 
 # FOR IMAGE OR FILE UPLOADING...
 
-MEDIA_ROOT= 'static/media'
-MEDIA_URL='/media/'
+MEDIA_ROOT= 'static/opms'
+MEDIA_URL='/opms/'
+
+
+CLOUDINARY_STORAGE={
+    'CLOUD_NAME': 'dbqtos6rt',
+    'API_KEY': '688616267922488',
+    'API_SECRET': '1vX0m1yd1ihW-8vfWkv3pep4nfw'
+}
+
+DEFAULT_FILE_STORAGE ='cloudinary_storage.storage.MediaCloudinaryStorage'

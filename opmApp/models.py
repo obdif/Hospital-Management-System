@@ -14,8 +14,10 @@ class CustomUser(AbstractUser):
     username = models.CharField(max_length=200, null=True, unique=True) 
     name = models.CharField(max_length = 200)
     email = models.CharField(max_length = 200, unique=True)
-    profile_pic = models.ImageField(upload_to="images/profile/", blank=True, default="images/profile/prfile.jpeg")
-    
+    profile_pic = models.ImageField(upload_to="profile/", blank=True, default="https://res.cloudinary.com/dbqtos6rt/image/upload/v1720589104/opms/profile/profile_bgrbul.jpg")
+    phone_no = models.IntegerField( blank=False, default=2)
+    address = models.TextField(max_length=500, blank=True, default="")
+    sex = models.CharField(max_length= 10, default="")
     
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ['username', 'name']
@@ -28,9 +30,6 @@ class CustomUser(AbstractUser):
 
 class Patient(CustomUser):
     age = models.IntegerField()
-    sex = models.CharField(max_length= 10, default="-")
-    phone_no = models.IntegerField()
-    address = models.TextField(max_length=1000)
     patient_id = models.CharField(max_length=12, unique=True, editable=False)
     password=None
     
@@ -60,6 +59,7 @@ class Patient(CustomUser):
  
 class Department(models.Model):
     name = models.CharField(max_length=150)
+    image = models.ImageField(blank=True, default="", upload_to="assets/")
     
     def __str__(self):
         return self.name    
@@ -69,7 +69,10 @@ class Department(models.Model):
 class Doctor(CustomUser):
     status=models.BooleanField(default=False)
     department = models.ForeignKey(Department, on_delete=models.SET_NULL, null=True, blank=True)
-    document = models.ImageField(upload_to='images/doctor_documents/', null=True, blank=True)
+    document = models.ImageField(upload_to='doctor_documents/', null=True, blank=True)
+    about = models.TextField(blank=True, default="---")
+    country = models.CharField(max_length=30, blank=False, default="Nigeria")
+    
     
     def __str__(self):
         return self.name

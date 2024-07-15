@@ -1,13 +1,44 @@
-/**
- * Template Name: LUTH
- * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
- * Updated: Apr 20 2024 with Bootstrap v5.3.3
- * Author: BootstrapMade.com
- * License: https://bootstrapmade.com/license/
- */
 
-(function () {
-  "use strict";
+$(document).ready(function() {
+  $('#search-input').on('keyup', function() {
+      let query = $(this).val();
+      if (query.length > 0) {
+          $.ajax({
+              url: '{% url "search_patients" %}',
+              data: { 'query': query },
+              dataType: 'json',
+              success: function(data) {
+                  let resultsContainer = $('#suggestions');
+                  resultsContainer.empty();
+                  if (data.length > 0) {
+                      data.forEach(function(item) {
+                          let patientUrl = '{% url "patients_details" 0 %}'.replace('0', item.id);
+                          resultsContainer.append(`
+                              <div class="result-item">
+                                  <a href="${patientUrl}">
+                                      ${item.name} (${item.patient_id}) - ${item.email}
+                                  </a>
+                              </div>
+                          `);
+                      });
+                  } else {
+                      resultsContainer.append('<div class="result-item">No results found</div>');
+                  }
+              }
+          });
+      } else {
+          $('#suggestions').empty();
+      }
+  });
+});
+
+
+function goBack(){
+  window.history.back();
+}
+
+
+
 
   /**
    * Easy selector helper function

@@ -1,23 +1,27 @@
 {% load static %}
 
+
+
 <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
       <a href="{%url 'doctor_dashboard'%}" class="logo d-flex align-items-center">
-        <img src="{% static 'img/logo.png'%}" alt="">
+        <img src="https://res.cloudinary.com/dbqtos6rt/image/upload/v1720673537/opms/assets/logo_iueamp.png" alt="">
         <span class="d-none d-lg-block">LUTH</span>
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
-    <div class="search-bar">
-      <form class="search-form d-flex align-items-center" method="POST" action="{% url 'patient_search' %}">
+
+
+     <div class="search-bar">
+      <form class="search-form d-flex align-items-center" method="POST" action="">
         {% csrf_token %}
         <input type="text" name="query" id="search-input" placeholder="Search by Patient Id / Name / Email" title="Enter search keyword">
         <button type="submit" title="Search"><i class="bi bi-search"></i></button>
       </form>
-      <div id="suggestions" style="position: absolute; background: white; z-index: 1000;"></div>
+      <div id="suggestions" style="position: absolute; background: white; color:black; z-index: 1000;" ></div>
+      {% comment %} <a id="suggestions" href="{% url 'patients_details' patient.id %}" style="position: absolute; background: blue; z-index: 1000;" ></a> {% endcomment %}
     </div>
-
 
     
 
@@ -96,7 +100,7 @@
         <li class="nav-item dropdown pe-3">
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-            <img src="{% static 'img/profile.jpeg'%}" alt="Profile" class="rounded-circle">
+            <img src="{{doctor.profile_pic.url}}" alt="Profile" class="rounded-circle">
             <span class="d-none d-md-block dropdown-toggle ps-2" style="text-transform:Capitalize;">Dr. {{doctor.name}}</span>
           </a><!-- End Profile Iamge Icon -->
 
@@ -110,7 +114,7 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="profile.html">
+              <a class="dropdown-item d-flex align-items-center" href="{%url 'doctor_profile' %}">
                 <i class="bi bi-person"></i>
                 <span>My Profile</span>
               </a>
@@ -135,23 +139,43 @@
   </header>
 
 
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+  
   <script>
-    document.getElementById('search-input').addEventListener('input', function() {
-        fetch(`/doctor/search_autocomplete/?query=${this.value}`)
-            .then(response => response.json())
-            .then(data => {
-                let suggestions = document.getElementById('suggestions');
-                suggestions.innerHTML = '';
-                data.forEach(item => {
-                    let div = document.createElement('div');
-                    div.innerHTML = `${item.name} (${item.id}) - ${item.email}`;
-                    div.addEventListener('click', function() {
-                        document.getElementById('search-input').value = item.name;
-                        suggestions.innerHTML = '';
-                    });
-                    suggestions.appendChild(div);
-                });
-            });
-    });
+    
+    $(document).ready(function() {
+      $('#search-input').on('keyup', function() {
+          let query = $(this).val();
+          if (query.length > 0) {
+              $.ajax({
+                  url: '{% url "search_patients" %}',
+                  data: { 'query': query },
+                  dataType: 'json',
+                  success: function(data) {
+                      let resultsContainer = $('#suggestions');
+                      resultsContainer.empty();
+                      if (data.length > 0) {
+                          data.forEach(function(item) {
+                              let patientUrl = '{% url "patients_details" 0 %}'.replace('0', item.id);
+                              resultsContainer.append(`
+                                  <div class="result-item">
+                                      <a class="search_url" href="${patientUrl}">
+                                          ${item.name} (${item.patient_id}) - ${item.email}
+                                      </a>
+                                      <hr>
+                                  </div>
+                              `);
+                          });
+                      } else {
+                          resultsContainer.append('<div class="result-item">No results found</div>');
+                      }
+                  }
+              });
+          } else {
+              $('#suggestions').empty();
+          }
+      });
+  });
+   
     </script>

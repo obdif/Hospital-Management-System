@@ -190,7 +190,7 @@
         <!-- End Doctors Nav -->
     
         <li class="nav-item">
-          <a class="nav-link collapsed" href="{% url 'departments'%}">
+          <a class="nav-link collapsed" href="{% url 'doctor_department'%}">
             <i class="bi bi-layout-wtf"></i><span>Departments</span>
           </a>
         </li>
@@ -227,12 +227,15 @@
     <!-- End Sidebar-->
 
     <main id="main" class="main">
-      {% comment %} <div class="" style="margin-bottom:30px;">
-        <h1 style="text-align: center; font-weight: 600">
-        Patients
-        </h1>
-      </div> {% endcomment %}
-
+      <div class="" style="margin-bottom: 30px; display: flex; gap: 15%">
+        <button onclick="goBack()" class="backBtn">
+          <i class="bi bi-arrow-left-short" id="iconx"></i>
+        </button>
+        {% comment %} <h1 style="text-align: center; font-weight: 600; color:white;">
+          Appointments Details
+        </h1> {% endcomment %}
+      </div>
+      <br />
 
 
       <!-- End Page Title -->
@@ -242,36 +245,60 @@
   
             <div class="card">
               <div class="card-body">
-        
-
-
-                <h2>Search Results</h2>
-<table>
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Details</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for patient in patients %}
-        <tr>
-            <td>{{ patient.id }}</td>
-            <td>{{ patient.name }}</td>
-            <td>{{ patient.email }}</td>
-            <td>
-                <a href="{% url 'patients_details' patient.id %}" style="color:blue;">
-                    <button style="color:blue;"><i class="bi bi-eye-fill"></i></button>
-                </a>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-
-
+                <div class="patient_details">
+                  <div class="patient_actions">
+                    <button>Create invoice</button>
+                    <button>Edit Patient</button>
+                    <button>Create invoice</button>
+                  </div>
+                  <div class="patient_info">
+                    <div class="patient_img">
+                      <img src="" alt="" size={70}/>
+                    </div>
+                    <table>
+                      <tr>
+                        <th> Name: </th>
+                        <td> {{patient.name}} </td>
+                      </tr>
+                      <tr>
+                        <th> ID: </th>
+                        <td> {{patient.patient_id}}</td>
+                      </tr>
+                      <tr>
+                        <th> Sex: </th>
+                        <td> {{patient.sex}}</td>
+                      </tr>
+                      <tr>
+                        <th> Age: </th>
+                        <td> {{patient.age}} </td>
+                      </tr>
+                      <tr>
+                        <th> Email: </th>
+                        <td> {{patient.email}} </td>
+                      </tr>
+                      <tr>
+                        <th> Address: </th>
+                        <td> {{patient.address}} </td>
+                      </tr>
+                      <tr>
+                        <th> Email: </th>
+                        <td> {{patient.email}} </td>
+                      </tr>
+                      <tr>
+                        <th> Blood Group: </th>
+                        <td> {{patient.blood}} </td>
+                      </tr>
+                      <tr>
+                        <th> Email: </th>
+                        <td> {{patient.email}} </td>
+                      </tr>
+                      <tr>
+                        <th> Email: </th>
+                        <td> {{patient.email}} </td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
   
               </div>
             </div>
@@ -284,5 +311,10 @@
 
     <!-- ======= Footer ======= -->
     {% include "../include/footer.html" %}
+    <script>
+      function goBack(){
+        window.history.back();
+    }
+    </script>
   </body>
 </html>
