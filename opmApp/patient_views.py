@@ -313,6 +313,7 @@ def patient_profile(request):
         patient.phone_no = request.POST.get('phone', '')
         patient.address = request.POST.get('address', '')
         patient.country = request.POST.get('country', '')
+        patient.sex = request.POST.get('gender', '')
 
 
 

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import *
 from django.contrib.auth import get_user_model
-# from django.contrib.auth.models import User
+from .forms import PatientSearchForm
 from django.contrib.auth import authenticate, login, logout, get_backends
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -172,6 +172,28 @@ def patients(request):
 def patients_details(request, patient_id):
     doctor = Doctor.objects.get(id=request.user.id)
     patient = get_object_or_404(Patient, id=patient_id)
+    # patient = Patient.objects.get(id=request.user.id)
+    if request.method == 'POST':
+        patient.name = request.POST.get('name', '')
+        patient.age = request.POST.get('age', '')
+        patient.phone_no = request.POST.get('phone', '')
+        patient.address = request.POST.get('address', '')
+        patient.country = request.POST.get('country', '')
+        patient.sex = request.POST.get('gender', '')
+        patient.blood_group = request.POST.get('bgroup', '')
+
+
+
+      
+        if 'profile_image' in request.FILES:
+            profile_image = request.FILES['profile_image']
+            patient.profile_pic = default_storage.save(f"profile/{profile_image.name}", profile_image)
+
+        messages.success(request, "Patient updated successfully.")
+        patient.save()
+        return redirect('patients_details', patient_id=patient_id)
+    
+    
     
     context={
         'patient': patient,
@@ -232,21 +254,6 @@ def add_patients(request):
             'address':address,
         }
               
-              
-        # if not name :
-        #     messages.error(request, "Name is Required")
-        # elif not age:
-        #     messages.error(request, "Age is Required")
-        # elif not phone:
-        #     messages.error(request, "Phone Number is Required")
-        # elif not email:
-        #     messages.error(request, "Email is Required")
-        # elif not sex:
-        #     messages.error(request, "Select your Gender")
-        # elif not address:
-        #     messages.error(request, "Address is Required")
-        #     return render(request, "doctors_template/add_patient.html", context)
-        
         # Check if email already exists
         User = get_user_model()
         if User.objects.filter(email=email).exists():
@@ -261,6 +268,8 @@ def add_patients(request):
  
     return render(request,"doctors_template/add_patient.html")
 
+
+
 def invoices(request):
     doctor = Doctor.objects.get(id=request.user.id)
     
@@ -270,6 +279,95 @@ def invoices(request):
     }
  
     return render(request,"doctors_template/invoices.html", context)
+
+
+
+
+# @login_required(login_url="doctor_login")
+# def create_invoice(request, patient_id):
+#     patient = get_object_or_404(Patient, id=patient_id)
+
+#     if request.method == 'POST':
+#         record_number = request.POST.get('record_number', '')
+#         assigned_doctor_name = request.POST.get('assigned_doctor_name', '')
+#         admit_date = request.POST.get('admit_date', '')
+#         release_date = request.POST.get('release_date', '')
+#         room_charge = request.POST.get('room_charge', 0)
+#         medicine_cost = request.POST.get('medicine_cost', 0)
+#         doctor_fee = request.POST.get('doctor_fee', 0)
+#         other_charge = request.POST.get('other_charge', 0)
+#         total = int(room_charge) + int(medicine_cost) + int(doctor_fee) + int(other_charge)
+        
+
+#         MedicalResult.objects.create(
+#             patientId=patient.id,
+#             patientName=patient.name,
+#             recordNumber=record_number,
+#             assignedDoctorName=assigned_doctor_name,
+#             admitDate=admit_date,
+#             releaseDate=release_date,
+#             roomCharge=room_charge,
+#             medicineCost=medicine_cost,
+#             doctorFee=doctor_fee,
+#             OtherCharge=other_charge,
+#             total=total,
+#             dischargeMeditations=request.POST.get('discharge_meditations', ''),
+#             dischargeInstructions=request.POST.get('discharge_instructions', '')
+#         )
+        
+#         messages.success(request, "Invoice created successfully.")
+#         return redirect('some_success_page')  # Redirect to a success page
+
+#     context = {
+#         'patient': patient,
+#     }
+#     return render(request, 'doctors_template/create_invoice.html', context)
+
+
+@login_required(login_url="doctor_login")
+def create_invoice(request, patient_id):
+    if request.method == 'GET' and 'patient_info' in request.GET:
+        patient_info = request.GET['patient_info']
+        try:
+            patient = Patient.objects.get(
+                Q(patient_id=patient_info) | Q(email=patient_info) | Q(phone_no=patient_info)
+            )
+            return redirect('create_invoice', patient_id=patient.id)
+        except Patient.DoesNotExist:
+            messages.error(request, "Patient not found.")
+            return redirect('invoices')  # Redirect to the invoices tracking page
+
+    patient = get_object_or_404(Patient, patient_id=patient_id) if patient_id else None
+
+    if request.method == 'POST':
+        MedicalResult.objects.create(
+            patientId=patient.id,
+            patientName=patient.name,
+            recordNumber=request.POST.get('recordNumber', ''),
+            assignedDoctorName=request.user.username,
+            address=request.POST.get('address', ''),
+            mobile=request.POST.get('mobile', ''),
+            condition_before=request.POST.get('condition_before', ''),
+            condition_after=request.POST.get('condition_after', ''),
+            admitDate=request.POST.get('admitDate', ''),
+            releaseDate=request.POST.get('releaseDate', ''),
+            daySpent=request.POST.get('daySpent', ''),
+            roomCharge=request.POST.get('roomCharge', ''),
+            medicineCost=request.POST.get('medicineCost', ''),
+            doctorFee=request.POST.get('doctorFee', ''),
+            OtherCharge=request.POST.get('OtherCharge', ''),
+            total=request.POST.get('total', ''),
+            dischargeMeditations=request.POST.get('dischargeMeditations', ''),
+            dischargeInstructions=request.POST.get('dischargeInstructions', ''),
+        )
+        messages.success(request, "Invoice created successfully.")
+        return redirect('invoices')  # Redirect to the invoices tracking page
+
+    context = {
+        'patient': patient,
+    }
+    return render(request, 'doctors_template/create_invoice.html', context)
+
 
 @login_required(login_url="doctor_login")
 def doctor_profile(request):
@@ -349,42 +447,6 @@ def doctor_appointments(request):
 
 
 # ================================== APPOINTMENT  VIEW DETAILS ==============================
-# @login_required(login_url="doctor_login")
-# def doctor_available(request):
-#     user = request.user
-#     doctor = Doctor.objects.get(customuser_ptr=user)
-
-#     if request.method == 'POST':
-#         days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-#         for day in days:
-#             if request.POST.get(f'{day}_available'):
-#                 from_time = request.POST.get(f'{day}_from')
-#                 to_time = request.POST.get(f'{day}_to')
-#                 if from_time and to_time:
-#                     from_time = from_time.strip()
-#                     to_time = to_time.strip()
-#                     if from_time and to_time:  # Ensure both times are still non-empty after stripping
-#                         DoctorAvailableDay.objects.create(
-#                             doctor=doctor,
-#                             day=day,
-#                             from_time=from_time,
-#                             to_time=to_time
-#                         )
-
-#         return redirect('doctor_appointments')
-
-#     availabilities = DoctorAvailableDay.objects.filter(doctor=doctor)
-#     available_days = {availability.day: availability for availability in availabilities}
-#     days_of_week = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-
-#     context = {
-#         'availabilities': availabilities,
-#         'days_of_week': days_of_week,
-#         'doctor': doctor,
-#         'available_days': available_days,
-#     }
-
-#     return render(request, "doctors_template/doctor_available.html", context)
 
 @login_required(login_url="doctor_login")
 def doctor_available(request):
@@ -393,25 +455,18 @@ def doctor_available(request):
 
     if request.method == 'POST':
         days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-        
         for day in days:
-            from_time = request.POST.get(f'{day}_from')
-            to_time = request.POST.get(f'{day}_to')
-            available = request.POST.get(f'{day}_available')
-
-            if available:
-                # Create or update the availability
-                DoctorAvailableDay.objects.update_or_create(
-                    doctor=doctor,
-                    day=day,
-                    defaults={
-                        'from_time': from_time,
-                        'to_time': to_time
-                    }
-                )
-            else:
-                # If the day was unchecked, delete the availability
-                DoctorAvailableDay.objects.filter(doctor=doctor, day=day).delete()
+            if request.POST.get(f'{day}_available'):
+                from_time = request.POST.get(f'{day}_from', '').strip()
+                to_time = request.POST.get(f'{day}_to', '').strip()
+                if from_time and to_time:
+                    DoctorAvailableDay.objects.update_or_create(
+                        doctor=doctor,
+                        day=day,
+                        defaults={'from_time': from_time, 'to_time': to_time}
+                    )
+                else:
+                    messages.error(request, f'Times for {day} are not valid.')
 
         return redirect('doctor_appointments')
 
@@ -429,39 +484,8 @@ def doctor_available(request):
     return render(request, "doctors_template/doctor_available.html", context)
 
 
-# @login_required(login_url="doctor_login")
-# def doctor_available(request):
-#     user = request.user
-#     doctor = Doctor.objects.get(customuser_ptr=user)
 
-#     if request.method == 'POST':
-#         days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-#         for day in days:
-#             if request.POST.get(f'{day}_available'):
-#                 from_time = request.POST.get(f'{day}_from').strip()
-#                 to_time = request.POST.get(f'{day}_to').strip()
-#                 if from_time and to_time:
-#                     print(f"Saving: {day} from {from_time} to {to_time}")
-#                     DoctorAvailableDay.objects.update_or_create(
-#                         doctor=doctor,
-#                         day=day,
-#                         defaults={'from_time': from_time, 'to_time': to_time}
-#                     )
 
-#         return redirect('doctor_appointments')
-
-#     availabilities = DoctorAvailableDay.objects.filter(doctor=doctor)
-#     available_days = {availability.day: availability for availability in availabilities}
-#     days_of_week = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-
-#     context = {
-#         'availabilities': availabilities,
-#         'days_of_week': days_of_week,
-#         'doctor': doctor,
-#         'available_days': available_days,
-#     }
-
-#     return render(request, "doctors_template/doctor_available.html", context)
 @login_required(login_url="doctor_login")
 def appointment_details(request, appointment_id):
     doctor = Doctor.objects.get(customuser_ptr=request.user)

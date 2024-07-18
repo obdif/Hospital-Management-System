@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% include "../include/head.html" %} {% load static %}
+
+  <title>Invoice - LUTH</title>
+
+  <body>
+    <!-- ======= Header ======= -->
+    {% include "../include/header.html" %}
+    
+    <!-- ======= Sidebar ======= -->
+    <aside id="sidebar" class="sidebar">
+        <ul class="sidebar-nav" id="sidebar-nav">
+          <li class="nav-item">
+            <a class="nav-link collapsed" href="{% url 'patient_dashboard'%}">
+              <i class="bi bi-grid"></i>
+              <span>Dashboard</span>
+            </a>
+          </li>
+          <!-- End patient_dashboard Nav -->
+    
+          <li class="nav-item">
+            <a class="nav-link collapsed" href="{% url 'patient_appointments'%}">
+              <i class="bi bi-list-ol"></i><span>Appointments</span>
+            </a>
+          </li>
+          <!-- End Appointments Nav -->
+    
+    
+          <li class="nav-item">
+            <a class="nav-link " href="{% url 'medical_historys'%}">
+              <i class="bi bi-list-ol"></i><span>Invoices</span>
+            </a>
+          </li>
+    
+    
+    
+          <li class="nav-item">
+            <a class="nav-link collapsed" href="{% url 'patient_doctors'%}">
+              <i class="bi bi-people"></i><span>Doctors</span>
+            </a>
+          </li>
+          <!-- End Doctors Nav -->
+    {% comment %} 
+          <li class="nav-item">
+            <a class="nav-link collapsed" href="{%url 'patient_departments'%}">
+              <i class="bi bi-layout-wtf"></i><span>Departments</span>
+            </a>
+          </li> {% endcomment %}
+          <!-- End Departments Nav -->
+    
+          <li class="nav-item">
+            <a class="nav-link collapsed" href="#">
+              <i class="bi bi-credit-card"></i><span>Payments</span>
+            </a>
+          </li>
+          <!-- End Payment Nav -->
+    
+          <!-- <li class="nav-heading">Pages</li> -->
+    
+          <li class="nav-item">
+            <a class="nav-link collapsed" href="{% url 'patient_profile'%}">
+              <i class="bi bi-person"></i>
+              <span>Profile</span>
+            </a>
+          </li>
+          <!-- End Profile Page Nav -->
+    
+          <li class="nav-item">
+            <a class="nav-link collapsed" href="{%url 'patient_logout' %}">
+              <i style="color: red" class="bi bi-box-arrow-right"></i>
+              <span style="color: red">Sign Out</span>
+            </a>
+          </li>
+          <!-- End Logout Page Nav -->
+        </ul>
+      </aside>
+    
+
+    <!-- End Sidebar-->
+
+    <main id="main" class="main">
+      <div class="" style="margin-bottom:30px;">
+        <h1 style="text-align: center; font-weight: 600">
+        Invoices
+        </h1>
+      </div>
+
+      {% comment %} <div>
+        <div class="add-patient">
+            <button>Create Invoice</button>
+        </div>
+      </div> {% endcomment %}
+
+      <!-- End Page Title -->
+      <section class="section">
+        <div class="row">
+          <div class="col-lg-12">
+  
+            <div class="card">
+              <div class="card-body">
+                <table class="table datatable">
+                  <thead>
+                    <tr>
+                  
+                      <th>Invoice No.</th>
+                      <th>Admission Date</th>
+                      <th>DisCharge date</th>
+                      <th>Hospital Bill</th>
+                      <th>Stautus</th>
+                      <th>Actions</th>
+                      {% comment %} <th></th> {% endcomment %}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>LUTHME98734</td>
+                      <td>Ayoola Khalid</td>
+                      <td>30 may, 2024</td>
+                      <td> 18,000</td>
+                      <td style="text-align:center;"> 
+                        <p style="background:darkgreen; font-weight:800; color:white;">Paid</p>
+                      </td>
+                      <td>
+                        <div class="pay_bill">
+                            <a href="">
+                              <button>view</button>
+                            </a>
+                          </div>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td>LUTHME98734</td>
+                      <td>Ayoola Khalid</td>
+                      <td>30 may, 2024</td>
+                      <td> 18,000</td>
+                      <td style="text-align:center;"> 
+                        <p style="background:orange; font-weight:800; color:white;"><em>Pending</em></p>
+                      </td>
+                      <td>
+                        <button> Send Mail</button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+               
+                <!-- End Table with stripped rows -->
+  
+              </div>
+            </div>
+  
+          </div>
+        </div>
+      </section>
+    </main>
+    <!-- End #main -->
+
+    <!-- ======= Footer ======= -->
+    {% include "../include/footer.html" %}
+  </body>
+</html>

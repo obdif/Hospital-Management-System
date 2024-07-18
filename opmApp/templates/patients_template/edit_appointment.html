@@ -35,7 +35,7 @@
         <!-- End Appointments Nav -->
 
         <li class="nav-item">
-          <a class="nav-link collapsed" href="{% url 'patient_appointments'%}">
+          <a class="nav-link collapsed" href="{% url 'medical_historys'%}">
             <i class="bi bi-list-ol"></i><span>Invoices</span>
           </a>
         </li>
@@ -85,6 +85,9 @@
 
     <main id="main" class="main">
       <div class="">
+        <button onclick="goBack()" class="backBtn">
+          <i class="bi bi-arrow-left-short" id="iconx"></i>
+        </button>
         <h1 style="text-align: center; font-weight: 600">
          Edit Appointments
         </h1>
@@ -113,8 +116,7 @@
                         required
                         name="description"
                       >{{appointment.description}}</textarea>
-                      <div class="invalid-feedback">
-                        Let's Know how you feel.
+                      <div class="invalid-feedback">Let's Know how you feel.
                       </div>
                     </div>
 
@@ -216,6 +218,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
     <script>
+      function goBack(){
+        window.history.back();
+    }
 
         $(document).ready(function() {
           $('#doctor-select').change(function() {

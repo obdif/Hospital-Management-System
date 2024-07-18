@@ -127,11 +127,11 @@
                     {% endif %}
                  
 
-                    <div class="pic">
+                    <div class="pic" style="margin-top:10px;">
                       <img
                         class="img"
-                        src="{% static 'img/profile.jpeg'%}"
-                        alt="image"
+                        src="{{patient.profile_pic.url}}"
+                        alt="{{patient.name}}"
                         width="200"
                       />
                     </div>

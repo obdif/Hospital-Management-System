@@ -6,153 +6,8 @@
 
   <body>
     <!-- ======= Header ======= -->
+    {% include "../include/doctor_header.html" %} {% load static %}
    
-    <header id="header" class="header fixed-top d-flex align-items-center">
-
-    <div class="d-flex align-items-center justify-content-between">
-      <a href="{%url 'doctor_dashboard'%}" class="logo d-flex align-items-center">
-        <img src="{% static 'img/logo.png'%}" alt="">
-        <span class="d-none d-lg-block">LUTH</span>
-      </a>
-      <i class="bi bi-list toggle-sidebar-btn"></i>
-    </div><!-- End Logo -->
-
-{% comment %} <style>
-  .search-bar #suggestions{
-    font-weight: bold;
-    padding: 10px;
-    position: absolute; 
-    background: white; 
-    z-index: 1000;
-    color: black;
-  }
-</style> {% endcomment %}
-    {% comment %} style="position: absolute; background: white; z-index: 1000;" {% url  'patient_search' %} {% endcomment %}
-
-    <div class="search-bar">
-      <form class="search-form d-flex align-items-center" method="POST" action="">
-        {% csrf_token %}
-        <input type="text" name="query" id="search-input" placeholder="Search by Patient Id / Name / Email" title="Enter search keyword">
-        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
-      </form>
-      <div id="suggestions" style="position: absolute;  background: white; z-index: 1000; color:black; " ></div>
-      {% comment %} <a id="suggestions" href="{% url 'patients_details' patient.id %}" style="position: absolute; background: blue; z-index: 1000;" ></a> {% endcomment %}
-    </div>
-
-
-  
-
-    <nav class="header-nav ms-auto">
-      <ul class="d-flex align-items-center">
-
-
-
-        <li class="nav-item dropdown">
-
-          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-            <i class="bi bi-chat-left-text"></i>
-            <span class="badge bg-success badge-number">3</span>
-          </a><!-- End Messages Icon -->
-
-          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
-            <li class="dropdown-header">
-              You have 3 new messages
-              <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="message-item">
-              <a href="#">
-                <img src="assets/img/messages-1.jpg" alt="" class="rounded-circle">
-                <div>
-                  <h4>Maria Hudson</h4>
-                  <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
-                  <p>4 hrs. ago</p>
-                </div>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="message-item">
-              <a href="#">
-                <img src="assets/img/messages-2.jpg" alt="" class="rounded-circle">
-                <div>
-                  <h4>Anna Nelson</h4>
-                  <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
-                  <p>6 hrs. ago</p>
-                </div>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="message-item">
-              <a href="#">
-                <img src="assets/img/messages-3.jpg" alt="" class="rounded-circle">
-                <div>
-                  <h4>David Muldon</h4>
-                  <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
-                  <p>8 hrs. ago</p>
-                </div>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="dropdown-footer">
-              <a href="#">Show all messages</a>
-            </li>
-
-          </ul><!-- End Messages Dropdown Items -->
-
-        </li><!-- End Messages Nav -->
-
-        <li class="nav-item dropdown pe-3">
-
-          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-            <img src="{{doctor.profile_pic.url}}" alt="Profile" class="rounded-circle">
-            <span class="d-none d-md-block dropdown-toggle ps-2">Dr. {{doctor.name}}</span>
-          </a><!-- End Profile Iamge Icon -->
-
-          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
-            <li class="dropdown-header">
-              <h6>Dr. {{doctor.name}}</h6>
-              <span>Doctor</span>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="profile.html">
-                <i class="bi bi-person"></i>
-                <span>My Profile</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="#">
-                <i class="bi bi-box-arrow-right"></i>
-                <span>Sign Out</span>
-              </a>
-            </li>
-
-          </ul><!-- End Profile Dropdown Items -->
-        </li><!-- End Profile Nav -->
-
-      </ul>
-    </nav><!-- End Icons Navigation -->
-
-  </header>
 
     <!-- End Header -->
 
@@ -288,9 +143,9 @@
 
                       <td>
                         <div class="action-button">
-                          <a href="" style="color:darkgreen;"><button style="color:darkgreen; " title="Edit Patient"><i class="bi bi-pencil-fill"></i></button></a>
+                          <a href="{% url 'patients_details' patient.id %}#profile-edit" style="color:darkgreen;"><button data-bs-target="#profile-edit" style="color:darkgreen; " title="Edit Patient"><i class="bi bi-pencil-fill"></i></button></a>
                           
-                          <a href="{% url 'patients_details' patient.id %}" style="color:blue;"><button title="Delete Patient" style="color:blue; font-size:18px;">view</button></a>
+                          <a href="{% url 'patients_details' patient.id %}" style="color:blue;"><button title="View Patient" style="color:blue; font-size:18px;">view</button></a>
                         </div>  
                       </td>
                       {% comment %} <td>

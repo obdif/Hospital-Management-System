@@ -34,7 +34,7 @@
         <!-- End Appointments Nav -->
 
         <li class="nav-item">
-          <a class="nav-link collapsed" href="{% url 'patient_appointments'%}">
+          <a class="nav-link collapsed" href="{% url 'medical_historys'%}">
             <i class="bi bi-list-ol"></i><span>Invoices</span>
           </a>
         </li>
@@ -85,6 +85,10 @@
     <!-- End Sidebar-->
 
     <main id="main" class="main">
+      <button onclick="goBack()" class="backBtn">
+        <i class="bi bi-arrow-left-short" id="iconx"></i>
+      </button>
+
       <div class="">
         <h1 style="text-align: center; font-weight: 600">
           Book An Appointment
@@ -115,9 +119,7 @@
                         style="height: 150px"
                         required
                         name="description"
-                      >
-                              {{description|default_if_none:""}}</textarea
-                      >
+                      >{{description|default_if_none:""}}</textarea>
                       <div class="invalid-feedback">
                         Let's Know how you feel.
                       </div>
@@ -207,6 +209,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+
+      function goBack(){
+        window.history.back();
+    }
       {% comment %} SCRIPTS TO SHOW DATE AND TIME   {% endcomment %}
           $(document).ready(function() {
               $('#doctor-select').change(function() {

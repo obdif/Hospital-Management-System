@@ -47,7 +47,7 @@
         <!-- End Appointments Nav -->
 
         <li class="nav-item">
-          <a class="nav-link collapsed" href="{% url 'patient_appointments'%}">
+          <a class="nav-link collapsed" href="{% url 'medical_historys'%}">
             <i class="bi bi-list-ol"></i><span>Invoices</span>
           </a>
         </li>
@@ -163,7 +163,7 @@
 
                     <div class="row">
                       <div class="col-lg-3 col-md-4 label">Blood Group</div>
-                      <div class="col-lg-9 col-md-8">{{patient.bgroup}}</div>
+                      <div class="col-lg-9 col-md-8">{{patient.blood_group}}</div>
                     </div>
 
                     <div class="row">
@@ -174,6 +174,11 @@
                     <div class="row">
                       <div class="col-lg-3 col-md-4 label">Phone</div>
                       <div class="col-lg-9 col-md-8">{{patient.phone_no}}</div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-lg-3 col-md-4 label">Gender</div>
+                      <div class="col-lg-9 col-md-8">{{patient.sex}}</div>
                     </div>
 
                     <div class="row">
@@ -240,23 +245,7 @@
                         </div>
                       </div>
 
-                      <div class="row mb-3">
-                        <label
-                          for="bgroup"
-                          class="col-md-4 col-lg-3 col-form-label"
-                          >Blood Group</label
-                        >
-                        <div class="col-md-8 col-lg-9">
-                          <input
-                            name="bgroup"
-                            type="text"
-                            class="form-control"
-                            id="bgroup"
-                            value="{{patient.bgroup}}"
-                            Disabled
-                          />
-                        </div>
-                      </div>
+                     
 
                       <div class="row mb-3">
                         <label
@@ -289,6 +278,45 @@
                             id="phone"
                             value="{{patient.phone_no}}"
                           />
+                        </div>
+                      </div>
+
+                      <div class="row mb-3">
+                        <label
+                          for="phone"
+                          class="col-md-4 col-lg-3 col-form-label"
+                          >Gender</label
+                        >
+                        <div class="col-md-8 col-lg-9">
+                          {% comment %} <input
+                            name="phone"
+                            type="tell"
+                            class="form-control"
+                            id="phone"
+                            value="{{patient.phone_no}}"
+                          /> {% endcomment %}
+                          <select
+                          class="form-select"
+                          id="doctor-select"
+                          name="gender"
+                          required
+                        >
+                          <option selected disabled value="">Choose...</option>
+                          
+                          <option
+                            value="Male"
+                            style="text-transform: Capitalize"
+                          >
+                            Male
+                          </option>
+                          <option
+                            value="Female"
+                            style="text-transform: Capitalize"
+                          >
+                            Female
+                          </option>
+                          
+                        </select>
                         </div>
                       </div>
 

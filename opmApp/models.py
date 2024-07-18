@@ -18,6 +18,7 @@ class CustomUser(AbstractUser):
     phone_no = models.IntegerField( blank=False, default=2)
     address = models.TextField(max_length=500, blank=True, default="")
     sex = models.CharField(max_length= 10, default="")
+    country = models.CharField(max_length=20, blank=True, default="Nigeria")
     
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ['username', 'name']
@@ -31,6 +32,7 @@ class CustomUser(AbstractUser):
 class Patient(CustomUser):
     age = models.IntegerField()
     patient_id = models.CharField(max_length=12, unique=True, editable=False)
+    blood_group = models.CharField(max_length=5, blank=True, default="")
     password=None
     
     
@@ -71,7 +73,6 @@ class Doctor(CustomUser):
     department = models.ForeignKey(Department, on_delete=models.SET_NULL, null=True, blank=True)
     document = models.ImageField(upload_to='doctor_documents/', null=True, blank=True)
     about = models.TextField(blank=True, default="---")
-    country = models.CharField(max_length=30, blank=False, default="Nigeria")
     
     
     def __str__(self):
@@ -136,10 +137,10 @@ class DoctorAvailableDay(models.Model):
 
 
 class MedicalResult(models.Model):
-    # patient = models.ForeignKey(Patient, on_delete=models.CASCADE, default='1')
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE, default='')
     patientId=models.PositiveIntegerField(null=True)
     patientName=models.CharField(max_length=40)
-    recordNumber = models.CharField(max_length=12, unique=True, editable=True)
+    recordNumber = models.CharField(max_length=12, unique=True, editable=False)
     assignedDoctorName=models.CharField(Doctor, max_length=40)
     address = models.CharField(max_length=40)
     mobile = models.CharField(max_length=20,null=True)
@@ -159,6 +160,23 @@ class MedicalResult(models.Model):
     
     dischargeMeditations = models.CharField(max_length=200)
     dischargeInstructions = models.TextField(max_length=500)
+    
+    
+    
+    def save(self, *args, **kwargs):
+        if not self.recordNumber:
+            self.recordNumber = self.invoiceNumber()
+        super().save(*args, **kwargs)
+
+    def invoiceNumber(self):
+        year = datetime.now().strftime("%y")
+        while True:
+            new_id = random.randint(0, 999999)  # Generate a random 6-digit number
+            recordNumber = f"{year}{new_id:06d}"
+            if not MedicalResult.objects.filter(recordNumber=recordNumber).exists():
+                break
+        return recordNumber
+    
     
     def __str__(self):
         return self.patient
