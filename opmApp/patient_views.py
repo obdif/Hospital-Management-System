@@ -294,8 +294,16 @@ def medical_result_receipt(request):
 
 @login_required(login_url="patient_login")
 def doctors(request):
+    patient = Patient.objects.get(id=request.user.id)
+    doctors = Doctor.objects.all()
+
+
+    context={
+        'patient':patient,
+        'doctors':doctors,
+    }
  
-    return render(request,"patients_template/doctors.html")
+    return render(request,"patients_template/doctors.html", context)
 
 
 @login_required(login_url="patient_login")

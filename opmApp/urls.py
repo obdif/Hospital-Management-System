@@ -1,5 +1,5 @@
 from django.urls import path
-from . import patient_views, doctor_views
+from . import patient_views, doctor_views, views
 from django.conf.urls.static import static
 from django.conf import settings
 
@@ -7,7 +7,10 @@ from django.conf import settings
 urlpatterns = [
     # ========================== PATIENTS URL ==================
 
-    path('', patient_views.patient_dashboard, name="patient_dashboard"),
+    path('', views.home, name="home"),
+    
+    
+    path('patient/', patient_views.patient_dashboard, name="patient_dashboard"),
     path('patient/register/', patient_views.patient_register, name="patient_register"),
     path('patient/login/', patient_views.patient_login, name="patient_login"),
     path('patient/book_an_appointment/', patient_views.book_an_appointment, name="book_an_appointment"),
@@ -38,7 +41,7 @@ urlpatterns = [
     path('doctor/doctors/', doctor_views.doctors, name="doctors"),
     path('doctor/invoices/', doctor_views.invoices, name="invoices"),
     path('doctor/invoices/create_invoice/', doctor_views.create_invoice, name="create_invoice"),
-    path('doctor/invoices/create_invoice/<int:patient_id>/', doctor_views.create_invoice, name="create_invoice"),
+    path('doctor/invoices/create_invoice/<int:patient_id>/', doctor_views.create_invoice_with_patient, name="create_invoice_with_patient"),
     path('doctor/patients/', doctor_views.patients, name="doctor_patients"),
     path('doctor/departments/', doctor_views.department, name="doctor_department"),
     path('doctor/patients_details/<int:patient_id>/', doctor_views.patients_details, name="patients_details"),
@@ -54,6 +57,7 @@ urlpatterns = [
     path('doctor/search/', doctor_views.search_patients, name='search_patients'),
     # path('doctor/search/', doctor_views.patient_search, name='patient_search'),
     path('doctor/search_autocomplete/', doctor_views.search_autocomplete, name='search_autocomplete'),
+    path('patient/search/', doctor_views.patient_search, name='patient_search'),
 
 
 ]

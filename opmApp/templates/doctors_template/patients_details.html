@@ -86,7 +86,7 @@
         <!-- End Profile Page Nav -->
     
         <li class="nav-item">
-          <a class="nav-link collapsed" href="{% url 'patient_logout'%}">
+          <a class="nav-link collapsed" href="{% url 'doctor_logout'%}">
             <i style="color: red" class="bi bi-box-arrow-right"></i>
             <span style="color: red">Sign Out</span>
           </a>
@@ -155,7 +155,7 @@
                   </li>
 
                   <li class="nav-item">
-                    <a href="{% url 'create_invoice' patient.id %}"
+                    <a href="{% url 'create_invoice_with_patient' patient.id %}"
                     class="nav-link"
                       style="
                         border:none;

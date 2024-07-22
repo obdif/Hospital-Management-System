@@ -85,20 +85,22 @@
       <section class="section">
         <!-- ================DOCTOR GRID LAYOUT START ================= -->
         <div class="doctor-grid">
+          {% for doctor in doctors %}
           <div class="doctor">
             <div class="doctor-img">
               <img
-                src="{% static 'img/doctors/HOD Medicine.jpg'%}"
-                alt=""
+                src="{{doctor.profile_pic.url}}"
+                alt="{{doctor.name}}"
                 width="300"
               />
             </div>
             <div class="doctor-name">
-              <h4 class="pagetitle">DR. MRS. ADEYEYE O.O</h4>
+              <h4 class="pagetitle">DR. {{doctor.name}}</h4>
               <br />
-              <em>Head of Department (medicine)</em>
+              {% comment %} <em>Head of {{doctor.department}}</em> {% endcomment %}
             </div>
           </div>
+          {% endfor %}
 
           <div class="doctor">
             <div class="doctor-img">

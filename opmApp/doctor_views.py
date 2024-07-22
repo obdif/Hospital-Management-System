@@ -13,6 +13,8 @@ from django.core.mail import send_mail
 from django.http import JsonResponse
 from django.db.models import Q
 from django.core.files.storage import default_storage
+from decimal import Decimal, InvalidOperation
+
 
 
 
@@ -270,93 +272,82 @@ def add_patients(request):
 
 
 
-def invoices(request):
-    doctor = Doctor.objects.get(id=request.user.id)
-    
-    
-    context = {
-        'doctor': doctor,
-    }
- 
-    return render(request,"doctors_template/invoices.html", context)
-
-
-
-
-# @login_required(login_url="doctor_login")
-# def create_invoice(request, patient_id):
-#     patient = get_object_or_404(Patient, id=patient_id)
-
-#     if request.method == 'POST':
-#         record_number = request.POST.get('record_number', '')
-#         assigned_doctor_name = request.POST.get('assigned_doctor_name', '')
-#         admit_date = request.POST.get('admit_date', '')
-#         release_date = request.POST.get('release_date', '')
-#         room_charge = request.POST.get('room_charge', 0)
-#         medicine_cost = request.POST.get('medicine_cost', 0)
-#         doctor_fee = request.POST.get('doctor_fee', 0)
-#         other_charge = request.POST.get('other_charge', 0)
-#         total = int(room_charge) + int(medicine_cost) + int(doctor_fee) + int(other_charge)
-        
-
-#         MedicalResult.objects.create(
-#             patientId=patient.id,
-#             patientName=patient.name,
-#             recordNumber=record_number,
-#             assignedDoctorName=assigned_doctor_name,
-#             admitDate=admit_date,
-#             releaseDate=release_date,
-#             roomCharge=room_charge,
-#             medicineCost=medicine_cost,
-#             doctorFee=doctor_fee,
-#             OtherCharge=other_charge,
-#             total=total,
-#             dischargeMeditations=request.POST.get('discharge_meditations', ''),
-#             dischargeInstructions=request.POST.get('discharge_instructions', '')
-#         )
-        
-#         messages.success(request, "Invoice created successfully.")
-#         return redirect('some_success_page')  # Redirect to a success page
-
-#     context = {
-#         'patient': patient,
-#     }
-#     return render(request, 'doctors_template/create_invoice.html', context)
-
 
 @login_required(login_url="doctor_login")
-def create_invoice(request, patient_id):
+def invoices(request):
+    # invoices = MedicalResult.objects.filter(doctor_id=request.user).order_by('-created_date')
+    try:
+        doctor = Doctor.objects.get(id=request.user.id)
+        invoices = MedicalResult.objects.filter(doctor_id=request.user).order_by('-created_date')
+    except Doctor.DoesNotExist:
+        messages.error(request, "Doctor profile not found.")
+        return redirect('doctor_login')  # Redirect to login or another appropriate page
+
+    context = {
+        'doctor': doctor,
+        'invoices': invoices,
+    }
+    return render(request, "doctors_template/invoices.html", context)
+
+@login_required(login_url="doctor_login")
+def patient_search(request):
+    query = request.GET.get('query', '')
+    patients = Patient.objects.filter(
+        Q(patient_id__icontains=query) | 
+        Q(email__icontains=query) | 
+        Q(name__icontains=query)
+    )
+    suggestions = list(patients.values('id', 'patient_id', 'name', 'email'))
+    return JsonResponse(suggestions, safe=False)
+
+@login_required(login_url="doctor_login")
+def create_invoice(request):
     if request.method == 'GET' and 'patient_info' in request.GET:
         patient_info = request.GET['patient_info']
         try:
             patient = Patient.objects.get(
-                Q(patient_id=patient_info) | Q(email=patient_info) | Q(phone_no=patient_info)
+                Q(patient_id=patient_info) | Q(email=patient_info) | (Q(phone_no=patient_info) if patient_info.isdigit() else Q())
             )
-            return redirect('create_invoice', patient_id=patient.id)
+            return redirect('create_invoice_with_patient', patient_id=patient.id)
         except Patient.DoesNotExist:
             messages.error(request, "Patient not found.")
             return redirect('invoices')  # Redirect to the invoices tracking page
 
-    patient = get_object_or_404(Patient, patient_id=patient_id) if patient_id else None
+    return render(request, 'doctors_template/create_invoice.html')
+
+
+
+
+
+@login_required(login_url="doctor_login")
+def create_invoice_with_patient(request, patient_id):
+    patient = get_object_or_404(Patient, id=patient_id)
+    doctor = Doctor.objects.get(id=request.user.id)
 
     if request.method == 'POST':
+        try:
+            room_charge = Decimal(request.POST.get('roomCharge', '0'))
+            medicine_cost = Decimal(request.POST.get('medicineCost', '0'))
+            doctor_fee = Decimal(request.POST.get('doctorFee', '0'))
+            other_charge = Decimal(request.POST.get('OtherCharge', '0'))
+        except InvalidOperation:
+            messages.error(request, "Please enter valid numbers for charges.")
+            return redirect('create_invoice_with_patient', patient_id=patient_id)
+
         MedicalResult.objects.create(
-            patientId=patient.id,
+            patient=patient,
             patientName=patient.name,
-            recordNumber=request.POST.get('recordNumber', ''),
             assignedDoctorName=request.user.username,
             address=request.POST.get('address', ''),
-            mobile=request.POST.get('mobile', ''),
             condition_before=request.POST.get('condition_before', ''),
             condition_after=request.POST.get('condition_after', ''),
             admitDate=request.POST.get('admitDate', ''),
             releaseDate=request.POST.get('releaseDate', ''),
-            daySpent=request.POST.get('daySpent', ''),
-            roomCharge=request.POST.get('roomCharge', ''),
-            medicineCost=request.POST.get('medicineCost', ''),
-            doctorFee=request.POST.get('doctorFee', ''),
-            OtherCharge=request.POST.get('OtherCharge', ''),
-            total=request.POST.get('total', ''),
+            daySpent=request.POST.get('daySpent', '0'),
+            roomCharge=room_charge,
+            medicineCost=medicine_cost,
+            doctorFee=doctor_fee,
+            OtherCharge=other_charge,
             dischargeMeditations=request.POST.get('dischargeMeditations', ''),
             dischargeInstructions=request.POST.get('dischargeInstructions', ''),
         )
@@ -365,8 +356,11 @@ def create_invoice(request, patient_id):
 
     context = {
         'patient': patient,
+        'doctor': doctor,
     }
     return render(request, 'doctors_template/create_invoice.html', context)
+
+
 
 
 @login_required(login_url="doctor_login")

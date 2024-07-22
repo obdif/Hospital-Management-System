@@ -1285,7 +1285,7 @@ video{
 .action-button button{
   background: none;
   border: none;
-  font-size: 24px;
+  font-size: 20px;
   color: rgb(152, 192, 152);
   color: rgb(187, 133, 133);
 }
@@ -1509,4 +1509,44 @@ section .doctor-grid .doctor-bg{
   width: 100%;
   /* margin-bottom: 5px; */
   bottom: 0%;
+}
+
+.pInvoice .pInvoice_input{
+  width: 20rem;
+}
+
+
+.invoice_details {
+  padding: 20px;
+  box-sizing: border-box;
+  display: block;
+  position: relative;
+}
+
+.invoice_details form label{
+  font-size: 19px;
+  font-weight: 600;
+  /* margin-right: 15px; */
+  margin-bottom: 8px;
+}
+
+.invoice_details form textarea{
+  height: 100px;
+}
+
+ .invoice_pics{
+  display: block;
+  position: relative;
+  right: 20px;
+  width: 100px;
+  float: right;
+  height: 100px;
+  margin-bottom: 50px;
+}
+
+.invoice_pics img{
+  width: 100px;
+  right: -20px;
+  height: 100px;
+  position: relative;
 }

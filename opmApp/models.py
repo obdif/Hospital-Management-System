@@ -69,6 +69,7 @@ class Department(models.Model):
 
 
 class Doctor(CustomUser):
+    # user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     status=models.BooleanField(default=False)
     department = models.ForeignKey(Department, on_delete=models.SET_NULL, null=True, blank=True)
     document = models.ImageField(upload_to='doctor_documents/', null=True, blank=True)
@@ -136,47 +137,43 @@ class DoctorAvailableDay(models.Model):
     
 
 
+
 class MedicalResult(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE, default='')
-    patientId=models.PositiveIntegerField(null=True)
-    patientName=models.CharField(max_length=40)
-    recordNumber = models.CharField(max_length=12, unique=True, editable=False)
-    assignedDoctorName=models.CharField(Doctor, max_length=40)
-    address = models.CharField(max_length=40)
-    mobile = models.CharField(max_length=20,null=True)
-    condition_before = models.CharField(max_length=100, null=True)
-    condition_after = models.CharField(max_length=100, null=True)
-    
-    admitDate=models.DateField(null=False)
-    releaseDate=models.DateField(null=False)
-    daySpent=models.PositiveIntegerField(null=False)
+    patientName = models.CharField(max_length=100, default="")
+    assignedDoctorName = models.CharField(max_length=100, default="")
+    # address = models.CharField(max_length=255, default="")
+    condition_before = models.TextField(default="")
+    condition_after = models.TextField(default="Good Health")
+    admitDate = models.DateField()
+    releaseDate = models.DateField()
+    daySpent = models.IntegerField()
+    roomCharge = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    medicineCost = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    doctorFee = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    OtherCharge = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    total = models.DecimalField(max_digits=10, decimal_places=2, default=0, editable=False)
+    history_of_illness = models.TextField(blank=True, default="Not Applicable")
+    dischargeMeditations = models.TextField(default="Not Applicable")
+    dischargeInstructions = models.TextField(blank=False)
+    invoice_id = models.CharField(max_length=20, unique=True, editable=False, default="")
+    created_date=models.DateField(default=timezone.now)
 
-    roomCharge=models.PositiveIntegerField(null=False)
-    medicineCost=models.PositiveIntegerField(null=False)
-    doctorFee=models.PositiveIntegerField(null=False)
-    OtherCharge=models.PositiveIntegerField(null=False)
-    total=models.PositiveIntegerField(null=False)
-    
-    
-    dischargeMeditations = models.CharField(max_length=200)
-    dischargeInstructions = models.TextField(max_length=500)
-    
-    
-    
     def save(self, *args, **kwargs):
-        if not self.recordNumber:
-            self.recordNumber = self.invoiceNumber()
+        if not self.invoice_id:
+            self.invoice_id = self.generate_invoice_id()
+        self.total = self.roomCharge + self.medicineCost + self.doctorFee + self.OtherCharge
         super().save(*args, **kwargs)
 
-    def invoiceNumber(self):
+    def generate_invoice_id(self):
+        prefix = "INV"
         year = datetime.now().strftime("%y")
         while True:
-            new_id = random.randint(0, 999999)  # Generate a random 6-digit number
-            recordNumber = f"{year}{new_id:06d}"
-            if not MedicalResult.objects.filter(recordNumber=recordNumber).exists():
+            new_id = random.randint(0, 99999)
+            invoice_id = f"{prefix}{year}{new_id:05d}"
+            if not MedicalResult.objects.filter(invoice_id=invoice_id).exists():
                 break
-        return recordNumber
-    
+        return invoice_id
     
     def __str__(self):
-        return self.patient
+        return f'{self.patientName} - {self.invoice_id}'
