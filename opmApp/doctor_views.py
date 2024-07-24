@@ -278,10 +278,11 @@ def invoices(request):
     # invoices = MedicalResult.objects.filter(doctor_id=request.user).order_by('-created_date')
     try:
         doctor = Doctor.objects.get(id=request.user.id)
-        invoices = MedicalResult.objects.filter(doctor_id=request.user).order_by('-created_date')
     except Doctor.DoesNotExist:
         messages.error(request, "Doctor profile not found.")
         return redirect('doctor_login')  # Redirect to login or another appropriate page
+
+    invoices = MedicalResult.objects.filter(doctor_id=request.user).order_by('-created_date')
 
     context = {
         'doctor': doctor,
@@ -336,9 +337,9 @@ def create_invoice_with_patient(request, patient_id):
 
         MedicalResult.objects.create(
             patient=patient,
+            doctor=doctor,  # Explicitly assign the doctor
             patientName=patient.name,
             assignedDoctorName=request.user.username,
-            address=request.POST.get('address', ''),
             condition_before=request.POST.get('condition_before', ''),
             condition_after=request.POST.get('condition_after', ''),
             admitDate=request.POST.get('admitDate', ''),
@@ -359,6 +360,8 @@ def create_invoice_with_patient(request, patient_id):
         'doctor': doctor,
     }
     return render(request, 'doctors_template/create_invoice.html', context)
+
+
 
 
 

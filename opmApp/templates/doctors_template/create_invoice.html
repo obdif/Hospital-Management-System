@@ -285,12 +285,12 @@
           
                   <div class="col-12">
                       <label for="condition_before">Condition Before:</label>
-                      <textarea id="condition_before" name="condition_before" required class="form-control"></textarea>
+                      <textarea id="condition_before" name="condition_before" value="{{patient.condition_before}}" required class="form-control"></textarea>
                   </div>
           
                   <div class="col-12">
                       <label for="condition_after">Condition After:</label>
-                      <textarea id="condition_after" name="condition_after" required class="form-control"></textarea>
+                      <textarea id="condition_after" name="condition_after" required class="form-control" value="{{MedicalResult.condition_after}}"></textarea>
                   </div>
           
                   <div class="col-12">
@@ -310,7 +310,7 @@
         
                   <div class="col-12">
                     <label for="dischargeMeditations">Discharge Meditations:</label>
-                    <textarea id="dischargeMeditations" name="dischargeMeditations" required class="form-control"></textarea>
+                    <textarea id="dischargeMeditations" name="dischargeMeditations" required class="form-control" value="{{doctor.dischargeMeditations}}"></textarea>
                 </div>
         
                   {% comment %} <div class="col-12">

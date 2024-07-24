@@ -139,10 +139,10 @@ class DoctorAvailableDay(models.Model):
 
 
 class MedicalResult(models.Model):
+    doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE, default='')
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE, default='')
     patientName = models.CharField(max_length=100, default="")
     assignedDoctorName = models.CharField(max_length=100, default="")
-    # address = models.CharField(max_length=255, default="")
     condition_before = models.TextField(default="")
     condition_after = models.TextField(default="Good Health")
     admitDate = models.DateField()
