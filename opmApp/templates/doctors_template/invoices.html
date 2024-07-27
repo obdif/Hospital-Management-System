@@ -135,9 +135,6 @@
                       <th>Stautus</th>
                       <th>Actions</th>
                       <th></th>
-                      {% comment %}
-                      <th></th>
-                      {% endcomment %}
                     </tr>
                   </thead>
                   <tbody>
@@ -147,17 +144,42 @@
                       <td>{{ invoice.invoice_id }}</td>
                       <td>{{ invoice.patientName }}</td>
                       <td>{{ invoice.created_date }}</td>
-                      <td>{{ invoice.total }}</td>
+                      <td>#{{ invoice.total }}</td>
+
+                      {% if invoice.status == 'Paid' %} 
                       <td style="text-align: center">
                         <p
                           style="
                             background: darkgreen;
-                            font-weight: 800;
+                            font-weight: 600;
                             color: white;
                           "
                         >
                           Paid
                         </p>
+                      {% elif invoice.status == 'Pending' %}
+                      <td style="text-align: center">
+                        <p
+                          style="
+                            background: darkorange;
+                            font-weight: 600;
+                            color: white;
+                          "
+                        >
+                          Pending
+                        </p>
+                      {% else %}
+                      <td style="text-align: center">
+                        <p
+                          style="
+                            background: darkred;
+                            font-weight: 800;
+                            color: white;
+                          "
+                        >
+                          
+                        </p>
+                      {% endif %}
                       </td>
                       <td>
                         <div class="action-button">

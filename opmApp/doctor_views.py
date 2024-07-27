@@ -24,7 +24,11 @@ from decimal import Decimal, InvalidOperation
 
 @login_required(login_url="doctor_login")
 def doctor_dashboard(request):
-    doctor = Doctor.objects.get(id=request.user.id)
+    try:
+        doctor = Doctor.objects.get(id=request.user.id)
+    except Doctor.DoesNotExist:
+        return redirect('doctor_login')
+    
     total_patient = Patient.objects.count()
     doctor_appointments = Appointment.objects.filter(doctor_id=request.user)
     upcoming_appoinments = doctor_appointments.filter(status='Pending').order_by('-date_time')[:2]
@@ -84,15 +88,7 @@ def doctor_register(request):
                 return render(request, 'doctors_template/doctor_register.html', context)
         
         
-        # ============================ TO VALIDATE PASSWORD ==============
-        
-        if password != C_password:
-            messages.error(request, "Password do not match!")
-        elif len(password) < 8:
-            messages.error(request, "Password must be greater than 8 Character.")
-            return render(request, 'doctors_template/doctor_register.html', context)
 
-        
         
                 # ============================ TO VALIDATE DEPARTMENT ==============
 
@@ -106,6 +102,14 @@ def doctor_register(request):
             messages.error(request, "Invalid department selected")
             return render(request, 'doctors_template/doctor_register.html', context)
         
+                # ============================ TO VALIDATE PASSWORD ==============
+        
+        if password != C_password:
+            messages.error(request, "Password do not match!")
+        elif len(password) < 8:
+            messages.error(request, "Password must be greater than 8 Character.")
+            return render(request, 'doctors_template/doctor_register.html', context)
+
         
         
         username = email.split('@')[0]  # Simple username generation based on email
@@ -140,6 +144,10 @@ def doctor_login(request):
         email = request.POST['email']
         password = request.POST['password']
  
+        context = {
+            'email':email,
+        }
+        
         authenticate_user = authenticate(email=email, password=password)
         if authenticate_user is not None:
             login(request, authenticate_user)
@@ -147,7 +155,7 @@ def doctor_login(request):
         
         else:
             messages.error(request, "Wrong Credentials details.\n Try again.")
-            return redirect('doctor_login')
+            return render(request, "doctors_template/doctor_login.html", context)
  
     return render(request,"doctors_template/doctor_login.html")
 
@@ -156,7 +164,11 @@ def doctor_login(request):
 
 @login_required(login_url="doctor_login")
 def patients(request):
-    doctor = Doctor.objects.get(id=request.user.id)
+    try:
+        doctor = Doctor.objects.get(id=request.user.id)
+    except Doctor.DoesNotExist:
+        return redirect('doctor_login')
+    # doctor = Doctor.objects.get(id=request.user.id)
     patients = Patient.objects.all().order_by('-id')
 
 
@@ -172,7 +184,10 @@ def patients(request):
 
 @login_required(login_url="doctor_login")
 def patients_details(request, patient_id):
-    doctor = Doctor.objects.get(id=request.user.id)
+    try:
+        doctor = Doctor.objects.get(id=request.user.id)
+    except Doctor.DoesNotExist:
+        return redirect('doctor_login')
     patient = get_object_or_404(Patient, id=patient_id)
     # patient = Patient.objects.get(id=request.user.id)
     if request.method == 'POST':
@@ -283,10 +298,14 @@ def invoices(request):
         return redirect('doctor_login')  # Redirect to login or another appropriate page
 
     invoices = MedicalResult.objects.filter(doctor_id=request.user).order_by('-created_date')
+    # invoicePaid=MedicalResult.objects.filter(status='Paid')
+    # invoicePending=MedicalResult.objects.filter(status='Pending')
 
     context = {
         'doctor': doctor,
         'invoices': invoices,
+        # 'invoicePaid': invoicePaid,
+        # 'invoicePending': invoicePending,
     }
     return render(request, "doctors_template/invoices.html", context)
 
@@ -323,7 +342,10 @@ def create_invoice(request):
 @login_required(login_url="doctor_login")
 def create_invoice_with_patient(request, patient_id):
     patient = get_object_or_404(Patient, id=patient_id)
-    doctor = Doctor.objects.get(id=request.user.id)
+    try:
+        doctor = Doctor.objects.get(id=request.user.id)
+    except Doctor.DoesNotExist:
+        return redirect('doctor_login')
 
     if request.method == 'POST':
         try:
@@ -344,7 +366,7 @@ def create_invoice_with_patient(request, patient_id):
             condition_after=request.POST.get('condition_after', ''),
             admitDate=request.POST.get('admitDate', ''),
             releaseDate=request.POST.get('releaseDate', ''),
-            daySpent=request.POST.get('daySpent', '0'),
+            # daySpent=request.POST.get('daySpent', '0'),
             roomCharge=room_charge,
             medicineCost=medicine_cost,
             doctorFee=doctor_fee,
@@ -352,6 +374,19 @@ def create_invoice_with_patient(request, patient_id):
             dischargeMeditations=request.POST.get('dischargeMeditations', ''),
             dischargeInstructions=request.POST.get('dischargeInstructions', ''),
         )
+        
+        
+        context = {
+            'condition_before':MedicalResult.condition_before,
+            'condition_after':MedicalResult.condition_after,
+            'dischargeMeditations':MedicalResult.dischargeMeditations,
+            'dischargeInstructions':MedicalResult.dischargeInstructions,
+            # 'sex':sex,
+            # 'address':address,
+        }
+        
+        
+        
         messages.success(request, "Invoice created successfully.")
         return redirect('invoices')  # Redirect to the invoices tracking page
 
@@ -368,7 +403,11 @@ def create_invoice_with_patient(request, patient_id):
 
 @login_required(login_url="doctor_login")
 def doctor_profile(request):
-    doctor = Doctor.objects.get(id=request.user.id)
+    try:
+        doctor = Doctor.objects.get(id=request.user.id)
+    except Doctor.DoesNotExist:
+        return redirect('doctor_login')
+    
     if request.method == 'POST':
         doctor.name = request.POST.get('name', '')
         # doctor.age = request.POST.get('age', '')
@@ -428,7 +467,10 @@ def reject_appointment(appointment_id):
 # ================================== DOCTOR APPOINTMENT  ==============================
 @login_required(login_url="doctor_login")
 def doctor_appointments(request):
-    doctor = Doctor.objects.get(id=request.user.id)
+    try:
+        doctor = Doctor.objects.get(id=request.user.id)
+    except Doctor.DoesNotExist:
+        return redirect('doctor_login')
     appointments = Appointment.objects.filter(doctor_id=request.user).order_by('-current_date')
 
     
@@ -516,7 +558,10 @@ def appointment_details(request, appointment_id):
 @login_required(login_url="doctor_login")
 def doctors(request):
     doctors = Doctor.objects.all()
-    doctor = Doctor.objects.get(id=request.user.id)
+    try:
+        doctor = Doctor.objects.get(id=request.user.id)
+    except Doctor.DoesNotExist:
+        return redirect('doctor_login')
  
  
     context = {

@@ -102,46 +102,59 @@
                 <table class="table datatable">
                   <thead>
                     <tr>
-                  
                       <th>Invoice No.</th>
                       <th>Admission Date</th>
                       <th>DisCharge date</th>
                       <th>Hospital Bill</th>
-                      <th>Stautus</th>
+                      <th>Status</th>
                       <th>Actions</th>
                       {% comment %} <th></th> {% endcomment %}
                     </tr>
                   </thead>
                   <tbody>
+                    {% for invoice in invoices %}
                     <tr>
-                      <td>LUTHME98734</td>
-                      <td>Ayoola Khalid</td>
-                      <td>30 may, 2024</td>
-                      <td> 18,000</td>
+                      <td>{{invoice.invoice_id}}</td>
+                      <td>{{invoice.admitDate}}</td>
+                      <td>{{invoice.releaseDate}}</td>
+                      <td>#{{invoice.total}}</td>
+                      {% if invoice.status == 'Paid' %}
                       <td style="text-align:center;"> 
                         <p style="background:darkgreen; font-weight:800; color:white;">Paid</p>
                       </td>
+                      {% elif invoice.status == 'Pending' %}
+                      <td style="text-align:center;"> 
+                        <p style="background:orange; font-weight:800; color:white;"><em>Pending</em></p>
+                      </td>
+                      {% endif %}
+                    
+                      {% if invoice.status == 'Paid' %}
                       <td>
                         <div class="pay_bill">
-                            <a href="">
+                            <a href="{% url 'medical_result_receipt' invoice.id%}">
                               <button>view</button>
                             </a>
                           </div>
                       </td>
-                    </tr>
-
-                    <tr>
-                      <td>LUTHME98734</td>
-                      <td>Ayoola Khalid</td>
-                      <td>30 may, 2024</td>
-                      <td> 18,000</td>
-                      <td style="text-align:center;"> 
-                        <p style="background:orange; font-weight:800; color:white;"><em>Pending</em></p>
-                      </td>
+                      {% elif invoice.status == 'Pending' %}
                       <td>
-                        <button> Send Mail</button>
-                      </td>
+                        <style>
+                          .pending{
+                          {% comment %} cursor:not-allowed; {% endcomment %}
+                          background:darkred;
+                          }
+                          
+                        </style>
+                        <div class="pay_bill pending">
+                          <a href="">
+                            <button>Pay Now</button>
+                          </a>
+                        </div>
+                    </td>
+                      </td> 
+                      {% endif %}
                     </tr>
+                    {% endfor %}
                   </tbody>
                 </table>
                

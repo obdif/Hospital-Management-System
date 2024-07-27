@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -164,3 +165,13 @@ CLOUDINARY_STORAGE={
 }
 
 DEFAULT_FILE_STORAGE ='cloudinary_storage.storage.MediaCloudinaryStorage'
+
+
+
+JAZZMIN_SETTINGS ={
+    "site_title": "OPMS",
+    "site_header": "OPMS ADMINISTRATION",
+    "site_brand": "OPMS ADMINISTRATION",
+    "copyright": "LUTH",
+    "site_logo": "https://res.cloudinary.com/dbqtos6rt/image/upload/v1720673537/opms/assets/logo_iueamp.png",
+}

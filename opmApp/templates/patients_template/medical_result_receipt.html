@@ -7,6 +7,9 @@
     href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
   />
 
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+
 
   <title>Invoice Receipt - LUTH</title>
 
@@ -85,68 +88,75 @@
     <!-- End Sidebar-->
 
     <main id="main" class="main">
-      <div class="">
-        <h1 style="text-align: center; font-weight: 600">
-         Medical Result for HeadAche
-        </h1>
-      </div> <br><br>
+      
       <!-- End Page Title -->
 
+      <button onclick="goBack()" class="backBtn">
+        <i class="bi bi-arrow-left-short" id="iconx"></i>
+      </button>
+
       <div class=" download" style="margin-bottom:20px;">
-        <a href="">
-            <div class="download-btn">
-            <i class="bi bi-download"></i>
-            <button>Print Report</button>
-            </div>
-        </a>
+            
+          <button id="downloadInvoice" class='download-btn'> <i class="bi bi-download"></i> Download Invoice</button>
+          <button id="printInvoice" class='download-btn'> <i class="bi bi-printer"></i>Print Invoice</button>
       </div>
+
+ 
+
     
       <section class="section">
         <div class="row">
           <div class="col-lg-12">
             <div class="card">
-              <div class="card-body">
+              <div class="card-body"  id="invoice">
                 <style>
                     table{
                         border:1px solid black;
                         margin-top:30px;
                     }
-               
+                    td{
+                      text-transform:capitalize;
+                    }
                 </style>
+                <div class=""><br>
+                  <h1 style="text-align: center; font-weight: 600">
+                   Medical Result for {{invoice.condition_before}}
+                  </h1>
+                </div> <br>
                 <table class="table datatable" style="border:1px solid black;">
                 
                     <tbody>
                         <tr>
                             <th colspan="4">Patient Name</th>
-                            <td>Adekunle Blessing Olamide</td>
+                            <td>{{invoice.patientName}}</td>
                         </tr>
                         <tr>
                             <th colspan="4">Medical Record Number</th>
-                            <td>LUTHME/24/483483</td>
+                            <td>{{invoice.invoice_id}}</td>
                         </tr>
                         <tr>
                             <th colspan="4">Admission Date</th>
-                            <td>May 25, 2024</td>
+                            <td>{{invoice.admitDate}}</td>
                         </tr>
 
                         <tr>
                             <th colspan="4">DisCharge date</th>
-                            <td>May 28, 2024</td>
+                            <td>{{invoice.releaseDate}}</td>
                         </tr>
 
                         <tr>
                             <th colspan="4">Condition before Admit.</th>
-                            <td>Headache</td>
+                            <td>{{invoice.condition_before}}</td>
                         </tr>
 
                         <tr>
                             <th colspan="4">Condition on DisCharge</th>
-                            <td>Stable</td>
+                            <td>{{invoice.condition_after}}</td>
                         </tr>
 
                         <tr>
                             <th colspan="4">Attending Doctor/Physician</th>
-                            <td>Dr. Ifeoluwa</td>
+                            <td>{{invoice.doctor}}</td>
                         </tr>
 
                         <tr>
@@ -156,7 +166,7 @@
 
                         <tr >
                             <th colspan="4">Primary Care Physician</th>
-                            <td>N/A</td>
+                            <td>{{invoice.doctor}}</td>
                         </tr>
 
                         <tr >
@@ -164,7 +174,7 @@
                             <tr ></tr>
                             <td >
                                 <ol>
-                                    <li>osnfd</li>
+                                    <li>{{invoice.history_of_illness}}</li>
                                     <li>osnfd</li>
                                     <li>osnfd</li>
                                 </ol>
@@ -173,12 +183,12 @@
 
                         <tr>
                             <th colspan="4">Discharge Meditations</th>
-                            <td>dsfdsdf</td>
+                            <td>{{invoice.dischargeMeditations}}</td>
                         </tr>
 
                         <tr>
                             <th colspan="4">Discharge Instructions</th>
-                            <td>N/A</td>
+                            <td>{{invoice.dischargeInstructions}}</td>
                         </tr>
                         <tr>
                             <th colspan="5" style='text-align:center;'>Hospital Bill</th>
@@ -193,11 +203,11 @@
                         <tr>
 
                         <tr>
-                            <td style="border:1px solid black;">NGN 3,000</td>
-                            <td style="border:1px solid black;">NGN 8,350</td>
-                            <td style="border:1px solid black;">NGN 10,000</td>
-                            <td style="border:1px solid black;">NGN 6,500</td>
-                            <td style="border:1px solid black;">NGN 27,850</td>
+                            <td style="border:1px solid black;">NGN {{invoice.roomCharge}}</td>
+                            <td style="border:1px solid black;">NGN {{invoice.medicineCost}}</td>
+                            <td style="border:1px solid black;">NGN {{invoice.doctorFee}}</td>
+                            <td style="border:1px solid black;">NGN {{invoice.OtherCharge}}</td>
+                            <td style="border:1px solid black;">NGN {{invoice.total}}</td>
                         <tr>
                         
 
@@ -214,11 +224,41 @@
 
     <!-- ======= Footer ======= -->
     {% include "../include/footer.html" %}
+
+    {% comment %} Download library as PDF  {% endcomment %}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+
+
     <!-- Toastr JS from updated CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
     <script>
+
+      document.getElementById('downloadInvoice').addEventListener('click', () => {
+        const element = document.getElementById('invoice');
+        
+        html2pdf(element, {
+          margin: 1,
+          filename: 'Medical Report Invoice.pdf',
+          image: { type: 'jpeg', quality: 0.98 },
+          html2canvas: { scale: 2 },
+          jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+        });
+      });
+
+
+
+      document.getElementById('printInvoice').addEventListener('click', () => {
+        const printContent = document.getElementById('invoice').innerHTML;
+        const originalContent = document.body.innerHTML;
+  
+        document.body.innerHTML = printContent;
+        window.print();
+        document.body.innerHTML = originalContent;
+        window.location.reload(); // To reload the page after printing
+      });
+
       {% if messages %}
           {% for message in messages %}
               toastr.options = {
@@ -241,6 +281,10 @@
               toastr["{{ message.tags }}"]("{{ message }}");
           {% endfor %}
       {% endif %}
+
+      function goBack(){
+        window.history.back();
+    }
     </script>
   </body>
 </html>

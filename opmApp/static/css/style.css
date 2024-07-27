@@ -62,22 +62,36 @@ h6 {
   /* align-items: flex-end; */
 }
 
-
+.download{
+  margin: auto;
+  align-items: center;
+  position: relative;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+}
 
 .download .download-btn{
   padding: 15px;
   border: none;
+  position: relative;
   border-radius: 15px;
   background: #012970;
   color: #ebeef4;
-  font-weight: 800;
-  font-size: 25px;
+  font-weight: 600;
+  font-size: 20px;
   text-align: center;
   transition: all;
   transition-duration: 1s;
 }
 
-.download-btn button{
+.download-btn:hover{
+  background: #012a70c9;
+  transform: scale(20px);
+}
+
+.download button{
   background: none;
   color: #ebeef4;
   border: none;
@@ -430,7 +444,7 @@ h6 {
 .header .toggle-sidebar-btn {
   font-size: 32px;
   padding-left: 10px;
-  cursor: pointer;
+  cursor:pointer;
   color: #012970;
 }
 
@@ -1378,16 +1392,20 @@ video{
   }
 }
 
+.pay_bill{
+  background: #011a49;
+  text-align: center;
+}
 
 .pay_bill button{
   border: none;
   border-radius: 8px;
-  background: #011a49;
+  background: none;
   color: white;
   font-size: 18px;
   font-weight: 600;
   padding: 4px;
-  width: 6rem;
+  /* width: 6rem; */
 }
 
 .d-info{

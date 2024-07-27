@@ -285,12 +285,12 @@
           
                   <div class="col-12">
                       <label for="condition_before">Condition Before:</label>
-                      <textarea id="condition_before" name="condition_before" value="{{patient.condition_before}}" required class="form-control"></textarea>
+                      <textarea id="condition_before" name="condition_before" value="{{condition_before|default_if_none:""}}" required class="form-control"></textarea>
                   </div>
           
                   <div class="col-12">
                       <label for="condition_after">Condition After:</label>
-                      <textarea id="condition_after" name="condition_after" required class="form-control" value="{{MedicalResult.condition_after}}"></textarea>
+                      <textarea id="condition_after" name="condition_after" required class="form-control" value="{{condition_after| default_if_none:""}}"></textarea>
                   </div>
           
                   <div class="col-12">
@@ -310,7 +310,7 @@
         
                   <div class="col-12">
                     <label for="dischargeMeditations">Discharge Meditations:</label>
-                    <textarea id="dischargeMeditations" name="dischargeMeditations" required class="form-control" value="{{doctor.dischargeMeditations}}"></textarea>
+                    <textarea id="dischargeMeditations" name="dischargeMeditations" required class="form-control" value="{{dischargeMeditations|default_if_none:""}}"></textarea>
                 </div>
         
                   {% comment %} <div class="col-12">
@@ -318,10 +318,10 @@
                       <input   required class="form-control" type="number" id="daySpent" name="daySpent">
                   </div> {% endcomment %}
           
-                  <div class="col-12">
+                  {% comment %} <div class="col-12">
                     <label for="roomCharge">Room Charge:</label>
                     <input   required class="form-control" type="number" step="0.01" id="roomCharge" name="roomCharge" required>
-                </div>
+                </div> {% endcomment %}
          
                 <div class="col-12">
                     <label for="medicineCost">Medicine Cost:</label>

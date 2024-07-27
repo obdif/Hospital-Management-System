@@ -17,7 +17,11 @@ from django.core.files.storage import default_storage
 @login_required(login_url="patient_login")
 def patient_dashboard(request):
     # doctors = Doctor.objects.all()
-    patient = Patient.objects.get(id=request.user.id)
+    try:
+        patient = Patient.objects.get(id=request.user.id)
+    except Doctor.DoesNotExist:
+        return redirect('patient_login')
+
     appointments = Appointment.objects.filter(patient=request.user).order_by('-current_date')
     pending_appointments = appointments.filter(status='Pending').count()
     rejected_appointments = appointments.filter(status='Rejected').count()
@@ -201,7 +205,11 @@ def fetch_available_times(request):
 @login_required(login_url="patient_login")
 def patient_appointments(request):
     appointments = Appointment.objects.filter(patient=request.user).order_by('-current_date')
-    patient = Patient.objects.get(id=request.user.id)
+    try:
+        patient = Patient.objects.get(id=request.user.id)
+    except Doctor.DoesNotExist:
+        return redirect('patient_login')
+
     
     
     context = {
@@ -219,7 +227,10 @@ def patient_appointments(request):
 def edit_appointment(request, appointment_id):
     appointment = get_object_or_404(Appointment, id=appointment_id, patient=request.user)
     doctors = Doctor.objects.all()
-    patient = Patient.objects.get(id=request.user.id)
+    try:
+        patient = Patient.objects.get(id=request.user.id)
+    except Doctor.DoesNotExist:
+        return redirect('patient_login')
 
     if request.method == 'POST':
         description = request.POST.get('description')
@@ -271,7 +282,11 @@ def delete_appointment(request, appointment_id):
 
 @login_required(login_url="patient_login")
 def appointment_details(request, appointment_id):
-    patient = Patient.objects.get(id=request.user.id)
+    try:
+        patient = Patient.objects.get(id=request.user.id)
+    except Doctor.DoesNotExist:
+        return redirect('patient_login')
+
     appointment = get_object_or_404(Appointment, id=appointment_id)
 
     context = {
@@ -284,17 +299,49 @@ def appointment_details(request, appointment_id):
 
 @login_required(login_url="patient_login")
 def medical_historys(request):
-    
-    return render(request, "patients_template/medical_historys.html")
+    try:
+        patient = Patient.objects.get(id=request.user.id)
+    except Doctor.DoesNotExist:
+        return redirect('patient_login')
 
-def medical_result_receipt(request):
+    invoices= MedicalResult.objects.filter(patient=request.user).order_by('-id')
     
-    return render(request, "patients_template/medical_result_receipt.html")
+
+    
+    
+    context ={
+        'patient':patient,
+        'invoices':invoices,
+        # 'paidInvoice':paidInvoice,
+        # 'Pending':Pending,
+    }
+    return render(request, "patients_template/medical_historys.html", context)
+
+
+def medical_result_receipt(request, invoice_id):
+    try:
+        patient = Patient.objects.get(id=request.user.id)
+    except Doctor.DoesNotExist:
+        return redirect('patient_login')
+    
+    invoice = get_object_or_404(MedicalResult, id=invoice_id)
+    
+    context ={
+        'patient':patient,
+        'invoice':invoice,
+    }
+    
+    return render(request, "patients_template/medical_result_receipt.html", context)
+
 
 
 @login_required(login_url="patient_login")
 def doctors(request):
-    patient = Patient.objects.get(id=request.user.id)
+    try:
+        patient = Patient.objects.get(id=request.user.id)
+    except Doctor.DoesNotExist:
+        return redirect('patient_login')
+
     doctors = Doctor.objects.all()
 
 
@@ -314,7 +361,11 @@ def department(request):
 
 @login_required(login_url="patient_login")
 def patient_profile(request):
-    patient = Patient.objects.get(id=request.user.id)
+    try:
+        patient = Patient.objects.get(id=request.user.id)
+    except Doctor.DoesNotExist:
+        return redirect('patient_login')
+
     if request.method == 'POST':
         patient.name = request.POST.get('name', '')
         patient.age = request.POST.get('age', '')

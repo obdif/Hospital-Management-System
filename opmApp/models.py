@@ -139,6 +139,14 @@ class DoctorAvailableDay(models.Model):
 
 
 class MedicalResult(models.Model):
+    STATUS_CHOICES = [
+        ('Paid', 'Paid'),
+        ('Pending', 'Pending'),
+    ]
+
+    ROOM_CHARGE_PER_DAY = 2500
+
+
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE, default='')
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE, default='')
     patientName = models.CharField(max_length=100, default="")
@@ -147,8 +155,8 @@ class MedicalResult(models.Model):
     condition_after = models.TextField(default="Good Health")
     admitDate = models.DateField()
     releaseDate = models.DateField()
-    daySpent = models.IntegerField()
-    roomCharge = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    daySpent = models.IntegerField(blank=True, null=True)
+    roomCharge = models.DecimalField(max_digits=10, decimal_places=2, default=0, editable=False)
     medicineCost = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     doctorFee = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     OtherCharge = models.DecimalField(max_digits=10, decimal_places=2, default=0)
@@ -157,13 +165,22 @@ class MedicalResult(models.Model):
     dischargeMeditations = models.TextField(default="Not Applicable")
     dischargeInstructions = models.TextField(blank=False)
     invoice_id = models.CharField(max_length=20, unique=True, editable=False, default="")
-    created_date=models.DateField(default=timezone.now)
+    created_date = models.DateField(default=timezone.now)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='Pending')
 
     def save(self, *args, **kwargs):
+        if isinstance(self.admitDate, str):
+            self.admitDate = datetime.strptime(self.admitDate, '%Y-%m-%d').date()
+        if isinstance(self.releaseDate, str):
+            self.releaseDate = datetime.strptime(self.releaseDate, '%Y-%m-%d').date()
+        if self.admitDate and self.releaseDate:
+            self.daySpent = (self.releaseDate - self.admitDate).days
+            self.roomCharge = self.daySpent * self.ROOM_CHARGE_PER_DAY
+        self.total = self.roomCharge + self.medicineCost + self.doctorFee + self.OtherCharge
         if not self.invoice_id:
             self.invoice_id = self.generate_invoice_id()
-        self.total = self.roomCharge + self.medicineCost + self.doctorFee + self.OtherCharge
         super().save(*args, **kwargs)
+        
 
     def generate_invoice_id(self):
         prefix = "INV"
@@ -174,6 +191,10 @@ class MedicalResult(models.Model):
             if not MedicalResult.objects.filter(invoice_id=invoice_id).exists():
                 break
         return invoice_id
-    
+
     def __str__(self):
         return f'{self.patientName} - {self.invoice_id}'
+    
+    def accept(self):
+        self.status = 'Paid'
+        self.save()
