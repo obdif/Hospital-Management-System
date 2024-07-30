@@ -107,6 +107,11 @@ h6 {
   transition-duration: 1s;
 }
 
+.dashboard_btn{
+  margin-right: 100px;
+}
+
+
 .pagetitle-btn button:hover{
   background: #011a49;
   transition: ease-in-out;

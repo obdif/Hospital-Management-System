@@ -8,11 +8,11 @@
     href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
   />
 
-  <title>Login - LUTH</title>
+  <title>Patient ID recovery - LUTH</title>
 
   <style>
     body {
-      background-image: url("https://res.cloudinary.com/dbqtos6rt/image/upload/v1720673534/opms/assets/1_mxcmaj.jpg");
+      background-image: url("https://res.cloudinary.com/dbqtos6rt/image/upload/v1720673532/opms/assets/3_ljkcue.jpg");
       background-position: center;
       background-repeat: no-repeat;
       background-size: cover;
@@ -45,53 +45,56 @@
                   <div class="card-body">
                     <div class="pt-4 pb-2">
                       <h5 class="card-title text-center pb-0 fs-4">
-                        Login to Your Account
+                        Recover Your Patient Id
                       </h5>
-                      <p class="text-center small">
-                        Enter your <strong>PATIENT ID</strong> to login
-                      </p>
+                      {% comment %} <p class="text-center small">
+                        You're logging in as a Doctor
+                      </p> {% endcomment %}
                     </div>
 
                     <form
                       class="row g-3 needs-validation"
                       method="POST"
                       novalidate
+                      action=""
                     >
                       {% csrf_token %}
 
                       <div class="col-12">
-                        <label for="yourId" class="form-label"
-                          >Patient id</label
+                        <label for="email" class="form-label"
+                          >Enter your Email</label
                         >
                         <input
-                          type="text"
-                          style="text-transform: uppercase"
-                          name="yourId"
+                          type="email"
+                          style="text-transform: lowercase"
+                          name="email"
                           class="form-control"
-                          id="yourId"
-                          value="{{patient_id|default_if_none:""}}"
+                          id="email"
+                          value="{{email|default_if_none:""}}"
                           required
                         />
                         <div class="invalid-feedback">
-                          Please enter your <strong>PATIENT ID.</strong>
+                          Please enter a valid email.
                         </div>
                       </div>
 
+                      
+
                       <div class="col-12">
                         <button class="btn btn-primary w-100" type="submit">
-                          Login
+                          Submit
                         </button>
                       </div>
-                      <div class="col-12">
+                      {% comment %} <div class="col-12">
                         <p class="small mb-0">
-                          Forgotten Patient Id?
-                          <a href="{% url 'recover_id'%}">Recover it here</a>
+                          
+                          <a href="{% url 'password_reset'%}">Forgotten Password?</a>
                         </p>
                         <p class="small mb-0">
                           Don't have account?
-                          <a href="{% url 'patient_register'%}">Create an account</a>
+                          <a href="{% url 'doctor_register'%}">Create an account</a>
                         </p>
-                      </div>
+                      </div> {% endcomment %}
                     </form>
                   </div>
                 </div>

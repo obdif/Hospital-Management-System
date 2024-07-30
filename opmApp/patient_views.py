@@ -393,6 +393,29 @@ def patient_profile(request):
     return render(request,"patients_template/patient_profile.html", context)
 
 
+def recover_id(request):
+    if request.method == "POST":
+        email = request.POST.get('email', '')
+
+        if Patient.objects.filter(email=email).exists():
+            patient = Patient.objects.get(email=email)
+
+            subject = "PATIENT ID RECOVERY"
+            message = f"Your Patient ID is {patient.patient_id}."
+            sender = 'your_email@example.com'
+            receiver = [email]
+            send_mail(subject, message, sender, receiver, fail_silently=True)
+
+            messages.success(request, f"Your patient ID has been sent to {patient.patient_id}.")
+            return redirect("patient_login")
+        else:
+            messages.error(request, f"{email} is not a registered Patient. Please check the email and try again.")
+            return render(request, 'patients_template/recover_id.html')
+
+        
+        
+    return render(request, 'patients_template/recover_id.html')
+
 
 def logout_patient(request):
     logout(request) 

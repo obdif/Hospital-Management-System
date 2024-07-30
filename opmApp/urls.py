@@ -26,6 +26,7 @@ urlpatterns = [
     path('patient/delete_appointment/<int:appointment_id>/', patient_views.delete_appointment, name="delete_appointment"),
     path('patient/patient_registration_confirmation/', patient_views.patient_registration_confirmation, name="patient_registration_confirmation"),
     path('fetch-available-times/', patient_views.fetch_available_times, name='fetch_available_times'),
+    path('patient/recover_id/', patient_views.recover_id, name='recover_id'),
 
     
     
@@ -41,23 +42,24 @@ urlpatterns = [
     path('doctor/doctors/', doctor_views.doctors, name="doctors"),
     path('doctor/invoices/', doctor_views.invoices, name="invoices"),
     path('doctor/invoices/create_invoice/', doctor_views.create_invoice, name="create_invoice"),
+    path('doctor/invoices/invoice_receipt/<int:invoice_id>/', doctor_views.invoice_receipt, name="invoice_receipt"),
     path('doctor/invoices/create_invoice/<int:patient_id>/', doctor_views.create_invoice_with_patient, name="create_invoice_with_patient"),
     path('doctor/patients/', doctor_views.patients, name="doctor_patients"),
     path('doctor/departments/', doctor_views.department, name="doctor_department"),
     path('doctor/patients_details/<int:patient_id>/', doctor_views.patients_details, name="patients_details"),
-    # path('doctor/patients_details/<str:patient_id>/', doctor_views.patients_details, name="patients_details"),
     path('doctor/add_patients/', doctor_views.add_patients, name="add_patients"),
     path('doctor/doctor_available/', doctor_views.doctor_available, name="doctor_available"),
     path('doctor/logout/', doctor_views.logout_doctor, name="doctor_logout"),
     path('doctor/appointments/accept/<int:appointment_id>/', doctor_views.accept_appointment, name="accept_appointment"),
     path('doctor/appointments/reject/<int:appointment_id>/', doctor_views.reject_appointment, name="reject_appointment"),
     path('doctor/appointments/appointment_details/<int:appointment_id>/', doctor_views.appointment_details, name="appointment_details"),
-
-
+    path('doctor/invoices/edit_invoice/<int:invoice_id>/', doctor_views.edit_invoice, name="edit_invoice"),
+    path('doctor/reset_password/', doctor_views.password_reset, name='password_reset'),
+    path('doctor/reset_password_otp/', doctor_views.reset_password_otp, name='reset_password_otp'),
     path('doctor/search/', doctor_views.search_patients, name='search_patients'),
-    # path('doctor/search/', doctor_views.patient_search, name='patient_search'),
     path('doctor/search_autocomplete/', doctor_views.search_autocomplete, name='search_autocomplete'),
     path('patient/search/', doctor_views.patient_search, name='patient_search'),
+    path('doctor/change_password/', doctor_views.change_password, name='change_password'),
 
 
 ]

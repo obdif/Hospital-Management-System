@@ -183,9 +183,13 @@
                       </td>
                       <td>
                         <div class="action-button">
-                        <button style="color:darkblue; " title="View Invoice"><i class="bi bi-eye-fill"></i></button>
-                        <button style="color:darkgreen; " title="Edit Invoice"><i class="bi bi-pencil-fill"></i></button>
-                        <button type="submit" style="color:darkred;" title="Delete Invoice" onclick="return confirm('Are you sure you want to delete this Invoice?');">
+                        <a href="{% url 'invoice_receipt' invoice.id %}">
+                          <button style="color:darkblue; " title="View Invoice"><i class="bi bi-eye-fill"></i></button>
+                        </a>
+                        <a href="{% url 'edit_invoice' invoice.id %}">
+                          <button style="color:darkgreen; " title="Edit Invoice"><i class="bi bi-pencil-fill"></i></button>
+                        </a>
+                          <button type="submit" style="color:darkred;" title="Delete Invoice" onclick="return confirm('Are you sure you want to delete this Invoice?');">
                           <i class="bi bi-trash-fill"></i>
                       </button>
                       </div>

@@ -289,27 +289,6 @@ def add_patients(request):
 
 
 @login_required(login_url="doctor_login")
-def invoices(request):
-    # invoices = MedicalResult.objects.filter(doctor_id=request.user).order_by('-created_date')
-    try:
-        doctor = Doctor.objects.get(id=request.user.id)
-    except Doctor.DoesNotExist:
-        messages.error(request, "Doctor profile not found.")
-        return redirect('doctor_login')  # Redirect to login or another appropriate page
-
-    invoices = MedicalResult.objects.filter(doctor_id=request.user).order_by('-created_date')
-    # invoicePaid=MedicalResult.objects.filter(status='Paid')
-    # invoicePending=MedicalResult.objects.filter(status='Pending')
-
-    context = {
-        'doctor': doctor,
-        'invoices': invoices,
-        # 'invoicePaid': invoicePaid,
-        # 'invoicePending': invoicePending,
-    }
-    return render(request, "doctors_template/invoices.html", context)
-
-@login_required(login_url="doctor_login")
 def patient_search(request):
     query = request.GET.get('query', '')
     patients = Patient.objects.filter(
@@ -366,7 +345,6 @@ def create_invoice_with_patient(request, patient_id):
             condition_after=request.POST.get('condition_after', ''),
             admitDate=request.POST.get('admitDate', ''),
             releaseDate=request.POST.get('releaseDate', ''),
-            # daySpent=request.POST.get('daySpent', '0'),
             roomCharge=room_charge,
             medicineCost=medicine_cost,
             doctorFee=doctor_fee,
@@ -396,6 +374,84 @@ def create_invoice_with_patient(request, patient_id):
     }
     return render(request, 'doctors_template/create_invoice.html', context)
 
+
+
+@login_required(login_url="doctor_login")
+def invoices(request):
+    # invoices = MedicalResult.objects.filter(doctor_id=request.user).order_by('-created_date')
+    try:
+        doctor = Doctor.objects.get(id=request.user.id)
+    except Doctor.DoesNotExist:
+        messages.error(request, "Doctor profile not found.")
+        return redirect('doctor_login')  
+
+    invoices = MedicalResult.objects.filter(doctor_id=request.user).order_by('-created_date')
+    # invoicePaid=MedicalResult.objects.filter(status='Paid')
+    # invoicePending=MedicalResult.objects.filter(status='Pending')
+
+    context = {
+        'doctor': doctor,
+        'invoices': invoices,
+        # 'invoicePaid': invoicePaid,
+        # 'invoicePending': invoicePending,
+    }
+    return render(request, "doctors_template/invoices.html", context)
+
+
+@login_required(login_url="doctor_login")
+def invoice_receipt(request, invoice_id):
+    try:
+        doctor = Doctor.objects.get(id=request.user.id)
+    except Doctor.DoesNotExist:
+        messages.error(request, "Doctor profile not found.")
+        return redirect('doctor_login')
+    
+    invoice = get_object_or_404(MedicalResult, id=invoice_id) 
+       
+    context ={
+        'doctor':doctor,
+        'invoice':invoice,
+    }
+    return render(request, "doctors_template/invoice_receipt.html", context)
+
+
+def edit_invoice(request, invoice_id):
+    # patient = get_object_or_404(Patient, id=patient_id)
+    doctor= Doctor.objects.get(id=request.user.id)
+    invoice = get_object_or_404(MedicalResult, id=invoice_id)
+    
+    if request.method == "POST":
+        condition_before= request.POST.get('condition_before')
+        condition_after= request.POST.get('condition_after')
+        admitDate= request.POST.get('admitDate')
+        releaseDate= request.POST.get('releaseDate')
+        dischargeMeditations=request.POST.get('dischargeMeditations')
+    
+    
+        if condition_before:
+            invoice.condition_before = condition_before
+        if condition_after:
+            invoice.condition_after = condition_after
+        if admitDate:
+            invoice.admitDate = admitDate
+        if releaseDate:
+            invoice.releaseDate = releaseDate
+        if dischargeMeditations:
+            invoice.dischargeMeditations = dischargeMeditations
+            
+        
+        invoice.save()
+        messages.error(request, "Edit save")
+        return redirect('edit_invoice')
+    
+    
+    context = {
+        'doctor':doctor,
+        'invoice':invoice,
+        # 'patient':patient,
+    }
+    return render(request, "doctors_template/edit_invoice.html", context)
+    
 
 
 
@@ -577,6 +633,84 @@ def department(request):
     return render(request,"doctors_template/departments.html")
 
 
+
+def password_reset(request):
+    if request.method == 'POST':
+        email= request.POST.get('email', '')
+        
+        context ={
+            'email':email,
+        }
+        
+        
+                
+        User = get_user_model()
+        if User.objects.filter(email=email).exists():
+            
+            
+            otp=OTP(email=email)
+            otp.save()
+            
+            
+            subject = "PASSWORD RESET OTP"
+            message = f"Your OTP for password reset is \n\n\n\n{otp.otp}."
+            sender = 'adeblessinme4u@gmail.com'
+            receiver = [email]
+            send_mail(subject, message, sender, receiver, fail_silently=True)
+
+            messages.success(request, f"Enter the OTP sent to {email}")
+            request.session['reset_email'] = email
+            return redirect("reset_password_otp")
+        else:
+            messages.error(request, f"{email}  is not a registered doctor, Check the email and try again.")
+            return render(request, 'doctors_template/password_reset.html', context)
+        
+        
+    return render(request, 'doctors_template/password_reset.html')
+
+
+def reset_password_otp(request):
+    if request.method == 'POST':
+        otp_value = request.POST.get('otp')
+        email = request.session.get('reset_email')
+
+        otp_instance = OTP.objects.filter(otp=otp_value, email=email).first()
+        if otp_instance:
+            if otp_instance.is_expired():
+                otp_instance.delete()
+                messages.error(request, "The OTP has expired. Please request a new one.")
+                return redirect('password_reset')
+            else:
+                return redirect('change_password')
+        else:
+            messages.error(request, "The OTP is not valid.")
+            return redirect('reset_password_otp')
+
+    return render(request, 'doctors_template/reset_password_otp.html')
+
+
+
+def change_password(request):
+    if request.method == 'POST':
+        new_password = request.POST.get('password')
+        confirm_password = request.POST.get('password2')
+        email = request.session.get('reset_email')
+        
+        if confirm_password != new_password:
+            messages.error(request, "Password do not match!")
+            return redirect('change_password')
+        else:
+            pass
+        
+        if email and confirm_password:
+            User = get_user_model()
+            user = User.objects.get(email=email)
+            user.set_password(confirm_password)
+            user.save()
+            messages.success(request, "Your password has been reset successfully.")
+            return redirect('doctor_login')
+        
+    return render(request, 'doctors_template/change_password.html')
 
 
 def logout_doctor(request):

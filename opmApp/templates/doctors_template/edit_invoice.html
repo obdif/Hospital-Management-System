@@ -18,7 +18,7 @@
 
     <div class="d-flex align-items-center justify-content-between">
       <a href="{%url 'doctor_dashboard'%}" class="logo d-flex align-items-center">
-        <img src="{% static 'img/logo.png'%}" alt="">
+        <img src="https://res.cloudinary.com/dbqtos6rt/image/upload/v1720673537/opms/assets/logo_iueamp.png" alt="">
         <span class="d-none d-lg-block">LUTH</span>
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
@@ -240,10 +240,10 @@
           </div> 
       <div class="align-items-center" style="margin-bottom:10px; margin-left:60px; align-item:center;  display:flex;">
         <h1 style="text-align: center; font-weight: 600">
-          Create Invoice for {{ patient.name }}
+          Create Invoice for {{ invoice.patientName }}
         </h1>
         <div class="invoice_pics profile-card">
-          <img src="{{patient.profile_pic.url}}" alt="{{patient.name}}" class="rounded-circle"/>
+          <img src="{{invoice.patient.profile_pic.url}}" alt="{{invoice.patientName}}" class="rounded-circle"/>
         </div>
       </div>
 
@@ -271,7 +271,7 @@
                       name="name"
                       class="form-control"
                       id="yourName"
-                      value="{{patient.name}}"
+                      value="{{invoice.patientName}}"
                       disabled
                     />
                     <div class="invalid-feedback">
@@ -295,7 +295,7 @@
           
                   <div class="col-12">
                       <label for="admitDate">Admit Date:</label>
-                      <input   required class="form-control" type="date" id="admitDate" name="admitDate">
+                      <input   required class="form-control" type="date" id="admitDate" name="admitDate" value={{invoice.admitDate}}>
                   </div>
           
                   <div class="col-12">
@@ -310,7 +310,7 @@
         
                   <div class="col-12">
                     <label for="dischargeMeditations">Discharge Meditations:</label>
-                    <textarea id="dischargeMeditations" name="dischargeMeditations" required class="form-control" value="{{dischargeMeditations|default_if_none:""}}"></textarea>
+                    <textarea id="dischargeMeditations" name="dischargeMeditations" required class="form-control" value="{{invoice.dischargeMeditations|default_if_none:""}}"></textarea>
                 </div>
         
          

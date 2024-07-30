@@ -145,6 +145,9 @@ EMAIL_HOST_USER='adeblessinme4u@gmail.com' #Your email address will be here i.e 
 EMAIL_HOST_PASSWORD ='qvpx txbb mrji blpz' #the Email Host Password you will put your App Password since google don't allow "less secure app", you can find or create app password in your google account by navigating to security then search for App password, then you can create or copy the password there.
 
 
+
+
+
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',  # Default backend
     'opmApp.backends.PatientBackend',  # Custom backend

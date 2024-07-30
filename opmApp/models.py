@@ -198,3 +198,27 @@ class MedicalResult(models.Model):
     def accept(self):
         self.status = 'Paid'
         self.save()
+        
+        
+        
+class OTP(models.Model):
+    otp = models.CharField(max_length=6, unique=True, editable=False)
+    email = models.EmailField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        if not self.otp:
+            self.otp = self.generate_otp()
+        super().save(*args, **kwargs)
+
+    def generate_otp(self):
+        while True:
+            otp = f"{random.randint(0, 999999):06d}"
+            if not OTP.objects.filter(otp=otp).exists():
+                return otp
+
+    def is_expired(self):
+        return (timezone.now() - self.created_at).total_seconds() > 300
+    
+    def __str__(self):
+        return self.otp
