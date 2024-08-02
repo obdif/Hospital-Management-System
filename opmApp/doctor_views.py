@@ -10,6 +10,7 @@ from django.db import IntegrityError
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.core.mail import send_mail
+import logging
 from django.http import JsonResponse
 from django.db.models import Q
 from django.core.files.storage import default_storage
@@ -633,40 +634,74 @@ def department(request):
     return render(request,"doctors_template/departments.html")
 
 
-
+logger = logging.getLogger(__name__)
 def password_reset(request):
     if request.method == 'POST':
-        email= request.POST.get('email', '')
-        
-        context ={
-            'email':email,
+        email = request.POST.get('email', '')
+
+        context = {
+            'email': email,
         }
-        
-        
-                
+
         User = get_user_model()
         if User.objects.filter(email=email).exists():
-            
-            
-            otp=OTP(email=email)
+            otp = OTP(email=email)
             otp.save()
-            
-            
+
             subject = "PASSWORD RESET OTP"
             message = f"Your OTP for password reset is \n\n\n\n{otp.otp}."
             sender = 'adeblessinme4u@gmail.com'
             receiver = [email]
-            send_mail(subject, message, sender, receiver, fail_silently=True)
 
-            messages.success(request, f"Enter the OTP sent to {email}")
-            request.session['reset_email'] = email
-            return redirect("reset_password_otp")
+            try:
+                send_mail(subject, message, sender, receiver, fail_silently=False)
+                messages.success(request, f"Enter the OTP sent to {email}")
+                request.session['reset_email'] = email
+                return redirect("reset_password_otp")
+            except Exception as e:
+                logger.error(f"Failed to send email: {e}")
+                messages.error(request, "Failed to send OTP email. Please try again later.")
+                return render(request, 'doctors_template/password_reset.html', context)
+
         else:
-            messages.error(request, f"{email}  is not a registered doctor, Check the email and try again.")
+            messages.error(request, f"{email} is not a registered doctor, Check the email and try again.")
             return render(request, 'doctors_template/password_reset.html', context)
-        
-        
+
     return render(request, 'doctors_template/password_reset.html')
+
+# def password_reset(request):
+#     if request.method == 'POST':
+#         email= request.POST.get('email', '')
+        
+#         context ={
+#             'email':email,
+#         }
+        
+        
+                
+#         User = get_user_model()
+#         if User.objects.filter(email=email).exists():
+            
+            
+#             otp=OTP(email=email)
+#             otp.save()
+            
+            
+#             subject = "PASSWORD RESET OTP"
+#             message = f"Your OTP for password reset is \n\n\n\n{otp.otp}."
+#             sender = 'adeblessinme4u@gmail.com'
+#             receiver = [email]
+#             send_mail(subject, message, sender, receiver, fail_silently=True)
+
+#             messages.success(request, f"Enter the OTP sent to {email}")
+#             request.session['reset_email'] = email
+#             return redirect("reset_password_otp")
+#         else:
+#             messages.error(request, f"{email}  is not a registered doctor, Check the email and try again.")
+#             return render(request, 'doctors_template/password_reset.html', context)
+        
+        
+#     return render(request, 'doctors_template/password_reset.html')
 
 
 def reset_password_otp(request):

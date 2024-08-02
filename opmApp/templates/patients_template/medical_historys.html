@@ -91,7 +91,7 @@
             <button>Create Invoice</button>
         </div>
       </div> {% endcomment %}
-
+{% if invoice %}
       <!-- End Page Title -->
       <section class="section">
         <div class="row">
@@ -166,6 +166,15 @@
           </div>
         </div>
       </section>
+      {% else %}
+      <div class="blank">
+        <div class="blank_icon">
+          <i  class="bi bi-journal-x blank-icon"></i><br>
+          <p>No Invoice found for you. <a href="{%url 'book_an_appointment'%}">Create a new appointment.</a></p>
+        </div>
+       
+        </div>
+      {% endif %}
     </main>
     <!-- End #main -->
 

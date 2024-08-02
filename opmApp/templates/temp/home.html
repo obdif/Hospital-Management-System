@@ -1,1 +1,100 @@
-I'm a new home
+<!DOCTYPE html>
+<html lang="en">
+{% include "../include/head.html" %}
+  <!-- Toastr CSS from updated CDN -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
+  />
+
+{% load static %}
+<title>Home Page - LUTH</title>
+
+
+
+<body>
+ 
+
+  <!-- ======= Header ======= -->
+  {% load static %}
+
+  <main id="ma" class="man">
+
+    <div class="firstHomePage">
+      <div class="homePageContent">
+        <div class="d-flex align-items-center homeImg justify-content-between">
+            {% comment %} <img src="https://res.cloudinary.com/dbqtos6rt/image/upload/v1720673537/opms/assets/logo_iueamp.png" alt=""> {% endcomment %}
+            <img src="https://res.cloudinary.com/dbqtos6rt/image/upload/v1722584036/opms/assets/logo_iueamp-removebg-preview_l3xvdf.png" alt="">
+            {% comment %} <span class="d-none d-lg-block">LUTH</span> {% endcomment %}
+        </div>
+          <div class="greeting">
+              <h1>Welcome to LUTH</h1>
+              <p>Lorem ipsu quas dicta quod quibusdam debitis autem explicabo quam recusandae aliquam magnam?</p>
+          </div>
+
+          <div class="login_option">
+              
+                  <a href="{%url 'patient_dashboard'%}">
+                      <div class=" login patientLogin">   
+                      Login as Patient
+                  </div>
+              </a>
+              
+                  <a href="{%url 'doctor_dashboard'%}">
+                      <div class=" login doctorLogin">
+                      Login as Doctor
+                  </div>
+
+                  </a>
+          </div>
+
+          <div class="homeFooter">
+              <div class="homeLinks">
+                  <ul>
+                      <li><a href="">About Us</a></li> |
+                      <li><a href="">Privacy & Policy</a></li> |
+                      <li><a href="">Terms & Conditions</a></li> 
+                  </ul>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+{% comment %} {% include "../include/footer.html" %} {% endcomment %}
+
+  <!-- Toastr JS from updated CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+
+<script>
+  {% if messages %}
+      {% for message in messages %}
+          toastr.options = {
+              "closeButton": true,
+              "debug": false,
+              "newestOnTop": true,
+              "progressBar": true,
+              "positionClass": "toast-top-right",
+              "preventDuplicates": false,
+              "onclick": null,
+              "showDuration": "300",
+              "hideDuration": "1000",
+              "timeOut": "10000",
+              "extendedTimeOut": "5000",
+              "showEasing": "swing",
+              "hideEasing": "linear",
+              "showMethod": "fadeIn",
+              "hideMethod": "fadeOut"
+          };
+          toastr["{{ message.tags }}"]("{{ message }}");
+      {% endfor %}
+  {% endif %}
+</script>
+
+</body>
+
+</html>

@@ -147,7 +147,6 @@ EMAIL_HOST_PASSWORD ='qvpx txbb mrji blpz' #the Email Host Password you will put
 
 
 
-
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',  # Default backend
     'opmApp.backends.PatientBackend',  # Custom backend

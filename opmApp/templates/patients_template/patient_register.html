@@ -31,7 +31,7 @@
               >
                 <div class="d-flex justify-content-center py-4">
                   <a
-                    href="{% url 'patient_dashboard'%}"
+                    href="{% url 'home'%}"
                     class="logo d-flex align-items-center w-auto"
                   >
                     <img src="https://res.cloudinary.com/dbqtos6rt/image/upload/v1720673537/opms/assets/logo_iueamp.png" alt="" />
@@ -128,7 +128,7 @@
                         <label for="phoneNo" class="form-label"
                           >Phone Number<span style="color: red">*</span></label
                         >
-                        <input type="phone" name="phone" class="form-control"
+                        <input type="text" name="phone" class="form-control"
                         id="phoneNo" value="{{phone|default_if_none:""}}"
                         required />
                         <div class="invalid-feedback">

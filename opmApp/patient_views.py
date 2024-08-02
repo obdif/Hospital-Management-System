@@ -402,11 +402,11 @@ def recover_id(request):
 
             subject = "PATIENT ID RECOVERY"
             message = f"Your Patient ID is {patient.patient_id}."
-            sender = 'your_email@example.com'
+            sender = 'adeblessinme4u@gmail.com'
             receiver = [email]
             send_mail(subject, message, sender, receiver, fail_silently=True)
 
-            messages.success(request, f"Your patient ID has been sent to {patient.patient_id}.")
+            messages.success(request, f"Your patient ID is: {patient.patient_id}.")
             return redirect("patient_login")
         else:
             messages.error(request, f"{email} is not a registered Patient. Please check the email and try again.")
