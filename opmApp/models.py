@@ -69,11 +69,17 @@ class Department(models.Model):
 
 
 class Doctor(CustomUser):
+    STATUS_CHOICES = [
+        ('Pending', 'Pending'),
+        ('Accepted', 'Accepted'),
+        ('Rejected', 'Rejected'),
+    ]
     # user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
-    status=models.BooleanField(default=False)
     department = models.ForeignKey(Department, on_delete=models.SET_NULL, null=True, blank=True)
     document = models.ImageField(upload_to='doctor_documents/', null=True, blank=True)
     about = models.TextField(blank=True, default="---")
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='Pending')
+
     
     
     def __str__(self):

@@ -30,6 +30,12 @@ def doctor_dashboard(request):
     except Doctor.DoesNotExist:
         return redirect('doctor_login')
     
+    if doctor.status== "Pending":
+        messages.error(request, "Your Account is still under review.")
+        return redirect('doctor_login')
+    else:
+        pass
+    
     total_patient = Patient.objects.count()
     doctor_appointments = Appointment.objects.filter(doctor_id=request.user)
     upcoming_appoinments = doctor_appointments.filter(status='Pending').order_by('-date_time')[:2]
@@ -145,18 +151,22 @@ def doctor_login(request):
         email = request.POST['email']
         password = request.POST['password']
  
-        context = {
-            'email':email,
-        }
+        # context = {
+        #     'email':email,
+        # }
         
         authenticate_user = authenticate(email=email, password=password)
+        
+        
         if authenticate_user is not None:
             login(request, authenticate_user)
             return redirect('doctor_dashboard')
         
         else:
             messages.error(request, "Wrong Credentials details.\n Try again.")
-            return render(request, "doctors_template/doctor_login.html", context)
+            return redirect('doctor_login')
+        
+        # messages.error(request, "Your Account is still under review.")
  
     return render(request,"doctors_template/doctor_login.html")
 
