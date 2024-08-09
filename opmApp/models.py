@@ -6,8 +6,8 @@ from django.utils import timezone
 
 # SUPER_USER DETAILS:
 # username: blessing 
-# email: blessing@gmail.com
-# password: blessing
+# email: blessing@gmail.com adeblessinme4u@gmail.com
+# password: blessing        1234567890
 
 
 class CustomUser(AbstractUser):
@@ -17,8 +17,8 @@ class CustomUser(AbstractUser):
     profile_pic = models.ImageField(upload_to="profile/", blank=True, default="https://res.cloudinary.com/dbqtos6rt/image/upload/v1720589104/opms/profile/profile_bgrbul.jpg")
     phone_no = models.IntegerField( blank=False, default=2)
     address = models.TextField(max_length=500, blank=True, default="")
-    sex = models.CharField(max_length= 10, default="")
-    country = models.CharField(max_length=20, blank=True, default="Nigeria")
+    sex = models.CharField(max_length=50, default="")
+    country = models.CharField(max_length=50, blank=True, default="Nigeria")
     
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ['username', 'name']
@@ -31,8 +31,8 @@ class CustomUser(AbstractUser):
 
 class Patient(CustomUser):
     age = models.IntegerField()
-    patient_id = models.CharField(max_length=12, unique=True, editable=False)
-    blood_group = models.CharField(max_length=5, blank=True, default="")
+    patient_id = models.CharField(max_length=50, unique=True, editable=False)
+    blood_group = models.CharField(max_length=50, blank=True, default="")
     password=None
     
     
@@ -78,7 +78,7 @@ class Doctor(CustomUser):
     department = models.ForeignKey(Department, on_delete=models.SET_NULL, null=True, blank=True)
     document = models.ImageField(upload_to='doctor_documents/', null=True, blank=True)
     about = models.TextField(blank=True, default="---")
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='Pending')
+    status = models.CharField(max_length=50, choices=STATUS_CHOICES, default='Pending')
 
     
     
@@ -100,10 +100,10 @@ class Appointment(models.Model):
     doctor_id = models.ForeignKey(Doctor, on_delete=models.CASCADE)
     description = models.TextField(blank=True)
     condition = models.CharField(max_length=200, blank=True)
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='Pending')
-    date_time = models.CharField(max_length=10)
+    status = models.CharField(max_length=50, choices=STATUS_CHOICES, default='Pending')
+    date_time = models.CharField(max_length=50)
     doctor_note = models.TextField(blank=True)
-    time = models.CharField(max_length=10)
+    time = models.CharField(max_length=50)
     current_date = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
@@ -130,7 +130,7 @@ class DoctorAvailableDay(models.Model):
     ]
     
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
-    day = models.CharField(max_length=20, choices=DOCTOR_DAYS)
+    day = models.CharField(max_length=50, choices=DOCTOR_DAYS)
     from_time = models.TimeField()
     to_time = models.TimeField()
     
@@ -170,9 +170,9 @@ class MedicalResult(models.Model):
     history_of_illness = models.TextField(blank=True, default="Not Applicable")
     dischargeMeditations = models.TextField(default="Not Applicable")
     dischargeInstructions = models.TextField(blank=False)
-    invoice_id = models.CharField(max_length=20, unique=True, editable=False, default="")
+    invoice_id = models.CharField(max_length=50, unique=True, editable=False, default="")
     created_date = models.DateField(default=timezone.now)
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='Pending')
+    status = models.CharField(max_length=50, choices=STATUS_CHOICES, default='Pending')
 
     def save(self, *args, **kwargs):
         if isinstance(self.admitDate, str):
@@ -208,7 +208,7 @@ class MedicalResult(models.Model):
         
         
 class OTP(models.Model):
-    otp = models.CharField(max_length=6, unique=True, editable=False)
+    otp = models.CharField(max_length=50, unique=True, editable=False)
     email = models.EmailField()
     created_at = models.DateTimeField(auto_now_add=True)
 

@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 from pathlib import Path
 import cloudinary_storage
+# import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,7 +27,8 @@ SECRET_KEY = 'django-insecure-a&b81*@0h=&035ho$$jhbvd=62abat-rh1)u17+kvtqj(jzuh4
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.vercel.app']
+ALLOWED_HOSTS = ['.vercel.app', '.now.sh', '127.0.0.1']
+# ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -75,15 +77,99 @@ TEMPLATES = [
 WSGI_APPLICATION = 'opm.wsgi.application'
 
 
+
+
+# postgres://avnadmin:AVNS_EhBGgBs84ma2m0AW9qP@pg-4e91638-opms.l.aivencloud.com:27207/defaultdb?sslmode=require
+
+
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': dj_database_url.config{
+#         'ENGINE': 'django_cockroachdb',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
+
+# DATABASE_URL = "postgresql://blessing:rWEf27wCcy9ID-eLyV70Mw@opmsdatabase-15955.8nj.gcp-europe-west1.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full"
+
+# DATABASES = {
+#     'default': dj_database_url.parse(DATABASE_URL, engine='django_cockroachdb')
+# }
+
+
+
+# # ============================= MONGO DATABASES ===========
+# import ssl
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'djongo',
+#         'NAME': 'OPMS',
+#         'ENFORCE_SCHEMA': False,
+#         'CLIENT': {
+#             'host': 'mongodb+srv://olamidedevops:TKgHFlQD4MtqpDYa@auth.nleripr.mongodb.net/OPMS?retryWrites=true&w=majority&ssl=true',
+#             'ssl': True,
+#             'username': 'olamidedevops',
+#             'password': 'TKgHFlQD4MtqpDYa',
+#             'authMechanism': 'SCRAM-SHA-1',
+#             # 'ssl_cert_reqs': ssl.CERT_NONE,
+#             'tlsAllowInvalidCertificates': True,
+#             'tls': True,
+#             'socketTimeoutMS': 100000,
+#             'connectTimeoutMS': 100000,
+            
+#         }
+#     }
+# }
+
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'defaultdb', 
+        'USER': 'avnadmin',   
+        'PASSWORD': 'AVNS_EhBGgBs84ma2m0AW9qP',  
+        'HOST': 'pg-4e91638-opms.l.aivencloud.com',
+        'PORT': '27207',
+        'OPTIONS': {
+            'sslmode': 'require', 
+            # 'sslrootcert': 'system',
+        },
     }
 }
+
+
+
+# -----BEGIN CERTIFICATE-----
+# MIIEQTCCAqmgAwIBAgIUd0FFELwrafVMwnN6wHwQCKGXdOYwDQYJKoZIhvcNAQEM
+# BQAwOjE4MDYGA1UEAwwvMWZiMjA3OTctOWQzNy00YjE3LTgzOTUtNGYyMjkwOTlj
+# ZGUzIFByb2plY3QgQ0EwHhcNMjQwODA5MDYxMzUzWhcNMzQwODA3MDYxMzUzWjA6
+# MTgwNgYDVQQDDC8xZmIyMDc5Ny05ZDM3LTRiMTctODM5NS00ZjIyOTA5OWNkZTMg
+# UHJvamVjdCBDQTCCAaIwDQYJKoZIhvcNAQEBBQADggGPADCCAYoCggGBAMufSJwk
+# jRO30bok31UYZshMTTa2NcXue6EzP1ElltgHQKfd5cZZM7hLzAlTuFRteACWYLWN
+# A/0juy9qhJ7OeKZAbarcZdbdoWKbujCaOG/2uahMQMMyivVcHOj1IKvVCz/ZbljV
+# zX4MF/xtts+UyDMj4ip1pX+EPVk4hqG+7TOZUtXS4tyxEen5NS/2/Wnk7zucSJgD
+# OwzFJeYWu6//ORzLVXmAy2opnmB0qTWNiZhQOEOihwvci6GV/f6o9JlqwuSUvhIA
+# oCBC73SzDImo1N3L0aZ4/3DnJen+89wkFy7hdPUrAmwsBdjTeuobxrUMaCsCxuMr
+# p475SZYqAGEkStgnbwML6Vyy4+UUw2jvirLoIm3KM5tb0ro7vj7ud84BuAqi79AX
+# 1vIE9+209JqH2CCi6byHDTTQZ6NnEoAyg0pAiraNBOkTlLgkU8yBtZHCZe5s5DRG
+# inJQWn8B5Oxk4gq5mJ/70e+v6J0jrI+pAxnsFlduoCiS9bOOJi7JfDwCjwIDAQAB
+# oz8wPTAdBgNVHQ4EFgQUDjXsF/K5C8C+bplQJAGHXfgi/E0wDwYDVR0TBAgwBgEB
+# /wIBADALBgNVHQ8EBAMCAQYwDQYJKoZIhvcNAQEMBQADggGBAFGZAeZVgvx+EYmS
+# vWmGE6kuFXAj2ksp50vnQ/Jhdqo+m5x/UuNcE4sKpaIQ67efLS22bNyLQp515WyJ
+# +pz0sxcPS5Xe4+T4by4pAY/EzX8GOfDnrTf/5zF4AMlV2Re/+NbuDmIQFYfllOZ5
+# a7zK1GU8P66M2Zlju18/M27GJz3MPfMMLhxfYXyH8okgeGKgpdFItRlgANl5RUAB
+# NDrDhLzoY9jWMpkZY3B44XKQdICHp2/fGLS/12aEjcC/ETfKk0JIrgrgYd7Uevw9
+# R+3Gegfpukfu8yRmNT/iqS8WDAnp+jl1gVThFn0ed1hsY+A5dbq4gAQ8mBKiAwe2
+# ciOfKHBRuqYQEEyEMWwH/N3/wlTyFLyqh9+sLux2fI00riuKJTClhuuCdMnslrYP
+# PX2zKkhkw44PzoPimQJVmYPERDpxdMAjNmwp0UDhirlYlTc/99O91PSOPxZneL4j
+# WefXxz2e52ct/GtiAHR0SFG97otqXy8Jm0gQG1fYi11oDUSHpg==
+# -----END CERTIFICATE-----
+
+
+# DATABASES = {'default': dj_database_url.config(default=os.environ['DATABASE_URL'], engine='django_cockroachdb')}
 
 
 # Password validation
@@ -121,7 +207,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
-STATIC_ROOT = os.path.join(BASE_DIR/ 'static')
+STATICFILES_DIR = os.path.join(BASE_DIR, 'static'),
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
