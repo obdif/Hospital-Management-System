@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 from pathlib import Path
 import cloudinary_storage
-# import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -34,7 +33,7 @@ ALLOWED_HOSTS = ['.vercel.app', '.now.sh', '127.0.0.1']
 # Application definition
 
 INSTALLED_APPS = [
-    'jazzmin',
+    # 'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -90,13 +89,6 @@ WSGI_APPLICATION = 'opm.wsgi.application'
 #         'ENGINE': 'django_cockroachdb',
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
-# }
-
-
-# DATABASE_URL = "postgresql://blessing:rWEf27wCcy9ID-eLyV70Mw@opmsdatabase-15955.8nj.gcp-europe-west1.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full"
-
-# DATABASES = {
-#     'default': dj_database_url.parse(DATABASE_URL, engine='django_cockroachdb')
 # }
 
 
@@ -207,10 +199,10 @@ DEFAULT_FILE_STORAGE ='cloudinary_storage.storage.MediaCloudinaryStorage'
 
 
 
-JAZZMIN_SETTINGS ={
-    "site_title": "OPMS",
-    "site_header": "OPMS ADMINISTRATION",
-    "site_brand": "OPMS ADMINISTRATION",
-    "copyright": "LUTH",
-    "site_logo": "https://res.cloudinary.com/dbqtos6rt/image/upload/v1720673537/opms/assets/logo_iueamp.png",
-}
+# JAZZMIN_SETTINGS ={
+#     "site_title": "OPMS",
+#     "site_header": "OPMS ADMINISTRATION",
+#     "site_brand": "OPMS ADMINISTRATION",
+#     "copyright": "LUTH",
+#     "site_logo": "https://res.cloudinary.com/dbqtos6rt/image/upload/v1720673537/opms/assets/logo_iueamp.png",
+# }
