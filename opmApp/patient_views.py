@@ -343,7 +343,7 @@ def medical_result_receipt(request, invoice_id):
 
 
 @login_required(login_url="patient_login")
-def doctors(request):
+def patient_doctors(request):
     try:
         patient = Patient.objects.get(id=request.user.id)
     except Patient.DoesNotExist:
@@ -361,7 +361,7 @@ def doctors(request):
 
 
 @login_required(login_url="patient_login")
-def department(request):
+def patient_departments(request):
  
     return render(request,"patients_template/departments.html")
 
