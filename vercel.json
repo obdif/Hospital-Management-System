@@ -16,10 +16,14 @@
     ],
     "routes": [
       {
+        "src": "/static/(.*)",
+        "dest": "/static/$1"
+      },
+      {
         "src": "/(.*)",
         "dest": "opm/wsgi.py"
       }
     ],
-
+    
     "outputDirectory": "staticfiles_build"
   }
