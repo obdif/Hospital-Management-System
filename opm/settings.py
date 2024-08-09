@@ -142,33 +142,6 @@ DATABASES = {
 
 
 
-# -----BEGIN CERTIFICATE-----
-# MIIEQTCCAqmgAwIBAgIUd0FFELwrafVMwnN6wHwQCKGXdOYwDQYJKoZIhvcNAQEM
-# BQAwOjE4MDYGA1UEAwwvMWZiMjA3OTctOWQzNy00YjE3LTgzOTUtNGYyMjkwOTlj
-# ZGUzIFByb2plY3QgQ0EwHhcNMjQwODA5MDYxMzUzWhcNMzQwODA3MDYxMzUzWjA6
-# MTgwNgYDVQQDDC8xZmIyMDc5Ny05ZDM3LTRiMTctODM5NS00ZjIyOTA5OWNkZTMg
-# UHJvamVjdCBDQTCCAaIwDQYJKoZIhvcNAQEBBQADggGPADCCAYoCggGBAMufSJwk
-# jRO30bok31UYZshMTTa2NcXue6EzP1ElltgHQKfd5cZZM7hLzAlTuFRteACWYLWN
-# A/0juy9qhJ7OeKZAbarcZdbdoWKbujCaOG/2uahMQMMyivVcHOj1IKvVCz/ZbljV
-# zX4MF/xtts+UyDMj4ip1pX+EPVk4hqG+7TOZUtXS4tyxEen5NS/2/Wnk7zucSJgD
-# OwzFJeYWu6//ORzLVXmAy2opnmB0qTWNiZhQOEOihwvci6GV/f6o9JlqwuSUvhIA
-# oCBC73SzDImo1N3L0aZ4/3DnJen+89wkFy7hdPUrAmwsBdjTeuobxrUMaCsCxuMr
-# p475SZYqAGEkStgnbwML6Vyy4+UUw2jvirLoIm3KM5tb0ro7vj7ud84BuAqi79AX
-# 1vIE9+209JqH2CCi6byHDTTQZ6NnEoAyg0pAiraNBOkTlLgkU8yBtZHCZe5s5DRG
-# inJQWn8B5Oxk4gq5mJ/70e+v6J0jrI+pAxnsFlduoCiS9bOOJi7JfDwCjwIDAQAB
-# oz8wPTAdBgNVHQ4EFgQUDjXsF/K5C8C+bplQJAGHXfgi/E0wDwYDVR0TBAgwBgEB
-# /wIBADALBgNVHQ8EBAMCAQYwDQYJKoZIhvcNAQEMBQADggGBAFGZAeZVgvx+EYmS
-# vWmGE6kuFXAj2ksp50vnQ/Jhdqo+m5x/UuNcE4sKpaIQ67efLS22bNyLQp515WyJ
-# +pz0sxcPS5Xe4+T4by4pAY/EzX8GOfDnrTf/5zF4AMlV2Re/+NbuDmIQFYfllOZ5
-# a7zK1GU8P66M2Zlju18/M27GJz3MPfMMLhxfYXyH8okgeGKgpdFItRlgANl5RUAB
-# NDrDhLzoY9jWMpkZY3B44XKQdICHp2/fGLS/12aEjcC/ETfKk0JIrgrgYd7Uevw9
-# R+3Gegfpukfu8yRmNT/iqS8WDAnp+jl1gVThFn0ed1hsY+A5dbq4gAQ8mBKiAwe2
-# ciOfKHBRuqYQEEyEMWwH/N3/wlTyFLyqh9+sLux2fI00riuKJTClhuuCdMnslrYP
-# PX2zKkhkw44PzoPimQJVmYPERDpxdMAjNmwp0UDhirlYlTc/99O91PSOPxZneL4j
-# WefXxz2e52ct/GtiAHR0SFG97otqXy8Jm0gQG1fYi11oDUSHpg==
-# -----END CERTIFICATE-----
-
-
 # DATABASES = {'default': dj_database_url.config(default=os.environ['DATABASE_URL'], engine='django_cockroachdb')}
 
 
@@ -207,8 +180,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
-STATICFILES_DIR = os.path.join(BASE_DIR, 'static'),
+STATICFILES_DIRS = os.path.join(BASE_DIR, 'static'),
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
