@@ -101,30 +101,6 @@ WSGI_APPLICATION = 'opm.wsgi.application'
 
 
 
-# # ============================= MONGO DATABASES ===========
-# import ssl
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'djongo',
-#         'NAME': 'OPMS',
-#         'ENFORCE_SCHEMA': False,
-#         'CLIENT': {
-#             'host': 'mongodb+srv://olamidedevops:TKgHFlQD4MtqpDYa@auth.nleripr.mongodb.net/OPMS?retryWrites=true&w=majority&ssl=true',
-#             'ssl': True,
-#             'username': 'olamidedevops',
-#             'password': 'TKgHFlQD4MtqpDYa',
-#             'authMechanism': 'SCRAM-SHA-1',
-#             # 'ssl_cert_reqs': ssl.CERT_NONE,
-#             'tlsAllowInvalidCertificates': True,
-#             'tls': True,
-#             'socketTimeoutMS': 100000,
-#             'connectTimeoutMS': 100000,
-            
-#         }
-#     }
-# }
-
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
