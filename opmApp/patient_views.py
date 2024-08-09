@@ -19,13 +19,14 @@ def patient_dashboard(request):
     # doctors = Doctor.objects.all()
     try:
         patient = Patient.objects.get(id=request.user.id)
-    except Doctor.DoesNotExist:
+    except Patient.DoesNotExist:
         return redirect('patient_login')
 
     appointments = Appointment.objects.filter(patient=request.user).order_by('-current_date')
     pending_appointments = appointments.filter(status='Pending').count()
     rejected_appointments = appointments.filter(status='Rejected').count()
     
+  
 
   
     context ={
@@ -106,6 +107,12 @@ def patient_registration_confirmation(request):
 
 def patient_login(request):
     if request.method == "POST":
+        
+        # try:
+        #     patient = Patient.objects.get(id=request.user.id)
+        # except Doctor.DoesNotExist:
+        #     return redirect('patient_login')
+        
         patient_id = request.POST.get('yourId').upper()
         
         patient = authenticate(request, username=patient_id)
@@ -207,7 +214,7 @@ def patient_appointments(request):
     appointments = Appointment.objects.filter(patient=request.user).order_by('-current_date')
     try:
         patient = Patient.objects.get(id=request.user.id)
-    except Doctor.DoesNotExist:
+    except Patient.DoesNotExist:
         return redirect('patient_login')
 
     
@@ -229,7 +236,7 @@ def edit_appointment(request, appointment_id):
     doctors = Doctor.objects.all()
     try:
         patient = Patient.objects.get(id=request.user.id)
-    except Doctor.DoesNotExist:
+    except Patient.DoesNotExist:
         return redirect('patient_login')
 
     if request.method == 'POST':
@@ -284,7 +291,7 @@ def delete_appointment(request, appointment_id):
 def appointment_details(request, appointment_id):
     try:
         patient = Patient.objects.get(id=request.user.id)
-    except Doctor.DoesNotExist:
+    except Patient.DoesNotExist:
         return redirect('patient_login')
 
     appointment = get_object_or_404(Appointment, id=appointment_id)
@@ -301,7 +308,7 @@ def appointment_details(request, appointment_id):
 def medical_historys(request):
     try:
         patient = Patient.objects.get(id=request.user.id)
-    except Doctor.DoesNotExist:
+    except Patient.DoesNotExist:
         return redirect('patient_login')
 
     invoices= MedicalResult.objects.filter(patient=request.user).order_by('-id')
@@ -321,7 +328,7 @@ def medical_historys(request):
 def medical_result_receipt(request, invoice_id):
     try:
         patient = Patient.objects.get(id=request.user.id)
-    except Doctor.DoesNotExist:
+    except Patient.DoesNotExist:
         return redirect('patient_login')
     
     invoice = get_object_or_404(MedicalResult, id=invoice_id)
@@ -339,7 +346,7 @@ def medical_result_receipt(request, invoice_id):
 def doctors(request):
     try:
         patient = Patient.objects.get(id=request.user.id)
-    except Doctor.DoesNotExist:
+    except Patient.DoesNotExist:
         return redirect('patient_login')
 
     doctors = Doctor.objects.all()
@@ -363,7 +370,7 @@ def department(request):
 def patient_profile(request):
     try:
         patient = Patient.objects.get(id=request.user.id)
-    except Doctor.DoesNotExist:
+    except Patient.DoesNotExist:
         return redirect('patient_login')
 
     if request.method == 'POST':
