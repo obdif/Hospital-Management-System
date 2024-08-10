@@ -63,6 +63,7 @@ urlpatterns = [
     path('doctor/search_autocomplete/', search_autocomplete, name='search_autocomplete'),
     path('patient/search/', patient_search, name='patient_search'),
     path('doctor/change_password/', change_password, name='change_password'),
+    path('doctor/application_pending/', application_pending, name='application_pending'),
 
 
 ]

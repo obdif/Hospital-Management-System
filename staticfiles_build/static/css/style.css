@@ -1577,7 +1577,7 @@ section .doctor-grid .doctor-bg{
 
 /* ====================== FIRST HOME PAGE ====================== */
 
-.firstHomePage{
+/* .firstHomePage{
   margin: 0;
   position: fixed;
   background: url(https://res.cloudinary.com/dbqtos6rt/image/upload/v1722592271/opms/assets/luthebg_qr55y3.png);
@@ -1587,7 +1587,7 @@ section .doctor-grid .doctor-bg{
   height: 100vh;
   width: 100%;
   
-}
+} */
 
 
 .firstHomePage .homePageContent{

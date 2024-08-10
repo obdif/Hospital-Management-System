@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 import requests
 from django.http import JsonResponse
-from django.core.mail import send_mail
+from django.core.mail import send_mail, EmailMessage
 from django.utils import timezone
 from django.core.files.storage import default_storage
 
@@ -75,11 +75,8 @@ def patient_register(request):
         patient = Patient(name=name, age=age, phone_no=phone, email=email, sex=sex)
         patient.save()
 
-        # if patient is not None:
-        #     messages.error(request, "Registration failed. Please try again.")
-
         subject = "LUTH | PATIENT REGISTRATION SUCCESSFUL"
-        message = f"Welcome {name}! \n\n\nThanks for your registration. Your Paitient ID to log in to the portal is: \n\n{patient.patient_id}\n\n\n\n Kindly visit www.luth.com/login to log in"
+        message = f"Welcome {name}! \n\n\nThanks for your registration. Your Paitient ID to log in to the portal is: \n\n{patient.patient_id}\n\n\n\n Kindly visit (https://hospital-management-system-silk.vercel.app/patient/login/) to log in"
         sender = 'adeblessinme4u@gmail.com'
         receiver = [email]
         send_mail(subject, message, sender, receiver, fail_silently=True)
@@ -173,14 +170,7 @@ def book_an_appointment(request):
 
         messages.success(request, "Appointment sent!")
         return redirect("patient_appointments")
-        
-        # patient = request.user    
-        
-        # appointment = Appointment(patient=patient, doctor_id=doctor, description=description, date_time=date, time=time)
-        # appointment.save()
-        
-        # messages.success(request, "Appointment sent!")
-        # return redirect("patient_appointments")
+       
       
     context={
         "doctors":doctors,
@@ -379,7 +369,7 @@ def patient_profile(request):
         patient.phone_no = request.POST.get('phone', '')
         patient.address = request.POST.get('address', '')
         patient.country = request.POST.get('country', '')
-        patient.sex = request.POST.get('gender', '')
+        # patient.sex = request.POST.get('gender', '')
 
 
 

@@ -12,6 +12,15 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 from pathlib import Path
 import cloudinary_storage
+import environ
+
+env = environ.Env()
+env.read_env()
+
+# env = environ.Env(
+#     # set casting, default value
+#     DEBUG=(bool, False)
+# )
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -34,13 +43,13 @@ ALLOWED_HOSTS = ['.vercel.app', '.now.sh', '127.0.0.1']
 
 INSTALLED_APPS = [
     # 'jazzmin',
+    'opmApp',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'opmApp',
     'cloudinary',
     'cloudinary_storage',
 ]
@@ -165,14 +174,24 @@ AUTH_USER_MODEL = 'opmApp.CustomUser'
 
 # +================================ CODE FOR EMAIL NOTIFICAION ======================
 
-EMAIL_BACKEND ='django.core.mail.backends.smtp.EmailBackend' # the email backend is a fixed you must put it exactly how you see it
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_USE_SSL = False
-EMAIL_HOST_USER='adeblessinme4u@gmail.com' #Your email address will be here i.e the sender email address
-EMAIL_HOST_PASSWORD ='qvpx txbb mrji blpz' #the Email Host Password you will put your App Password since google don't allow "less secure app", you can find or create app password in your google account by navigating to security then search for App password, then you can create or copy the password there.
+# EMAIL_BACKEND ='django.core.mail.backends.smtp.EmailBackend' 
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_USE_SSL = False
+# EMAIL_HOST_USER='olamidedevops@gmail.com' 
+# EMAIL_HOST_PASSWORD ='khrm gvta pkgu wdoi' 
+# EMAIL_HOST_PASSWORD ='tznr lakd bdil ptwe' 
+# EMAIL_HOST_PASSWORD ='qvpx txbb mrji blpz' 
 
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 465 #587
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD') 
 
 
 

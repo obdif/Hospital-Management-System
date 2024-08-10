@@ -14,7 +14,7 @@ class CustomUser(AbstractUser):
     username = models.CharField(max_length=200, null=True, unique=True) 
     name = models.CharField(max_length = 200)
     email = models.CharField(max_length = 200, unique=True)
-    profile_pic = models.ImageField(upload_to="profile/", blank=True, default="https://res.cloudinary.com/dbqtos6rt/image/upload/v1720589104/opms/profile/profile_bgrbul.jpg")
+    profile_pic = models.ImageField(upload_to="profile/", blank=True, default="opms/profile/profile_bgrbul.jpg")
     phone_no = models.CharField(max_length=50, blank=False, default=2)
     address = models.TextField(max_length=500, blank=True, default="")
     sex = models.CharField(max_length=50, default="")

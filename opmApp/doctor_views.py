@@ -126,6 +126,14 @@ def doctor_register(request):
         doctor.set_password(C_password)
         doctor.save()
         
+        subject = "LUTH | DOCTOR REGISTRATION SUCCESSFUL"
+        message = f"Welcome {name}! \n\n\nThanks for your registration. Your Application is under review, you will receive a notification once your application has been approved. \n\n Thanks for your understanding."
+        sender = 'adeblessinme4u@gmail.com'
+        receiver = [email]
+        send_mail(subject, message, sender, receiver, fail_silently=True)
+
+        # return redirect('application_pending')
+        
         if file:
             doctor.file = file
             doctor.save()
@@ -144,6 +152,9 @@ def doctor_register(request):
     return render(request,"doctors_template/doctor_register.html", {'departments': departments})
 
 
+
+def application_pending(request):
+    return render(request, "doctors_template/application_pending.html")
 
 
 def doctor_login(request):
