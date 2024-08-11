@@ -52,13 +52,13 @@ h6 {
 }
 
 .pagetitle .pagetitle-btn{
-  position: relative;
+  /* position: relative;
   left: 160%;
-  align-items: flex-end;
+  align-items: flex-end; */
 }
 .pagetitle .pagetitle-btn-d{
-  position: relative;
-  right: -200%;
+  /* position: relative;
+  right: -200%; */
   /* align-items: flex-end; */
 }
 
@@ -1577,7 +1577,7 @@ section .doctor-grid .doctor-bg{
 
 /* ====================== FIRST HOME PAGE ====================== */
 
-/* .firstHomePage{
+.firstHomePage{
   margin: 0;
   position: fixed;
   background: url(https://res.cloudinary.com/dbqtos6rt/image/upload/v1722592271/opms/assets/luthebg_qr55y3.png);
@@ -1587,7 +1587,7 @@ section .doctor-grid .doctor-bg{
   height: 100vh;
   width: 100%;
   
-} */
+}
 
 
 .firstHomePage .homePageContent{
@@ -1719,6 +1719,42 @@ section .doctor-grid .doctor-bg{
 }
 
 @media (max-width: 900px) {
+  /* .main{
+
+    background: yellow;
+  } */
+
+  .pagetitle-btn button{
+    padding: 12px;
+    border: none;
+    border-radius: 15px;
+    background: #012970;
+    color: #ebeef4;
+    font-weight: 600;
+    transition: all;
+    transition-duration: 1s;
+  }
+
+  .d-info-items{
+    display: grid;
+    position: relative;
+    grid-template-columns: auto  auto;
+    gap: 10px;
+  }
+  
+  .d-item .d-title{
+    font-size: 18px;
+  }
+  
+ 
+  .d-item h2{
+    color: white;
+    font-weight: 800;
+    font-size: 4rem;
+    
+  }
+
+
   .firstHomePage .homePageContent{
     color: white;
     padding: 50px;

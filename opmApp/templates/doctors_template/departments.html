@@ -103,41 +103,21 @@
       <section class="section">
         <!-- ================DOCTOR GRID LAYOUT START ================= -->
         <div class="doctor-grid">
+         
+          {% for departments in department %}
           <div class="doctor">
             <div class="doctor-img">
-              <img src="https://res.cloudinary.com/dbqtos6rt/image/upload/v1720673538/opms/assets/ortho2_c0hmc0.jpg" alt="" width="300" />
+              <img src="{{departments.image.url}}" alt="" width="300" />
             </div>
             <div class="doctor-name">
-              <h3 class="pagetitle">OBSTRETRIC & GYNEACOLOGY</h3>
+              <h3 class="pagetitle">{{departments.name}}</h3>
             </div>
           </div>
+          {% endfor %}
 
-          <div class="doctor">
-            <div class="doctor-img">
-              <img src="https://res.cloudinary.com/dbqtos6rt/image/upload/v1720673547/opms/assets/ortho3_srvpd8.jpg" alt="" width="300" />
-            </div>
-            <div class="doctor-name">
-              <h3 class="pagetitle">OPHTHALMOLOGY</h3>
-            </div>
-          </div>
 
-          <div class="doctor">
-            <div class="doctor-img">
-              <img src="https://res.cloudinary.com/dbqtos6rt/image/upload/v1720673534/opms/assets/9_y8s6wz.jpg" alt="" width="300" />
-            </div>
-            <div class="doctor-name">
-              <h3 class="pagetitle">COMMIUNITY HEALTH</h3>
-            </div>
-          </div>
 
-          <div class="doctor">
-            <div class="doctor-img">
-              <img src="{% static 'img/2.jpg'%}" alt="" width="300" />
-            </div>
-            <div class="doctor-name">
-              <h3 class="pagetitle">MEDICINE</h3>
-            </div>
-          </div>
+         
         </div>
 
         <!-- ==================DOCTOR GRID LAYOUT END ============================== -->

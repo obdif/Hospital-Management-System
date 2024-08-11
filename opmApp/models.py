@@ -103,7 +103,7 @@ class Appointment(models.Model):
     status = models.CharField(max_length=50, choices=STATUS_CHOICES, default='Pending')
     date_time = models.CharField(max_length=50)
     doctor_note = models.TextField(blank=True)
-    time = models.CharField(max_length=50)
+    time = models.TimeField(max_length=50)
     current_date = models.DateTimeField(default=timezone.now)
 
     def __str__(self):

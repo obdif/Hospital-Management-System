@@ -31,7 +31,7 @@ def doctor_dashboard(request):
         return redirect('doctor_login')
     
     if doctor.status== "Pending":
-        messages.error(request, "Your Account is still under review.")
+        messages.error(request, "Your APPLICATION is still under review. You will receive a notification once it's approved.")
         return redirect('doctor_login')
     else:
         pass
@@ -173,10 +173,12 @@ def doctor_login(request):
             login(request, authenticate_user)
             return redirect('doctor_dashboard')
         
-        else:
+        elif authenticate_user is None:
             messages.error(request, "Wrong Credentials details.\n Try again.")
             return redirect('doctor_login')
         
+        # if authenticate_user is None:
+        #     messages.error(request, "testing")
         # messages.error(request, "Your Account is still under review.")
  
     return render(request,"doctors_template/doctor_login.html")
@@ -607,10 +609,12 @@ def doctor_available(request):
 def appointment_details(request, appointment_id):
     doctor = Doctor.objects.get(customuser_ptr=request.user)
     appointment = get_object_or_404(Appointment, id=appointment_id)
+
     
     if request.method == "POST":
         condition = request.POST.get('cp', '')
         note = request.POST.get('note', '')
+        patient_id = request.POST.get('patient', '')
         
         
         appointment.condition = condition
@@ -620,6 +624,23 @@ def appointment_details(request, appointment_id):
         elif 'reject' in request.POST:
             appointment.reject()
         appointment.save()
+        
+        
+        patient = Patient.objects.get(id=patient_id)
+
+        subject = f"Appointment {appointment.status} by Dr. {doctor.name}"
+        message = (
+            f"Hello {patient.name}!\n\nYour appointment with Dr. {doctor.name} "
+            f"on {appointment.date_time} as been {appointment.status}.\n"
+            f"Doctor Feedback: \n Condition/Problem: {appointment.condition}\n Note: {appointment.doctor_note}.\n\n"
+            "\nKindly log in to your account to view the appointment.\n\n"
+            "Log in here: (https://hospital-management-system-kohl.vercel.app/patient/appointments/)"
+        )
+        sender = 'adeblessinme4u@gmail.com'
+        receiver = [patient.email]
+        send_mail(subject, message, sender, receiver, fail_silently=True)
+
+
 
         messages.success(request, "Feedback Sent successfully")
         return redirect('appointment_details', appointment_id=appointment_id)
@@ -632,6 +653,8 @@ def appointment_details(request, appointment_id):
         # "rejected_appointments":rejected_appointments,
     }
     return render(request, "doctors_template/appointment_details.html", context)
+
+
 
 @login_required(login_url="doctor_login")
 def doctors(request):
@@ -651,8 +674,9 @@ def doctors(request):
 
 @login_required(login_url="doctor_login")
 def department(request):
+    department= Department.objects.all()
  
-    return render(request,"doctors_template/departments.html")
+    return render(request,"doctors_template/departments.html", {'department':department})
 
 
 logger = logging.getLogger(__name__)
@@ -670,7 +694,7 @@ def password_reset(request):
             otp.save()
 
             subject = "PASSWORD RESET OTP"
-            message = f"Your OTP for password reset is \n\n\n\n{otp.otp}."
+            message = f"Your OTP for password reset is \n\n\n\n{otp.otp}"
             sender = 'adeblessinme4u@gmail.com'
             receiver = [email]
 
@@ -689,40 +713,6 @@ def password_reset(request):
             return render(request, 'doctors_template/password_reset.html', context)
 
     return render(request, 'doctors_template/password_reset.html')
-
-# def password_reset(request):
-#     if request.method == 'POST':
-#         email= request.POST.get('email', '')
-        
-#         context ={
-#             'email':email,
-#         }
-        
-        
-                
-#         User = get_user_model()
-#         if User.objects.filter(email=email).exists():
-            
-            
-#             otp=OTP(email=email)
-#             otp.save()
-            
-            
-#             subject = "PASSWORD RESET OTP"
-#             message = f"Your OTP for password reset is \n\n\n\n{otp.otp}."
-#             sender = 'adeblessinme4u@gmail.com'
-#             receiver = [email]
-#             send_mail(subject, message, sender, receiver, fail_silently=True)
-
-#             messages.success(request, f"Enter the OTP sent to {email}")
-#             request.session['reset_email'] = email
-#             return redirect("reset_password_otp")
-#         else:
-#             messages.error(request, f"{email}  is not a registered doctor, Check the email and try again.")
-#             return render(request, 'doctors_template/password_reset.html', context)
-        
-        
-#     return render(request, 'doctors_template/password_reset.html')
 
 
 def reset_password_otp(request):

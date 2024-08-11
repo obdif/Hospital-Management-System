@@ -9,6 +9,7 @@ from django.http import JsonResponse
 from django.core.mail import send_mail, EmailMessage
 from django.utils import timezone
 from django.core.files.storage import default_storage
+from datetime import datetime
 
 
 
@@ -76,7 +77,7 @@ def patient_register(request):
         patient.save()
 
         subject = "LUTH | PATIENT REGISTRATION SUCCESSFUL"
-        message = f"Welcome {name}! \n\n\nThanks for your registration. Your Paitient ID to log in to the portal is: \n\n{patient.patient_id}\n\n\n\n Kindly visit (https://hospital-management-system-silk.vercel.app/patient/login/) to log in"
+        message = f"Welcome {name}! \n\n\nThanks for your registration. Your Paitient ID to log in to the portal is: \n\n{patient.patient_id}\n\n\n\n Kindly visit (https://hospital-management-system-kohl.vercel.app/patient/) to log in"
         sender = 'adeblessinme4u@gmail.com'
         receiver = [email]
         send_mail(subject, message, sender, receiver, fail_silently=True)
@@ -126,58 +127,70 @@ def patient_login(request):
     return render(request,"patients_template/patient_login.html")
 
 
+
+
+
+
+
 @login_required(login_url="patient_login")
 def book_an_appointment(request):
     doctors = Doctor.objects.all()
     patient = Patient.objects.get(id=request.user.id)
 
     if request.method == "POST":
+        
+        context={}
+        
         description = request.POST.get('description', '')
         doctor_id = request.POST.get('doctor', '')
         date_str = request.POST.get('date')
-        time = request.POST.get('time')
+        time_str = request.POST.get('time')
         
-        
-        context ={
-            "description": description,
-            "doctors": doctors,
-            "doctor_id": doctor_id,
-        }
-        
-        # ============ code to check the length of discription, it must be greater than 10 character ====
-        
-        # if len(description) < 10:
-        #     messages.error(request, "Explanation is too short.")
-        #     return render(request, "patients_template/book_an_appointment.html", context)
-        
-        try:
-            doctor = Doctor.objects.get(id=doctor_id)
-        except Doctor.DoesNotExitst:
-            messages.error(request, "Selected doctor does not exist")
-            return render(request, "patients_template/book_an_appointment.html", context)
-
-        
+       
+        # # Validate the combined string
         # try:
-        #     date = datetime.strptime(date_str, "%Y-%m-%d").date()
+        #     date_time_obj = datetime.strptime(date_time_str, '%Y-%m-%d %H:%M')
         # except ValueError:
-        #     messages.error(request, "Invalid date format. Please use YYYY-MM-DD format.")
+        #     messages.error(request, "Invalid date or time format. Please try again.")
         #     return render(request, "patients_template/book_an_appointment.html", context)
-        
-        patient = patient  # Use the patient object obtained earlier
 
-        appointment = Appointment(patient=patient, doctor_id=doctor, description=description, date_time=date_str, time=time)
+        doctor = Doctor.objects.get(id=doctor_id)
+        patient = Patient.objects.get(id=request.user.id)
+
+        appointment = Appointment(
+            patient=patient, 
+            doctor_id=doctor, 
+            description=description, 
+            date_time=date_str, 
+            time=time_str
+        )
         appointment.save()
 
-        messages.success(request, "Appointment sent!")
+
+
+        subject = f"{patient.name} BOOKED AN APPOINTMENT WITH YOU ON {date_str} at {time_str}"
+        message = (
+            f"Hello Dr. {doctor.name}!\n\nYou have an appointment with {patient.name} "
+            f"on {date_str} at {time_str}.\n\nComplaint: {description}\n\n"
+            "Kindly log in to your account to accept or reject the appointment.\n\n"
+            "Log in here: (https://hospital-management-system-kohl.vercel.app/doctor/)"
+        )
+        sender = 'adeblessinme4u@gmail.com'
+        receiver = [doctor.email]
+        send_mail(subject, message, sender, receiver, fail_silently=True)
+
+        messages.success(request, "Appointment booked successfully!")
         return redirect("patient_appointments")
-       
-      
-    context={
-        "doctors":doctors,
+
+    context = {
+        "doctors": doctors,
         "patient": patient,
     }
- 
-    return render(request,"patients_template/book_an_appointment.html", context)
+
+    return render(request, "patients_template/book_an_appointment.html", context)
+
+
+
 
 
 @login_required(login_url="patient_login")
@@ -398,7 +411,7 @@ def recover_id(request):
             patient = Patient.objects.get(email=email)
 
             subject = "PATIENT ID RECOVERY"
-            message = f"Your Patient ID is {patient.patient_id}."
+            message = f"Your Patient ID is \n {patient.patient_id}"
             sender = 'adeblessinme4u@gmail.com'
             receiver = [email]
             send_mail(subject, message, sender, receiver, fail_silently=True)

@@ -26,9 +26,7 @@
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <div class="pagetitle-1">
-        <h1>Dashboard</h1>
-      </div>
+      
       <div class="pagetitle-btn">
         <a href="{% url 'book_an_appointment'%}"><button>Book An Appointment</button></a>
       </div>
@@ -132,12 +130,12 @@
                 <div class="card-body" style="background: #012970; color:white; padding: 25px;cursor: pointer;">
                   <!-- <h5 class="card-title">Customers <span>| This Year</span></h5> -->
                   <a href="{%url 'medical_historys'%}">
-                  <div class="d-flex align-items-center">
+                  <div class="d-flex align-items-center notification_msg">
                       <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                         <i class="bi bi-chat-left-dots-fill"></i>
                       </div>
                       <div class="ps-3">
-                        <h6 style="color:white;" class="animated-text">You have 5 messages</h6>
+                        <h6 style="color:white;" class="animated-text">You have 2 messages</h6>
                         <p style="color: rgb(166, 164, 164);">Click to check your inbox!</p>
                       </div>
                       <i class="bi bi-hand-index hand-click"
@@ -146,7 +144,7 @@
                           color:white;
                           position:relative;
                           bottom:-25px;
-                          left: 18%;
+                          left: 9%;
                         "
                       ></i>
                   </div>
