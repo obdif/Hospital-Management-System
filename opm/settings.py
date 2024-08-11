@@ -12,10 +12,10 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 from pathlib import Path
 import cloudinary_storage
-import environ
+# import environ
 
-env = environ.Env()
-env.read_env()
+# env = environ.Env()
+# env.read_env()
 
 # env = environ.Env(
 #     # set casting, default value
@@ -190,8 +190,10 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 465 #587
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
-EMAIL_HOST_USER = env('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD') 
+EMAIL_HOST_USER='adeblessinme4u@gmail.com'
+EMAIL_HOST_PASSWORD='qvpx txbb mrji blpz'
+# EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+# EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD') 
 
 
 
