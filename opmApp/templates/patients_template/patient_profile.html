@@ -107,11 +107,13 @@
               <div
                 class="card-body profile-card pt-4 d-flex flex-column align-items-center"
               >
+              <div class="profile_img">
                 <img
                   src="{{patient.profile_pic.url}}"
                   alt="{{patient.name}}"
-                  class="rounded-circle"
+                  {% comment %} class="rounded-circle" {% endcomment %}
                 />
+              </div>
                 <h2 style="text-align:center;">{{patient.name}}</h2>
                 <h3>Patient</h3>
               </div>
@@ -281,41 +283,7 @@
                         </div>
                       </div>
 
-                      {% comment %} <div class="row mb-3">
-                        <label
-                          for="phone"
-                          class="col-md-4 col-lg-3 col-form-label"
-                          >Gender</label
-                        >
-                        <div class="col-md-8 col-lg-9">
-                         
-                          <select
-                          class="form-select"
-                          id="doctor-select"
-                          name="gender"
-                          required
-                        >
-                          <option selected disabled value="">Choose...</option>
-                          
-                          <option
-                            value="Male"
-                            style="text-transform: Capitalize"
-                          >
-                            Male
-                          </option>
-                          <option
-                            value="Female"
-                            style="text-transform: Capitalize"
-                          >
-                            Female
-                          </option>
-                          
-                        </select>
-                        </div>
-                      </div>
-
-                      {% endcomment %}
-
+                     
                       <div class="row mb-3">
                         <label
                           for="Email"

@@ -1056,8 +1056,18 @@ h6 {
 /*--------------------------------------------------------------
 # Profie Page
 --------------------------------------------------------------*/
+.profile .profile-card .profile_img {
+  height: 150px;
+  width: 150px;
+  border: 1px solid #011a49;
+  padding: 3px;
+}
+
 .profile .profile-card img {
-  max-width: 120px;
+  width: 100%;
+  height: 100%;
+  /* max-width: 120px; */
+  /* height: 100px; */
 }
 
 .profile .profile-card h2 {
@@ -1723,6 +1733,24 @@ section .doctor-grid .doctor-bg{
 
     background: yellow;
   } */
+
+  .doctor-grid{
+    display: grid;
+    grid-template-columns: auto;
+    gap: 10px;
+    margin-top: 40px;
+    margin-left: 50px;
+  }
+  
+  .doctor-grid .doctor{
+    background: #fff;
+    width: 90%;
+    position: relative;
+    /* display: inline-block; */
+    border: none;
+    border-radius: 15px;
+  }
+
 
   .pagetitle-btn button{
     padding: 12px;

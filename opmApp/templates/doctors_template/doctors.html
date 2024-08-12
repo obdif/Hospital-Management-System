@@ -103,55 +103,7 @@
       <section class="section">
         <!-- ================DOCTOR GRID LAYOUT START ================= -->
         <div class="doctor-grid">
-          <div class="doctor doctor-bg">
-            <div class="doctor-img">
-              <img
-                src="https://res.cloudinary.com/dbqtos6rt/image/upload/v1720668852/opms/profile/HOD_Medicine_flllhz.jpg"
-                alt="DR. MRS. ADEYEYE"
-                width="300"
-              />
-            </div>
-            <div class="doctor-name">
-              <h4 class="pagetitle">DR. MRS. ADEYEYE O.O</h4>
-              <br />
-              <em>Head of Department (medicine)</em>
-            </div>
-            <button>Send an Email Message</button>
-          </div>
-
-          <div class="doctor doctor-bg">
-            <div class="doctor-img">
-              <img
-                src="https://res.cloudinary.com/dbqtos6rt/image/upload/v1720668852/opms/profile/HODOphtal_prsazn.jpg"
-                alt="PROF. ADEKOYA BOLA"
-                width="300"
-              />
-            </div>
-            <div class="doctor-name">
-              <h4 class="pagetitle">PROF. ADEKOYA BOLA</h4>
-              <br />
-              <em>Head of Department</em>
-            </div>
-            <button>Send an Email Message</button>
-          </div>
-
-          <div class="doctor doctor-bg">
-            <div class="doctor-img">
-              <img
-                src="https://res.cloudinary.com/dbqtos6rt/image/upload/v1720668854/opms/profile/HOD_O_G_cg5ezc.jpg"
-                alt="Dr. Rabiu"
-                width="300"
-              />
-            </div>
-            <div class="doctor-name">
-              <h4 class="pagetitle">DR. K.A RABIU</h4>
-              <br />
-              <em>Head of Department (Obstretric & Gyneacology)</em>
-            </div>
-            <button>Send an Email Message</button>
-          </div>
-
-
+   
           {% for doctor in doctors %}
           <div class="doctor doctor-bg">
             <div class="doctor-img">
@@ -164,20 +116,12 @@
             <div class="doctor-name">
               <h4 class="pagetitle" style="text-transform:capitalize;">Dr. {{doctor.name}}</h4>
               <br />
-              <em>{{doctor.department}}</em>
+              <h5>Department: <em>{{doctor.department}}</em></h5>
             </div>
             <button>Send an Email Message</button>
           </div>
           {% endfor %}
-          {% comment %} <div class="doctor">
-            <div class="doctor-img">
-              <img src="assets/img/card.jpg" alt="" width="300">
-            </div>
-            <div class="doctor-name">
-              <h3 class="pagetitle">Dr. Adekunle Blessing</h3>
-              <em>Physistcian</em>
-            </div>
-          </div>  {% endcomment %}
+      
         </div>
 
         <!-- ==================DOCTOR GRID LAYOUT END ============================== -->
