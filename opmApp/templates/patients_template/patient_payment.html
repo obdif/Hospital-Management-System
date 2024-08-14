@@ -28,7 +28,7 @@
     
     
           <li class="nav-item">
-            <a class="nav-link " href="{% url 'medical_historys'%}">
+            <a class="nav-link collapsed" href="{% url 'medical_historys'%}">
               <i class="bi bi-list-ol"></i><span>Invoices</span>
             </a>
           </li>
@@ -50,7 +50,7 @@
           <!-- End Departments Nav -->
     
           <li class="nav-item">
-            <a class="nav-link collapsed" href="{% url 'patient_payments' %}">
+            <a class="nav-link " href="{% url 'patient_payments' %}">
               <i class="bi bi-credit-card"></i><span>Payments</span>
             </a>
           </li>
@@ -91,7 +91,7 @@
             <button>Create Invoice</button>
         </div>
       </div> {% endcomment %}
-  {% if invoices %}
+  {% comment %} {% if invoices %} {% endcomment %}
       <!-- End Page Title -->
       <section class="section">
         <div class="row">
@@ -166,15 +166,15 @@
           </div>
         </div>
       </section>
-      {% else %}
-      <div class="blank">
+      {% comment %} {% else %} {% endcomment %}
+      {% comment %} <div class="blank">
         <div class="blank_icon">
           <i  class="bi bi-journal-x blank-icon"></i><br>
           <p>No Invoice found for you. <a href="{%url 'book_an_appointment'%}">Create a new appointment.</a></p>
         </div>
        
-        </div>
-      {% endif %}
+        </div> {% endcomment %}
+      {% comment %} {% endif %} {% endcomment %}
     </main>
     <!-- End #main -->
 

@@ -336,6 +336,9 @@ def create_invoice(request):
             messages.error(request, "Patient not found.")
             return redirect('invoices')  # Redirect to the invoices tracking page
 
+
+
+
     return render(request, 'doctors_template/create_invoice.html')
 
 
@@ -376,6 +379,18 @@ def create_invoice_with_patient(request, patient_id):
             dischargeMeditations=request.POST.get('dischargeMeditations', ''),
             dischargeInstructions=request.POST.get('dischargeInstructions', ''),
         )
+        
+        
+        subject = f"Medical Receipt for {MedicalResult.condition_before} by Dr. {doctor.name}"
+        message = (
+            f"Hello {patient.name}!\n\nYour Medical Result for {MedicalResult.condition_before} "
+            f"on {MedicalResult.admitDate} is ready. Find the below link to view or Print your invoice. Thank You \n\n"
+            f"View it here: (https://hospital-management-system-kohl.vercel.app/patient/medical_result_receipt/{MedicalResult.id}/)"
+        )
+        sender = 'adeblessinme4u@gmail.com'
+        receiver = [patient.email]
+        send_mail(subject, message, sender, receiver, fail_silently=True)
+
         
         
         context = {

@@ -30,6 +30,7 @@ urlpatterns = [
     path('patient/patient_registration_confirmation/', patient_registration_confirmation, name="patient_registration_confirmation"),
     path('fetch-available-times/', fetch_available_times, name='fetch_available_times'),
     path('patient/recover_id/', recover_id, name='recover_id'),
+    path('patient/patient_payments/', patient_payments, name='patient_payments'),
 
     
     

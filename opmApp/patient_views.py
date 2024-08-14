@@ -334,8 +334,17 @@ def medical_result_receipt(request, invoice_id):
     except Patient.DoesNotExist:
         return redirect('patient_login')
     
-    invoice = get_object_or_404(MedicalResult, id=invoice_id)
+
     
+    invoice = get_object_or_404(MedicalResult, id=invoice_id)
+   
+   
+    if MedicalResult.status== "Pending":
+        messages.error(request, 'You have a pending payment')
+        return redirect ('medical_historys')
+    else:
+        pass 
+   
     context ={
         'patient':patient,
         'invoice':invoice,
@@ -425,6 +434,11 @@ def recover_id(request):
         
         
     return render(request, 'patients_template/recover_id.html')
+
+
+def patient_payments(request):
+    
+    return render(request, 'patients_template/patient_payment.html')
 
 
 def logout_patient(request):
