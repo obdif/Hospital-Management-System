@@ -229,15 +229,3 @@ DEFAULT_FILE_STORAGE ='cloudinary_storage.storage.MediaCloudinaryStorage'
 #     "copyright": "LUTH",
 #     "site_logo": "https://res.cloudinary.com/dbqtos6rt/image/upload/v1720673537/opms/assets/logo_iueamp.png",
 # }
-
-
-
-# ============= PAYSTACK PAYMENT GATEWAY INTEGRATION ===================
-
-# PAYSTACK_SECRET_KEY = "sk_test_c51fb5da9188774749764cd5213088980f945b5d"
-# PAYSTACK_PUBLIC_KEY = "pk_test_3e3429d6d30ade71e16a23d0b28d14a6a1459b98"
-
-PAYSTACK_SECRET_KEY = os.environ.get('PAYSTACK_SECRET_KEY')
-PAYSTACK_PUBLIC_KEY = os.environ.get('PAYSTACK_PUBLIC_KEY')
-
-# paystack = Paystack(secret_key=PAYSTACK_SECRET_KEY, public_key=PAYSTACK_PUBLIC_KEY)
