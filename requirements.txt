@@ -11,10 +11,13 @@ cloudinary==1.40.0
 Django==5.0
 django-cloudinary-storage==0.3.0
 django-cockroachdb==4.1.1
+django-environ==0.11.2
 dnspython==2.6.1
+environ==1.0
 frozenlist==1.4.1
 idna==3.7
 multidict==6.0.5
+paystack==1.5.0
 pillow==10.4.0
 psycopg2-binary==2.9.9
 PyJWT==2.9.0
@@ -22,6 +25,7 @@ pymongo==4.8.0
 python-decouple==3.8
 pytz==2024.1
 requests==2.32.3
+simplejson==3.19.3
 six==1.16.0
 sqlparse==0.5.1
 twilio==9.2.3

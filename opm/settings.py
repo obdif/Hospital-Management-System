@@ -12,10 +12,11 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 from pathlib import Path
 import cloudinary_storage
-# import environ
+# from paystack import Paystack
+import environ
 
-# env = environ.Env()
-# env.read_env()
+env = environ.Env()
+env.read_env()
 
 # env = environ.Env(
 #     # set casting, default value
@@ -33,7 +34,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-a&b81*@0h=&035ho$$jhbvd=62abat-rh1)u17+kvtqj(jzuh4'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['.vercel.app', '.now.sh', '127.0.0.1']
 # ALLOWED_HOSTS = []
@@ -52,6 +53,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'cloudinary',
     'cloudinary_storage',
+    'payments',
 ]
 
 MIDDLEWARE = [
@@ -227,3 +229,15 @@ DEFAULT_FILE_STORAGE ='cloudinary_storage.storage.MediaCloudinaryStorage'
 #     "copyright": "LUTH",
 #     "site_logo": "https://res.cloudinary.com/dbqtos6rt/image/upload/v1720673537/opms/assets/logo_iueamp.png",
 # }
+
+
+
+# ============= PAYSTACK PAYMENT GATEWAY INTEGRATION ===================
+
+# PAYSTACK_SECRET_KEY = "sk_test_c51fb5da9188774749764cd5213088980f945b5d"
+# PAYSTACK_PUBLIC_KEY = "pk_test_3e3429d6d30ade71e16a23d0b28d14a6a1459b98"
+
+PAYSTACK_SECRET_KEY = os.environ.get('PAYSTACK_SECRET_KEY')
+PAYSTACK_PUBLIC_KEY = os.environ.get('PAYSTACK_PUBLIC_KEY')
+
+# paystack = Paystack(secret_key=PAYSTACK_SECRET_KEY, public_key=PAYSTACK_PUBLIC_KEY)

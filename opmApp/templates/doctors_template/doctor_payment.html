@@ -46,7 +46,7 @@
         <!-- End Doctors Nav -->
 
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'invoices'%}">
+          <a class="nav-link collapsed" href="{% url 'invoices'%}">
             <i class="bi bi-people"></i><span>Invoices</span>
           </a>
         </li>
@@ -67,7 +67,7 @@
         <!-- End Departments Nav -->
 
         <li class="nav-item">
-          <a class="nav-link collapsed" href="{% url 'doctor_payment'%}">
+          <a class="nav-link " href=" {% url 'doctor_payment'%}">
             <i class="bi bi-credit-card"></i><span>Payments</span>
           </a>
         </li>
@@ -95,30 +95,14 @@
 
     <!-- End Sidebar-->
 
-    <main id="main" class="main">
-      <div class="" style="margin-bottom: 30px">
-        <h1 style="text-align: center; font-weight: 600">Invoices</h1>
-      </div>
-      <div>
-        <div class="add-patient pagetitle-btn" style="margin-bottom: 20px">
-            <button id="create-invoice-btn">Create Invoice</button>
-        </div>
-    
-        <div id="create-invoice-form" class="pInvoice" style="display: none; margin-bottom:10px;">
-            <form method="GET" action="">
-              {% csrf_token %}
-                <label for="patient_info">Create Invoice for? </label>
-                <input type="text" class="pInvoice_input" name="patient_info"  id="patient-info" placeholder="Enter Patient Id | Email | Name" required />
-                <button type="submit">Submit</button>
-            </form>
-            <div id="suggest" style="position: absolute; background: white; color: black; z-index: 1000; padding:20px; cursor:pointer;"></div>
-        </div>
-    </div>
-    
 
       <!-- End Page Title -->
       <section class="section">
-        <div class="row">
+        <center><br><br><br><br><br>
+            <h1> Still Under development</h1>
+            <p> Coming Soon ...</p>
+        </center>
+        {% comment %} <div class="row">
           <div class="col-lg-12">
             <div class="card">
               <div class="card-body">
@@ -206,7 +190,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> {% endcomment %}
       </section>
     </main>
     <!-- End #main -->

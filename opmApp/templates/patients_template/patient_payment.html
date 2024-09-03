@@ -80,21 +80,21 @@
     <!-- End Sidebar-->
 
     <main id="main" class="main">
-      <div class="" style="margin-bottom:30px;">
+      {% comment %} <div class="" style="margin-bottom:30px;">
         <h1 style="text-align: center; font-weight: 600">
         Invoices
         </h1>
-      </div>
-
-      {% comment %} <div>
-        <div class="add-patient">
-            <button>Create Invoice</button>
-        </div>
       </div> {% endcomment %}
-  {% comment %} {% if invoices %} {% endcomment %}
-      <!-- End Page Title -->
+
+  
       <section class="section">
-        <div class="row">
+        <center><br><br><br><br><br>
+        <h1> Still Under development</h1>
+        <p> Coming Soon ...</p>
+        </center>
+      
+        
+        {% comment %} <div class="row">
           <div class="col-lg-12">
   
             <div class="card">
@@ -108,7 +108,6 @@
                       <th>Hospital Bill</th>
                       <th>Status</th>
                       <th>Actions</th>
-                      {% comment %} <th></th> {% endcomment %}
                     </tr>
                   </thead>
                   <tbody>
@@ -140,7 +139,6 @@
                       <td>
                         <style>
                           .pending{
-                          {% comment %} cursor:not-allowed; {% endcomment %}
                           background:darkred;
                           }
                           
@@ -164,17 +162,9 @@
             </div>
   
           </div>
-        </div>
-      </section>
-      {% comment %} {% else %} {% endcomment %}
-      {% comment %} <div class="blank">
-        <div class="blank_icon">
-          <i  class="bi bi-journal-x blank-icon"></i><br>
-          <p>No Invoice found for you. <a href="{%url 'book_an_appointment'%}">Create a new appointment.</a></p>
-        </div>
-       
         </div> {% endcomment %}
-      {% comment %} {% endif %} {% endcomment %}
+      </section>
+    
     </main>
     <!-- End #main -->
 

@@ -363,7 +363,7 @@ def create_invoice_with_patient(request, patient_id):
             messages.error(request, "Please enter valid numbers for charges.")
             return redirect('create_invoice_with_patient', patient_id=patient_id)
 
-        MedicalResult.objects.create(
+        medical_result = MedicalResult.objects.create(
             patient=patient,
             doctor=doctor,  # Explicitly assign the doctor
             patientName=patient.name,
@@ -381,11 +381,14 @@ def create_invoice_with_patient(request, patient_id):
         )
         
         
-        subject = f"Medical Receipt for {MedicalResult.condition_before} by Dr. {doctor.name}"
+        
+        
+        
+        subject = f"Medical Receipt for {medical_result.condition_before} by Dr. {doctor.name}"
         message = (
-            f"Hello {patient.name}!\n\nYour Medical Result for {MedicalResult.condition_before} "
-            f"on {MedicalResult.admitDate} is ready. Find the below link to view or Print your invoice. Thank You \n\n"
-            f"View it here: (https://hospital-management-system-kohl.vercel.app/patient/medical_result_receipt/{MedicalResult.id}/)"
+            f"Hello {patient.name}!\n\nYour Medical Result for {medical_result.condition_before} "
+            f"on {medical_result.admitDate} is ready. Find the below link to view or Print your invoice. Thank You \n\n"
+            f"View it here: (https://hospital-management-system-kohl.vercel.app/patient/medical_result_receipt/{medical_result.id}/)"
         )
         sender = 'adeblessinme4u@gmail.com'
         receiver = [patient.email]
@@ -394,10 +397,10 @@ def create_invoice_with_patient(request, patient_id):
         
         
         context = {
-            'condition_before':MedicalResult.condition_before,
-            'condition_after':MedicalResult.condition_after,
-            'dischargeMeditations':MedicalResult.dischargeMeditations,
-            'dischargeInstructions':MedicalResult.dischargeInstructions,
+            'condition_before':medical_result.condition_before,
+            'condition_after':medical_result.condition_after,
+            'dischargeMeditations':medical_result.dischargeMeditations,
+            'dischargeInstructions':medical_result.dischargeInstructions,
             # 'sex':sex,
             # 'address':address,
         }
@@ -446,6 +449,12 @@ def invoice_receipt(request, invoice_id):
         return redirect('doctor_login')
     
     invoice = get_object_or_404(MedicalResult, id=invoice_id) 
+    
+    if invoice.status == "Pending":
+        messages.error(request, "pay now")
+        return redirect('invoices')
+    else:
+        messages.success(request, "success")
        
     context ={
         'doctor':doctor,
@@ -772,6 +781,9 @@ def change_password(request):
             return redirect('doctor_login')
         
     return render(request, 'doctors_template/change_password.html')
+
+def doctor_payment(request):
+    return render(request, 'doctors_template/doctor_payment.html')
 
 
 def logout_doctor(request):

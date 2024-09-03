@@ -24,6 +24,7 @@ from django.conf.urls import handler404
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("", include("opmApp.urls")),
+    path("payments/", include("payments.urls")),
 ]
 
 handler404 = 'opmApp.views.error_404'

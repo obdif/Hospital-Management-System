@@ -1275,7 +1275,7 @@ h6 {
 
 @media (min-width: 992px) {
   .error-404 img {
-    max-width: 50%;
+    max-width: 40%;
   }
 }
 
@@ -1615,7 +1615,7 @@ section .doctor-grid .doctor-bg{
 }
 
 .greeting p{
-  max-width: 40%;
+  max-width: 45%;
 }
 
 
